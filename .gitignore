@@ -42,3 +42,7 @@ next-env.d.ts
 
 # file temporanei di Excel (creati quando il file e' aperto)
 ~$*
+
+# chiave usata solo dallo script di backup, mai online
+.env.backup
+backup-green-mind-group/
