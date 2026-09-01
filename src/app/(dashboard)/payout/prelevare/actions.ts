@@ -6,6 +6,7 @@ import { getCurrentMember } from "@/lib/current-member";
 import { formatActivityCode } from "@/lib/activity-code";
 import { sendWithdrawalStatusEmail, sendNewWithdrawalRequestNotification } from "@/lib/email";
 import type { WithdrawalRequest, WithdrawalStatus } from "@/lib/withdrawals";
+import { validaIban, validaBic, validaCoerenza } from "@/lib/bank-validation";
 
 export type WithdrawalState = {
   error: string | null;
@@ -27,6 +28,15 @@ export async function requestWithdrawal(
   }
   if (!bankName) return { error: "Nome banca e indirizzo obbligatori", success: false };
   if (!iban) return { error: "IBAN obbligatorio", success: false };
+
+  // Il controllo nel browser e' aggirabile: qui si parla di un bonifico
+  // reale, quindi si ricontrolla prima di registrare la richiesta.
+  const esitoIban = validaIban(iban);
+  if (!esitoIban.ok) return { error: `IBAN non valido — ${esitoIban.errore}`, success: false };
+  const esitoSwift = validaBic(swiftCode);
+  if (!esitoSwift.ok) return { error: `Swift non valido — ${esitoSwift.errore}`, success: false };
+  const esitoCoerenza = validaCoerenza(iban, swiftCode);
+  if (!esitoCoerenza.ok) return { error: esitoCoerenza.errore, success: false };
 
   const member = await getCurrentMember();
 

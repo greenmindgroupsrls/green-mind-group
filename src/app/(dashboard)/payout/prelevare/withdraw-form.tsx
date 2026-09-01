@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  useBankValidation,
+  MessaggioErrore,
+  MessaggioOk,
+  AvvisoCoerenza,
+} from "@/components/bank-fields";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { requestWithdrawal, type WithdrawalState } from "./actions";
 import { MIN_WITHDRAWAL_AMOUNT, WITHDRAWAL_CHARGE } from "@/lib/withdrawals";
@@ -16,6 +22,7 @@ function formatEuro(value: number) {
 
 export function WithdrawForm({ availableBalance }: { availableBalance: number }) {
   const [state, formAction, pending] = useActionState(requestWithdrawal, initialState);
+  const banca = useBankValidation();
   const formRef = useRef<HTMLFormElement>(null);
   const [amount, setAmount] = useState("");
   const [prevSuccess, setPrevSuccess] = useState(state.success);
@@ -73,7 +80,18 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>IBAN *</span>
-          <input name="iban" required className={inputClass} placeholder="IT00X0000000000000000000000" />
+          <input
+            name="iban"
+            required
+            value={banca.iban}
+            onChange={(e) => banca.setIban(e.target.value)}
+            onBlur={(e) => banca.onIbanBlur(e.target.value)}
+            aria-invalid={banca.ibanErrato}
+            className={banca.classe(banca.ibanErrato)}
+            placeholder="IT60 X054 2811 1010 0000 0123 456"
+          />
+          {banca.erroreIban && <MessaggioErrore testo={banca.erroreIban} />}
+          {banca.ibanOk && <MessaggioOk testo="IBAN valido" />}
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>Tipo di conto</span>
@@ -84,9 +102,21 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
         </label>
         <label className="flex flex-col gap-1.5 sm:col-span-2">
           <span className={labelClass}>Codice SWIFT/BIC</span>
-          <input name="swift_code" className={inputClass} placeholder="opzionale" />
+          <input
+            name="swift_code"
+            value={banca.swift}
+            onChange={(e) => banca.setSwift(e.target.value.toUpperCase())}
+            onBlur={banca.onSwiftBlur}
+            aria-invalid={banca.swiftErrato}
+            className={banca.classe(banca.swiftErrato)}
+            placeholder="opzionale — es. BCITITMM"
+          />
+          {banca.erroreSwift && <MessaggioErrore testo={banca.erroreSwift} />}
+          {banca.swiftOk && <MessaggioOk testo="Swift valido" />}
         </label>
       </div>
+
+      {banca.erroreCoerenza && <AvvisoCoerenza testo={banca.erroreCoerenza} />}
 
       <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5 rounded-lg border border-gray-200 dark:border-white/10 px-4">
         <div className="flex items-center justify-between py-2.5 text-sm">

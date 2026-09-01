@@ -164,17 +164,20 @@ export async function buildContractPdf(
   decl("b) In possesso di Partita IVA", data.declHasVat);
   decl("c) Superamento di EUR 5.000 netti annui (ai fini INPS)", data.declInpsExceeded);
   decl("d) Dipendente pubblico", data.declPublicEmployee);
+  // La (e) e' una dichiarazione affermata con spunta obbligatoria nel form,
+  // non una domanda: nel PDF si rende come casella barrata, coerente con
+  // a-d, cosi' il documento mostra che e' stata dichiarata esplicitamente.
   y -= 2;
+  draw("[X]", MARGIN, y, { font: bold, size: 9 });
   draw(
-    "e) Dichiara di NON essere stato dichiarato fallito, di NON aver riportato condanne, di NON avere",
-    MARGIN,
+    "e) Dichiara di NON essere stato dichiarato fallito, di NON aver riportato condanne,",
+    MARGIN + 20,
     y,
-    { size: 8.5, color: DIM },
+    { size: 8.5 },
   );
   y -= 11;
-  draw("   carichi pendenti né di essere sottoposto a misure di prevenzione.", MARGIN, y, {
+  draw("di NON avere carichi pendenti né di essere sottoposto a misure di prevenzione.", MARGIN + 20, y, {
     size: 8.5,
-    color: DIM,
   });
   y -= 20;
 

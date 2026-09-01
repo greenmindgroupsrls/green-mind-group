@@ -3,8 +3,24 @@
 import { useActionState, useRef, useState } from "react";
 import { FileText, Loader2 } from "lucide-react";
 import { signIncaricatoContract, type BecomeIncaricatoState } from "./actions";
+import { BankFields } from "@/components/bank-fields";
 
 const initialState: BecomeIncaricatoState = { error: null };
+
+// EE e' il codice usato dall'amministrazione italiana per indicare uno
+// stato estero (lo stesso della lettera nel codice fiscale di chi e' nato
+// fuori dall'Italia): copre tutte le cittadinanze non italiane.
+const CITTADINANZE = [
+  { value: "Italiana", label: "Italiana" },
+  { value: "EE", label: "EE - Straniera (stato estero)" },
+];
+
+const TIPI_DOCUMENTO = [
+  { value: "Carta d'identità", label: "Carta d'identità" },
+  { value: "Passaporto", label: "Passaporto" },
+  { value: "Patente di guida", label: "Patente di guida" },
+  { value: "Permesso di soggiorno", label: "Permesso di soggiorno" },
+];
 
 const inputClass =
   "h-11 w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
@@ -30,6 +46,40 @@ function Field({
         {required && " *"}
       </span>
       <input name={name} required={required} placeholder={placeholder} className={inputClass} />
+    </label>
+  );
+}
+
+// Elenchi chiusi: meglio una tendina di un campo libero, che genera
+// varianti ("C.I.", "carta identita'", "Carta d'Identita'") impossibili da
+// confrontare poi tra loro.
+function Select({
+  label,
+  name,
+  required,
+  options,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  options: { value: string; label: string }[];
+}) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className={labelClass}>
+        {label}
+        {required && " *"}
+      </span>
+      <select name={name} required={required} defaultValue="" className={inputClass}>
+        <option value="" disabled>
+          Seleziona...
+        </option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
@@ -86,7 +136,9 @@ export function ContractForm({
     // I campi anagrafici vanno controllati prima: un'anteprima con metà dei
     // dati vuoti non serve a nulla. Le spunte di firma invece non sono
     // richieste per l'anteprima — si firma dopo aver letto.
-    const required = form.querySelectorAll<HTMLInputElement>("input[required]:not([type=checkbox])");
+    const required = form.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+      "input[required]:not([type=checkbox]), select[required]",
+    );
     for (const el of required) {
       if (!el.checkValidity()) {
         el.reportValidity();
@@ -137,14 +189,9 @@ export function ContractForm({
       <Section title="Dati da completare">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Luogo di nascita" name="birth_place" required placeholder="es. Verona" />
-          <Field label="Cittadinanza" name="citizenship" required placeholder="es. Italiana" />
+          <Select label="Cittadinanza" name="citizenship" required options={CITTADINANZE} />
           <Field label="Professione" name="profession" placeholder="es. Impiegato" />
-          <Field
-            label="Tipo di documento"
-            name="document_type"
-            required
-            placeholder="es. Carta d'identità"
-          />
+          <Select label="Tipo di documento" name="document_type" required options={TIPI_DOCUMENTO} />
           <Field label="Numero documento" name="document_number" required placeholder="es. CA12345AB" />
         </div>
       </Section>
@@ -153,12 +200,7 @@ export function ContractForm({
         <p className="text-xs text-gray-500 dark:text-gray-400 -mt-2">
           Servono per l&apos;accredito delle provvigioni maturate. Puoi anche compilarli più avanti.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Banca" name="bank_name" />
-          <Field label="Intestatario" name="bank_holder" />
-          <Field label="IBAN" name="iban" />
-          <Field label="Swift / BIC" name="swift" />
-        </div>
+        <BankFields />
       </Section>
 
       <Section title="Dichiarazioni Referente">
@@ -174,11 +216,17 @@ export function ContractForm({
           />
           <SiNo name="decl_public_employee" label="d) Sono un dipendente pubblico" />
         </div>
-        <p className="rounded-lg bg-gray-50 dark:bg-white/5 px-4 py-3 text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-          e) Dichiaro di <strong>non</strong> essere stato dichiarato fallito, di <strong>non</strong>{" "}
-          aver riportato condanne, di <strong>non</strong> avere carichi pendenti né di essere
-          sottoposto a misure di prevenzione.
-        </p>
+        {/* A differenza di a-d, che sono domande con entrambe le risposte
+            valide, la (e) e' una dichiarazione che deve essere vera per
+            poter firmare: quindi spunta obbligatoria, non Si'/No. */}
+        <label className="flex items-start gap-2.5 rounded-lg bg-gray-50 dark:bg-white/5 px-4 py-3 text-xs text-gray-600 dark:text-gray-300 leading-relaxed cursor-pointer">
+          <input type="checkbox" name="decl_clean_record" required className={checkboxClass} />
+          <span>
+            e) Dichiaro di <strong>non</strong> essere stato dichiarato fallito, di{" "}
+            <strong>non</strong> aver riportato condanne, di <strong>non</strong> avere carichi
+            pendenti né di essere sottoposto a misure di prevenzione.
+          </span>
+        </label>
       </Section>
 
       <Section title="Genera e firma">
