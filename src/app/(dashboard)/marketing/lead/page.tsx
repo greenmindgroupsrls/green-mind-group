@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import { LeadRowActions } from "./lead-row-actions";
 import { LeadAssignAction } from "./lead-assign-action";
+import { LeadViewSwitch } from "./lead-view-switch";
+import type { CalendarLead } from "./lead-calendar";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,7 @@ type LeadRow = {
   internal_notes: string | null;
   assigned_to: number | null;
   assigned_at: string | null;
+  appointment_at: string | null;
   created_at: string;
 };
 
@@ -55,16 +58,23 @@ export default async function LeadPage() {
   const members = memberRows ?? [];
   const usernameByCode = new Map(members.map((m) => [m.activity_code, m.username]));
 
-  return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
-        <h2 className="font-semibold text-gray-900 dark:text-white">Lead</h2>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Richieste di contatto arrivate dai siti collegati (es. Vortix)
-        </p>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+  const calendarLeads: CalendarLead[] = leads.map((l) => ({
+    id: l.id,
+    name: l.name,
+    phone: l.phone,
+    email: l.email,
+    address: l.address,
+    notes: l.notes,
+    status: l.status,
+    requestedDate: l.requested_date,
+    requestedTime: l.requested_time,
+    appointmentAt: l.appointment_at,
+    assignedTo: l.assigned_to ? (usernameByCode.get(l.assigned_to) ?? null) : null,
+  }));
+
+  const tabella = (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               <th className="px-6 py-2 font-medium">Contatto</th>
@@ -118,7 +128,18 @@ export default async function LeadPage() {
             )}
           </tbody>
         </table>
+    </div>
+  );
+
+  return (
+    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+        <h2 className="font-semibold text-gray-900 dark:text-white">Lead</h2>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          Richieste di contatto arrivate dai siti collegati (es. Vortix)
+        </p>
       </div>
+      <LeadViewSwitch tabella={tabella} leads={calendarLeads} />
     </div>
   );
 }
