@@ -68,9 +68,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export function ContractForm({
   contractVersion,
   known,
+  alreadyIncaricato = false,
 }: {
   contractVersion: string;
   known: { label: string; value: string }[];
+  alreadyIncaricato?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(signIncaricatoContract, initialState);
   const formRef = useRef<HTMLFormElement>(null);
@@ -235,7 +237,11 @@ export function ContractForm({
           disabled={pending}
           className="self-start rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
         >
-          {pending ? "Firma in corso..." : "Firma e diventa incaricato"}
+          {pending
+            ? "Firma in corso..."
+            : alreadyIncaricato
+              ? "Firma il contratto"
+              : "Firma e diventa incaricato"}
         </button>
 
         {state.error && (

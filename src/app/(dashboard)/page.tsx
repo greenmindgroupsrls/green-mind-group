@@ -7,6 +7,7 @@ import { loadNetworkData } from "@/lib/load-network-data";
 import { DashboardView } from "./dashboard-view";
 import { AnnouncementsFeed } from "./announcements-feed";
 import { ClientDashboard } from "./client-dashboard";
+import { ContractReminder } from "./contract-reminder";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +83,9 @@ export default async function Home() {
         <div className="bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 text-sm px-8 py-2 border-b border-red-200 dark:border-red-500/20">
           Non è stato possibile caricare i tuoi dati in questo momento. Ricarica la pagina o riprova tra poco.
         </div>
+      )}
+      {!usingMockData && !loadFailed && currentMember && currentMember.activity_code !== 0 && (
+        <ContractReminder activityCode={currentMember.activity_code} />
       )}
       <DashboardView
         members={members}

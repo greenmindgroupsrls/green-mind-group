@@ -31,9 +31,20 @@ export default async function DiventaIncaricatoPage() {
 
   const member = await getCurrentMember();
   if (!member) redirect("/login");
-  if (member.role === "incaricato") redirect("/");
 
   const supabase = await createClient();
+
+  // Il discrimine e' il contratto, non il ruolo: gli incaricati attivati
+  // prima che questa funzione esistesse devono poterlo firmare comunque.
+  // Chi lo ha gia' firmato va invece alla propria copia.
+  const { data: existingContract } = await supabase
+    .from("incaricato_contracts")
+    .select("id")
+    .eq("activity_code", member.activity_code)
+    .maybeSingle();
+  if (existingContract) redirect("/diventa-incaricato/fatto");
+
+  const alreadyIncaricato = member.role === "incaricato";
   const [{ data: row }, { data: profile }, { data: address }] = await Promise.all([
     supabase
       .from("members")
@@ -93,11 +104,14 @@ export default async function DiventaIncaricatoPage() {
     <div className="p-8 max-w-3xl mx-auto flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Diventa incaricato alle vendite
+          {alreadyIncaricato
+            ? "Completa il tuo contratto da incaricato"
+            : "Diventa incaricato alle vendite"}
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">
-          Compila il contratto, generalo e firmalo per sbloccare Team, Marketing, Payout e
-          Registrazione.
+          {alreadyIncaricato
+            ? "Sei già operativo come incaricato, ma il tuo contratto non risulta ancora firmato. Compilalo, generalo e firmalo per mettere in regola la tua posizione."
+            : "Compila il contratto, generalo e firmalo per sbloccare Team, Marketing, Payout e Registrazione."}
         </p>
       </div>
 
@@ -108,7 +122,11 @@ export default async function DiventaIncaricatoPage() {
         </p>
       )}
 
-      <ContractForm contractVersion={CONTRACT_VERSION} known={known} />
+      <ContractForm
+        contractVersion={CONTRACT_VERSION}
+        known={known}
+        alreadyIncaricato={alreadyIncaricato}
+      />
     </div>
   );
 }
