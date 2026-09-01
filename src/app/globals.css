@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
+  --background: #f5f6fa;
   --foreground: #171717;
+  --accent: #5f9a0e;
+  --tree-line: #d8dae5;
+}
+
+.dark {
+  --background: #0e0b21;
+  --foreground: #f1f0fb;
+  --accent: #79c110;
+  --tree-line: #35315e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Albero strutturale in stile org-chart, solo CSS (no SVG/JS layout) */
+.org-tree,
+.org-tree ul {
+  padding-top: 24px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.org-tree ul {
+  padding-top: 32px;
+}
+
+.org-tree li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  position: relative;
+  padding: 32px 12px 0 12px;
+}
+
+.org-tree li::before,
+.org-tree li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 1px solid var(--tree-line);
+  width: 50%;
+  height: 32px;
+}
+
+.org-tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 1px solid var(--tree-line);
+}
+
+.org-tree li:only-child::after,
+.org-tree li:only-child::before {
+  display: none;
+}
+
+.org-tree li:only-child {
+  padding-top: 0;
+}
+
+.org-tree li:first-child::before,
+.org-tree li:last-child::after {
+  border: 0 none;
+}
+
+.org-tree li:last-child::before {
+  border-right: 1px solid var(--tree-line);
+  border-radius: 0 6px 0 0;
+}
+
+.org-tree li:first-child::after {
+  border-radius: 6px 0 0 0;
+}
+
+.org-tree ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 1px solid var(--tree-line);
+  width: 0;
+  height: 32px;
+}
+
+.org-tree li:only-child::before,
+.org-tree li:only-child::after {
+  display: none;
+}
+
+.org-tree > li {
+  padding-top: 0;
 }
