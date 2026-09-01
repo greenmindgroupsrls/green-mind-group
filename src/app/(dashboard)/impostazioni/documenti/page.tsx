@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { UploadField } from "./upload-field";
+import { KycUploadField } from "@/components/kyc-upload-field";
 
 const DOC_TYPES = [
   { type: "id_proof" as const, label: "ID Proof" },
@@ -35,7 +35,7 @@ export default async function KycDocumentsPage() {
       <h2 className="font-semibold text-gray-900 dark:text-white mb-4">KYC Documents</h2>
       <div className="flex flex-col gap-5 max-w-lg">
         {DOC_TYPES.map(({ type, label }) => (
-          <UploadField
+          <KycUploadField
             key={type}
             docType={type}
             label={label}

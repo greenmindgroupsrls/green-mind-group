@@ -6,16 +6,25 @@ import { createClient } from "@/lib/supabase/client";
 
 type Status = "idle" | "uploading" | "done" | "error";
 
-export function UploadField({
+export type KycDocType = "id_proof" | "utility_bill" | "account_statement" | "vat_certificate";
+
+// Unico modulo di caricamento per tutti i documenti personali: finiscono
+// tutti nello stesso archivio privato, in una cartella per codice attivita',
+// visibile solo all'interessato e all'azienda.
+export function KycUploadField({
   docType,
   label,
+  nota,
   activityCode,
   uploaded,
+  onUploaded,
 }: {
-  docType: "id_proof" | "utility_bill" | "account_statement";
+  docType: KycDocType;
   label: string;
+  nota?: string;
   activityCode: number;
   uploaded: boolean;
+  onUploaded?: (caricato: boolean) => void;
 }) {
   const [status, setStatus] = useState<Status>(uploaded ? "done" : "idle");
   const [fileName, setFileName] = useState<string | null>(null);
@@ -61,6 +70,7 @@ export function UploadField({
 
     setFileName(file.name);
     setStatus("done");
+    onUploaded?.(true);
   }
 
   return (
@@ -78,7 +88,7 @@ export function UploadField({
         </label>
       </div>
       <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-        Formati ammessi: PDF, JPG, PNG — max 8MB.
+        {nota ? `${nota} ` : ""}Formati ammessi: PDF, JPG, PNG — max 8MB.
       </p>
       {error && <p className="text-xs text-red-600 dark:text-red-400 mt-1">{error}</p>}
     </div>

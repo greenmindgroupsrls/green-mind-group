@@ -45,7 +45,8 @@ export default async function DiventaIncaricatoPage() {
   if (existingContract) redirect("/diventa-incaricato/fatto");
 
   const alreadyIncaricato = member.role === "incaricato";
-  const [{ data: row }, { data: profile }, { data: address }] = await Promise.all([
+  const [{ data: row }, { data: profile }, { data: address }, { data: vatCert }] =
+    await Promise.all([
     supabase
       .from("members")
       .select("first_name, last_name, email, ref_sponsor_code")
@@ -61,6 +62,14 @@ export default async function DiventaIncaricatoPage() {
       .select("street, city, postal_code, region, country")
       .eq("activity_code", member.activity_code)
       .limit(1)
+      .maybeSingle(),
+    // Se il certificato e' gia' stato caricato in Impostazioni non lo si
+    // richiede una seconda volta.
+    supabase
+      .from("member_kyc_documents")
+      .select("id")
+      .eq("activity_code", member.activity_code)
+      .eq("doc_type", "vat_certificate")
       .maybeSingle(),
   ]);
 
@@ -125,6 +134,8 @@ export default async function DiventaIncaricatoPage() {
       <ContractForm
         contractVersion={CONTRACT_VERSION}
         known={known}
+        activityCode={member.activity_code}
+        vatCertificateUploaded={Boolean(vatCert)}
         alreadyIncaricato={alreadyIncaricato}
       />
     </div>

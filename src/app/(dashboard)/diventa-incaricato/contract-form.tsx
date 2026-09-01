@@ -5,6 +5,7 @@ import { FileText, Loader2 } from "lucide-react";
 import { signIncaricatoContract, type BecomeIncaricatoState } from "./actions";
 import { BankFields } from "@/components/bank-fields";
 import { PROVINCE_ITALIANE } from "@/lib/province";
+import { KycUploadField } from "@/components/kyc-upload-field";
 
 const initialState: BecomeIncaricatoState = { error: null };
 
@@ -195,10 +196,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export function ContractForm({
   contractVersion,
   known,
+  activityCode,
+  vatCertificateUploaded,
   alreadyIncaricato = false,
 }: {
   contractVersion: string;
   known: { label: string; value: string }[];
+  activityCode: number;
+  vatCertificateUploaded: boolean;
   alreadyIncaricato?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(signIncaricatoContract, initialState);
@@ -209,6 +214,7 @@ export function ContractForm({
   // Regime fiscale e situazione da dipendente pubblico si chiedono solo
   // a chi risponde di si': chiederli a tutti sarebbe rumore.
   const [haPiva, setHaPiva] = useState<boolean | null>(null);
+  const [certificatoPiva, setCertificatoPiva] = useState(vatCertificateUploaded);
   const [dipPubblico, setDipPubblico] = useState<boolean | null>(null);
 
   async function handlePreview() {
@@ -346,10 +352,20 @@ export function ContractForm({
               required
               placeholder="es. Regime forfettario"
             />
-            <p className="text-xs text-amber-700 dark:text-amber-400">
-              Ricorda di allegare il certificato di attribuzione della partita IVA: senza, il
-              contratto resta incompleto.
-            </p>
+            <KycUploadField
+              docType="vat_certificate"
+              label="Certificato di attribuzione della partita IVA"
+              nota="Il documento rilasciato dall'Agenzia delle Entrate."
+              activityCode={activityCode}
+              uploaded={vatCertificateUploaded}
+              onUploaded={setCertificatoPiva}
+            />
+            {!certificatoPiva && (
+              <p className="text-xs text-amber-700 dark:text-amber-400">
+                Senza il certificato il contratto non può essere firmato. Il file resta privato:
+                lo vedi solo tu e l&apos;azienda.
+              </p>
+            )}
           </div>
         )}
 

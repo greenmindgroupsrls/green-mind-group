@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentMember } from "@/lib/current-member";
 import { CONTRACT_VERSION } from "@/lib/contract-version";
 import { validaIban, validaBic, validaCoerenza } from "@/lib/bank-validation";
 
@@ -95,6 +96,25 @@ export async function signIncaricatoContract(
   const userAgent = h.get("user-agent");
 
   const supabase = await createClient();
+
+  // Il certificato di attribuzione e' parte integrante del contratto per
+  // chi dichiara di avere partita IVA: si controlla qui e non solo nel
+  // browser, perche' e' l'unico punto che nessuno puo' aggirare.
+  if (scelte.vat === true) {
+    // Il filtro sul codice e' necessario: l'account aziendale vede i
+    // documenti di tutti, e senza filtro leggerebbe quelli di qualcun altro.
+    const me = await getCurrentMember();
+    const { data: certificato } = await supabase
+      .from("member_kyc_documents")
+      .select("id")
+      .eq("activity_code", me?.activity_code ?? -1)
+      .eq("doc_type", "vat_certificate")
+      .maybeSingle();
+    if (!certificato) {
+      return { error: "Carica il certificato di attribuzione della partita IVA per firmare" };
+    }
+  }
+
   const { error } = await supabase.rpc("sign_incaricato_contract", {
     p_birth_place: text("birth_place"),
     p_birth_province: text("birth_province"),
