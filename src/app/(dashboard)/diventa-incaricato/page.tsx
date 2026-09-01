@@ -1,7 +1,24 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
-import { BecomeForm } from "./become-form";
+import { formatActivityCode } from "@/lib/activity-code";
+import { ContractForm } from "./contract-form";
+import { CONTRACT_VERSION } from "@/lib/contract-version";
+
+export const dynamic = "force-dynamic";
+
+function itDate(iso: string | null | undefined) {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
 
 export default async function DiventaIncaricatoPage() {
   if (!supabaseConfigured()) {
@@ -17,62 +34,81 @@ export default async function DiventaIncaricatoPage() {
   if (member.role === "incaricato") redirect("/");
 
   const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("member_profiles")
-    .select("account_type, company_name, tax_id")
-    .eq("activity_code", member.activity_code)
-    .single();
+  const [{ data: row }, { data: profile }, { data: address }] = await Promise.all([
+    supabase
+      .from("members")
+      .select("first_name, last_name, email, ref_sponsor_code")
+      .eq("activity_code", member.activity_code)
+      .single(),
+    supabase
+      .from("member_profiles")
+      .select("date_of_birth, phone_country_code, phone_number, tax_id, company_name, account_type")
+      .eq("activity_code", member.activity_code)
+      .maybeSingle(),
+    supabase
+      .from("member_addresses")
+      .select("street, city, postal_code, region, country")
+      .eq("activity_code", member.activity_code)
+      .limit(1)
+      .maybeSingle(),
+  ]);
+
+  let sponsor = "—";
+  if (row?.ref_sponsor_code !== null && row?.ref_sponsor_code !== undefined) {
+    const { data: s } = await supabase
+      .from("members")
+      .select("username")
+      .eq("activity_code", row.ref_sponsor_code)
+      .maybeSingle();
+    sponsor = `${formatActivityCode(row.ref_sponsor_code)}${s?.username ? ` ${s.username}` : ""}`;
+  }
+
+  const known = [
+    { label: "Codice incaricato", value: formatActivityCode(member.activity_code) },
+    { label: "Nome e cognome", value: `${row?.first_name ?? ""} ${row?.last_name ?? ""}`.trim() },
+    { label: "Email", value: row?.email ?? "" },
+    {
+      label: "Telefono",
+      value: [profile?.phone_country_code, profile?.phone_number].filter(Boolean).join(" "),
+    },
+    {
+      label: profile?.account_type === "company" ? "Partita IVA" : "Codice fiscale",
+      value: profile?.tax_id ?? "",
+    },
+    { label: "Data di nascita", value: itDate(profile?.date_of_birth) },
+    {
+      label: "Indirizzo",
+      value: address
+        ? [address.street, address.postal_code, address.city, address.region, address.country]
+            .filter(Boolean)
+            .join(", ")
+        : "",
+    },
+    { label: "Sponsor", value: sponsor },
+  ];
+
+  const missing = known.filter((k) => !k.value).map((k) => k.label);
 
   return (
-    <div className="p-8 max-w-2xl mx-auto flex flex-col gap-6">
+    <div className="p-8 max-w-3xl mx-auto flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Diventa distributore
+          Diventa incaricato alle vendite
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">
-          Sblocca l&apos;intero back office: Team, Marketing, Payout e Registrazione.
+          Compila il contratto, generalo e firmalo per sbloccare Team, Marketing, Payout e
+          Registrazione.
         </p>
       </div>
 
-      <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">
-        Bozza operativa: prima di renderlo vincolante, fai revisionare questo regolamento da un
-        legale.
-      </p>
+      {missing.length > 0 && (
+        <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-3">
+          Nel contratto resteranno vuoti questi dati, che non sono ancora nel tuo profilo:{" "}
+          <strong>{missing.join(", ")}</strong>. Puoi completarli in Impostazioni e tornare qui.
+        </p>
+      )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm flex flex-col gap-4">
-        <h2 className="font-semibold text-gray-900 dark:text-white">Regolamento Incaricati</h2>
-        <ol className="flex flex-col gap-3 text-sm text-gray-600 dark:text-gray-300 list-decimal list-inside">
-          <li>
-            Da incaricato puoi iscrivere nuovi clienti e incaricati nella tua rete e costruire il
-            tuo team.
-          </li>
-          <li>
-            Le commissioni maturano secondo le regole del programma (livelli e rank) descritte nei
-            Termini e Condizioni.
-          </li>
-          <li>
-            I tuoi dati fiscali (Codice Fiscale o Partita IVA) restano quelli già forniti in fase
-            di registrazione — puoi aggiornarli in qualsiasi momento da Impostazioni.
-          </li>
-          <li>Puoi richiedere il pagamento delle commissioni maturate dalla sezione Payout.</li>
-        </ol>
-
-        {profile && (
-          <div className="rounded-lg bg-gray-50 dark:bg-white/5 px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
-            <p className="font-medium text-gray-900 dark:text-white mb-1">I tuoi dati</p>
-            {profile.account_type === "company" ? (
-              <p>
-                Azienda — {profile.company_name || "ragione sociale non impostata"}
-                {profile.tax_id ? ` · P.IVA ${profile.tax_id}` : ""}
-              </p>
-            ) : (
-              <p>Privato{profile.tax_id ? ` — CF ${profile.tax_id}` : ""}</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      <BecomeForm />
+      <ContractForm contractVersion={CONTRACT_VERSION} known={known} />
     </div>
   );
 }
