@@ -38,6 +38,20 @@ const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 const checkboxClass =
   "h-4 w-4 mt-0.5 shrink-0 rounded border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40";
 
+// Le dichiarazioni del contratto sono numerate a) b) c) ...: la lettera va
+// in grassetto perche' e' il riferimento con cui si citano, sia nel PDF sia
+// a voce ("il punto g"). Se l'etichetta non inizia con una lettera resta
+// invariata.
+function Etichetta({ testo }: { testo: string }) {
+  const m = /^([a-z]\))\s+([\s\S]*)$/.exec(testo);
+  if (!m) return <>{testo}</>;
+  return (
+    <>
+      <strong className="font-semibold">{m[1]}</strong> {m[2]}
+    </>
+  );
+}
+
 function Field({
   label,
   name,
@@ -52,7 +66,7 @@ function Field({
   return (
     <label className="flex flex-col gap-1.5">
       <span className={labelClass}>
-        {label}
+        <Etichetta testo={label} />
         {required && " *"}
       </span>
       <input name={name} required={required} placeholder={placeholder} className={inputClass} />
@@ -77,7 +91,7 @@ function Select({
   return (
     <label className="flex flex-col gap-1.5">
       <span className={labelClass}>
-        {label}
+        <Etichetta testo={label} />
         {required && " *"}
       </span>
       <select name={name} required={required} defaultValue="" className={inputClass}>
@@ -105,7 +119,9 @@ function SiNo({
 }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 py-2.5">
-      <span className="text-sm text-gray-600 dark:text-gray-300 sm:pr-6">{label}</span>
+      <span className="text-sm text-gray-600 dark:text-gray-300 sm:pr-6">
+        <Etichetta testo={label} />
+      </span>
       <div className="flex items-center gap-4 shrink-0">
         {(["si", "no"] as const).map((v) => (
           <label key={v} className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
@@ -131,7 +147,9 @@ function Afferma({ name, testo }: { name: string; testo: string }) {
   return (
     <label className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed cursor-pointer">
       <input type="checkbox" name={name} required className={checkboxClass} />
-      <span>{testo}</span>
+      <span>
+        <Etichetta testo={testo} />
+      </span>
     </label>
   );
 }
