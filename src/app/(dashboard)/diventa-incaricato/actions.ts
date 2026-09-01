@@ -49,9 +49,6 @@ export async function signIncaricatoContract(
   // deve mai passare come "no" implicito.
   const scelte = {
     earned: choice("decl_earned_threshold"),
-    unemployed: choice("decl_unemployed"),
-    social: choice("decl_social_security"),
-    pensioner: choice("decl_pensioner"),
     vat: choice("decl_has_vat"),
     publicEmployee: choice("decl_public_employee"),
   };
@@ -59,10 +56,19 @@ export async function signIncaricatoContract(
     return { error: "Rispondi a tutte le Dichiarazioni Referente" };
   }
 
-  // g: il regime fiscale serve solo a chi ha la partita IVA, ma allora e' obbligatorio.
+  const situazione = text("decl_employment_status");
+  if (!situazione) return { error: "Indica la tua situazione lavorativa e previdenziale" };
+
+  // g: numero e regime servono solo a chi ha la partita IVA, ma allora sono
+  // entrambi obbligatori.
+  const vatNumber = text("decl_vat_number");
   const vatRegime = text("decl_vat_regime");
-  if (scelte.vat === true && !vatRegime) {
-    return { error: "Indica il regime fiscale della tua partita IVA" };
+  if (scelte.vat === true) {
+    if (!vatNumber) return { error: "Indica il numero della tua partita IVA" };
+    if (!/^[0-9]{11}$/.test(vatNumber)) {
+      return { error: "La partita IVA deve essere composta da 11 cifre" };
+    }
+    if (!vatRegime) return { error: "Indica il regime fiscale della tua partita IVA" };
   }
 
   // h: chi e' dipendente pubblico deve specificare quale dei due casi dell'Art. 53.
@@ -107,10 +113,9 @@ export async function signIncaricatoContract(
     p_decl_no_compete: true,
     p_decl_no_conflict: true,
     p_decl_earned_threshold: scelte.earned,
-    p_decl_unemployed: scelte.unemployed,
-    p_decl_social_security: scelte.social,
-    p_decl_pensioner: scelte.pensioner,
+    p_decl_employment_status: situazione,
     p_decl_has_vat: scelte.vat,
+    p_decl_vat_number: vatNumber || null,
     p_decl_vat_regime: vatRegime || null,
     p_decl_public_employee: scelte.publicEmployee,
     p_decl_public_full_time: publicFullTime,

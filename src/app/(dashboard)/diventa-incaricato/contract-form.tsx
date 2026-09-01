@@ -16,6 +16,15 @@ const CITTADINANZE = [
   { value: "EE", label: "EE - Straniera (stato estero)" },
 ];
 
+const SITUAZIONI_LAVORATIVE = [
+  { value: "disoccupato", label: "Disoccupato" },
+  {
+    value: "gestione_previdenziale",
+    label: "Iscritto alla gestione previdenziale (dipendente, autonomo o professionista)",
+  },
+  { value: "pensionato", label: "Pensionato" },
+];
+
 const TIPI_DOCUMENTO = [
   { value: "Carta d'identità", label: "Carta d'identità" },
   { value: "Passaporto", label: "Passaporto" },
@@ -288,12 +297,16 @@ export function ContractForm({
             name="decl_earned_threshold"
             label="e) Con riferimento all'anno corrente, ho guadagnato 6.410,00 € lordi dall'attività di Incaricato"
           />
-          <SiNo name="decl_unemployed" label="f1) Sono disoccupato" />
-          <SiNo
-            name="decl_social_security"
-            label="f2) Sono iscritto alla gestione previdenziale (come dipendente, lavoratore autonomo o professionista)"
-          />
-          <SiNo name="decl_pensioner" label="f3) Sono pensionato" />
+        </div>
+
+        <Select
+          label="f) La mia situazione lavorativa e previdenziale"
+          name="decl_employment_status"
+          required
+          options={SITUAZIONI_LAVORATIVE}
+        />
+
+        <div className="divide-y divide-gray-100 dark:divide-white/5 border-t border-gray-100 dark:border-white/5 pt-1">
           <SiNo
             name="decl_has_vat"
             label="g) Possiedo una partita IVA inerente al presente contratto di collaborazione"
@@ -303,6 +316,12 @@ export function ContractForm({
 
         {haPiva === true && (
           <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-4 flex flex-col gap-3">
+            <Field
+              label="Numero di partita IVA"
+              name="decl_vat_number"
+              required
+              placeholder="11 cifre, es. 01234567890"
+            />
             <Field
               label="Regime fiscale della partita IVA"
               name="decl_vat_regime"

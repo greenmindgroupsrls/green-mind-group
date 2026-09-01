@@ -24,10 +24,9 @@ export type ContractData = {
   iban: string;
   swift: string;
   declEarnedThreshold: boolean;
-  declUnemployed: boolean;
-  declSocialSecurity: boolean;
-  declPensioner: boolean;
+  declEmploymentStatus: string;
   declHasVat: boolean;
+  declVatNumber: string;
   declVatRegime: string;
   declPublicEmployee: boolean;
   declPublicFullTime: boolean | null;
@@ -204,11 +203,18 @@ export async function buildContractPdf(
     "e) Nell'anno corrente ha guadagnato EUR 6.410,00 lordi dall'attivita' di Incaricato",
     data.declEarnedThreshold,
   );
-  scelta("f) E' disoccupato", data.declUnemployed);
-  scelta("f) E' iscritto alla gestione previdenziale", data.declSocialSecurity);
-  scelta("f) E' pensionato", data.declPensioner);
+  const SITUAZIONE: Record<string, string> = {
+    disoccupato: "Disoccupato",
+    gestione_previdenziale: "Iscritto alla gestione previdenziale (dipendente, autonomo o professionista)",
+    pensionato: "Pensionato",
+  };
+  draw("f) Situazione lavorativa e previdenziale:", MARGIN, y, { size: 8.5 });
+  draw(SITUAZIONE[data.declEmploymentStatus] ?? "-", MARGIN + 175, y, { size: 8.5, font: bold });
+  y -= 14;
   scelta("g) Possiede partita IVA inerente al presente contratto", data.declHasVat);
-  if (data.declHasVat && data.declVatRegime) {
+  if (data.declHasVat) {
+    draw(`Partita IVA: ${data.declVatNumber}`, MARGIN + 20, y, { size: 8.5, color: DIM });
+    y -= 11;
     draw(`Regime fiscale: ${data.declVatRegime}`, MARGIN + 20, y, { size: 8.5, color: DIM });
     y -= 11;
     draw("(da allegare: certificato di attribuzione della partita IVA)", MARGIN + 20, y, {
