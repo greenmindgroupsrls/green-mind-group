@@ -64,15 +64,20 @@ const getCachedNetwork = unstable_cache(
       supabase.from("member_ranks").select("activity_code, rank"),
     ]);
 
+    // IMPORTANTE: qui si LANCIA invece di restituire null. unstable_cache
+    // memorizza qualunque valore ritornato, null compreso: restituendolo, un
+    // singolo intoppo di un istante (es. token in fase di rinnovo) resterebbe
+    // in cache per 60 secondi e l'utente vedrebbe l'errore per un minuto
+    // intero anche a problema gia' risolto. Un'eccezione invece non viene
+    // memorizzata: il tentativo successivo riparte pulito.
     if (membersError || salesError || entriesError || ranksError || !members || members.length === 0) {
-      if (membersError) console.error("[load-network-data] members:", membersError.message);
-      if (salesError) console.error("[load-network-data] sales:", salesError.message);
-      if (entriesError) console.error("[load-network-data] commission_entries:", entriesError.message);
-      if (ranksError) console.error("[load-network-data] member_ranks:", ranksError.message);
-      if (!membersError && (!members || members.length === 0)) {
-        console.error("[load-network-data] members: nessuna riga restituita per questo utente");
-      }
-      return null;
+      const causa = membersError?.message
+        ?? salesError?.message
+        ?? entriesError?.message
+        ?? ranksError?.message
+        ?? "members: nessuna riga restituita per questo utente";
+      console.error("[load-network-data]", causa);
+      throw new Error(causa);
     }
 
     const ranks: Record<number, Rank> = {};
@@ -138,8 +143,21 @@ export async function loadNetworkData(): Promise<NetworkData> {
     return emptyOnError;
   }
 
-  const cached = await getCachedNetwork(session.access_token);
-  if (!cached) return emptyOnError;
+  // Un secondo tentativo copre gli intoppi di un istante (rinnovo del token
+  // in corso, singola query andata a vuoto): meglio mezzo secondo in piu'
+  // che un errore rosso in faccia a un utente per un problema gia' passato.
+  for (let tentativo = 1; tentativo <= 2; tentativo++) {
+    try {
+      const cached = await getCachedNetwork(session.access_token);
+      if (cached) return { ...cached, usingMockData: false, loadFailed: false };
+    } catch (e) {
+      console.error(
+        `[load-network-data] tentativo ${tentativo}/2 fallito:`,
+        e instanceof Error ? e.message : e,
+      );
+    }
+    if (tentativo === 1) await new Promise((r) => setTimeout(r, 400));
+  }
 
-  return { ...cached, usingMockData: false, loadFailed: false };
+  return emptyOnError;
 }
