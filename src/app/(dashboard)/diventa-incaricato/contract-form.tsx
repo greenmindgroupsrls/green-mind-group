@@ -85,10 +85,18 @@ function Select({
   );
 }
 
-function SiNo({ name, label }: { name: string; label: string }) {
+function SiNo({
+  name,
+  label,
+  onChange,
+}: {
+  name: string;
+  label: string;
+  onChange?: (valore: boolean) => void;
+}) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-2.5">
-      <span className="text-sm text-gray-600 dark:text-gray-300">{label}</span>
+    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 py-2.5">
+      <span className="text-sm text-gray-600 dark:text-gray-300 sm:pr-6">{label}</span>
       <div className="flex items-center gap-4 shrink-0">
         {(["si", "no"] as const).map((v) => (
           <label key={v} className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
@@ -97,12 +105,53 @@ function SiNo({ name, label }: { name: string; label: string }) {
               name={name}
               value={v}
               required
+              onChange={() => onChange?.(v === "si")}
               className="h-4 w-4 border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
             />
             {v === "si" ? "Sì" : "No"}
           </label>
         ))}
       </div>
+    </div>
+  );
+}
+
+// Dichiarazioni che devono essere vere per poter firmare: spunta
+// obbligatoria, non una scelta.
+function Afferma({ name, testo }: { name: string; testo: string }) {
+  return (
+    <label className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed cursor-pointer">
+      <input type="checkbox" name={name} required className={checkboxClass} />
+      <span>{testo}</span>
+    </label>
+  );
+}
+
+// Scelta fra due alternative descritte per esteso, incolonnate.
+function Radio({
+  name,
+  opzioni,
+}: {
+  name: string;
+  opzioni: { value: string; label: string }[];
+}) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      {opzioni.map((o) => (
+        <label
+          key={o.value}
+          className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed cursor-pointer"
+        >
+          <input
+            type="radio"
+            name={name}
+            value={o.value}
+            required
+            className="h-4 w-4 mt-0.5 shrink-0 border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
+          />
+          <span>{o.label}</span>
+        </label>
+      ))}
     </div>
   );
 }
@@ -130,6 +179,10 @@ export function ContractForm({
   const [previewing, setPreviewing] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [previewed, setPreviewed] = useState(false);
+  // Regime fiscale e situazione da dipendente pubblico si chiedono solo
+  // a chi risponde di si': chiederli a tutti sarebbe rumore.
+  const [haPiva, setHaPiva] = useState<boolean | null>(null);
+  const [dipPubblico, setDipPubblico] = useState<boolean | null>(null);
 
   async function handlePreview() {
     const form = formRef.current;
@@ -206,29 +259,93 @@ export function ContractForm({
       </Section>
 
       <Section title="Dichiarazioni Referente">
-        <div className="divide-y divide-gray-100 dark:divide-white/5 -mt-1">
-          <SiNo
-            name="decl_other_companies"
-            label="a) Sono incaricato da altre imprese di vendita diretta a domicilio"
+        <p className="text-xs text-gray-500 dark:text-gray-400 -mt-2">
+          Le prime quattro sono condizioni necessarie per l&apos;incarico: senza, non si può
+          firmare. Le altre servono a inquadrare la tua posizione.
+        </p>
+
+        <div className="flex flex-col gap-3">
+          <Afferma
+            name="decl_adult"
+            testo="a) Dichiaro di essere maggiorenne (di aver compiuto il 18° anno d'età) e di essere in possesso della capacità di agire, oltre che di intendere e di volere."
           />
-          <SiNo name="decl_has_vat" label="b) Sono in possesso di Partita IVA" />
-          <SiNo
-            name="decl_inps_exceeded"
-            label="c) Ho superato i 5.000 € netti annui (rilevante ai fini INPS)"
+          <Afferma
+            name="decl_honorability"
+            testo="b) Dichiaro di essere in possesso dei requisiti di onorabilità di cui all'Art. 71 del D.Lgs. n. 59/2010, previsti ai fini dello svolgimento dell'attività di Incaricato alle vendite."
           />
-          <SiNo name="decl_public_employee" label="d) Sono un dipendente pubblico" />
+          <Afferma
+            name="decl_no_compete"
+            testo="c) Dichiaro di non essere vincolato ad alcun soggetto terzo da alcun accordo di non concorrenza, o accordo limitativo di altro genere."
+          />
+          <Afferma
+            name="decl_no_conflict"
+            testo="d) Dichiaro che lo svolgimento dell'attività di Incaricato non è in conflitto, né genera alcun conflitto di interessi, con qualsivoglia lavoro o attività, anche professionale, e che non necessito di alcuna approvazione o autorizzazione da parte del mio datore di lavoro, socio in affari o di qualsivoglia terza parte."
+          />
         </div>
-        {/* A differenza di a-d, che sono domande con entrambe le risposte
-            valide, la (e) e' una dichiarazione che deve essere vera per
-            poter firmare: quindi spunta obbligatoria, non Si'/No. */}
-        <label className="flex items-start gap-2.5 rounded-lg bg-gray-50 dark:bg-white/5 px-4 py-3 text-xs text-gray-600 dark:text-gray-300 leading-relaxed cursor-pointer">
-          <input type="checkbox" name="decl_clean_record" required className={checkboxClass} />
-          <span>
-            e) Dichiaro di <strong>non</strong> essere stato dichiarato fallito, di{" "}
-            <strong>non</strong> aver riportato condanne, di <strong>non</strong> avere carichi
-            pendenti né di essere sottoposto a misure di prevenzione.
-          </span>
-        </label>
+
+        <div className="divide-y divide-gray-100 dark:divide-white/5 border-t border-gray-100 dark:border-white/5 pt-1">
+          <SiNo
+            name="decl_earned_threshold"
+            label="e) Con riferimento all'anno corrente, ho guadagnato 6.410,00 € lordi dall'attività di Incaricato"
+          />
+          <SiNo name="decl_unemployed" label="f1) Sono disoccupato" />
+          <SiNo
+            name="decl_social_security"
+            label="f2) Sono iscritto alla gestione previdenziale (come dipendente, lavoratore autonomo o professionista)"
+          />
+          <SiNo name="decl_pensioner" label="f3) Sono pensionato" />
+          <SiNo
+            name="decl_has_vat"
+            label="g) Possiedo una partita IVA inerente al presente contratto di collaborazione"
+            onChange={setHaPiva}
+          />
+        </div>
+
+        {haPiva === true && (
+          <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-4 flex flex-col gap-3">
+            <Field
+              label="Regime fiscale della partita IVA"
+              name="decl_vat_regime"
+              required
+              placeholder="es. Regime forfettario"
+            />
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Ricorda di allegare il certificato di attribuzione della partita IVA: senza, il
+              contratto resta incompleto.
+            </p>
+          </div>
+        )}
+
+        <div className="divide-y divide-gray-100 dark:divide-white/5 border-t border-gray-100 dark:border-white/5 pt-1">
+          <SiNo
+            name="decl_public_employee"
+            label="h) Sono un dipendente pubblico"
+            onChange={setDipPubblico}
+          />
+        </div>
+
+        {dipPubblico === true && (
+          <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-4 flex flex-col gap-3">
+            <p className="text-xs text-gray-600 dark:text-gray-300">
+              In ottemperanza all&apos;Art. 53 del D.Lgs. n. 165/2001, indica la tua situazione:
+            </p>
+            <Radio
+              name="decl_public_full_time"
+              opzioni={[
+                {
+                  value: "no",
+                  label:
+                    "Sono un dipendente pubblico part-time al 50%: non occorre l'autorizzazione dell'Ente di appartenenza.",
+                },
+                {
+                  value: "si",
+                  label:
+                    "Sono a tempo pieno, o part-time in misura eccedente il 50%, e ho ottenuto l'autorizzazione dell'Ente di appartenenza.",
+                },
+              ]}
+            />
+          </div>
+        )}
       </Section>
 
       <Section title="Genera e firma">

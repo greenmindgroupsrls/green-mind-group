@@ -33,20 +33,44 @@ export async function signIncaricatoContract(
   if (!checked("accetto_dichiarazioni")) {
     return { error: "Devi confermare le Dichiarazioni Referente" };
   }
-  if (!checked("decl_clean_record")) {
-    return {
-      error:
-        "Devi confermare la dichiarazione (e): assenza di fallimenti, condanne e carichi pendenti",
-    };
+
+  // a-d: condizioni necessarie all'incarico, non opinioni.
+  const obbligatorie: [string, string][] = [
+    ["decl_adult", "di essere maggiorenne e capace di agire"],
+    ["decl_honorability", "il possesso dei requisiti di onorabilità (Art. 71 D.Lgs. 59/2010)"],
+    ["decl_no_compete", "di non essere vincolato da accordi di non concorrenza"],
+    ["decl_no_conflict", "l'assenza di conflitti di interesse"],
+  ];
+  for (const [campo, descrizione] of obbligatorie) {
+    if (!checked(campo)) return { error: `Devi dichiarare ${descrizione}` };
   }
 
-  const declOther = choice("decl_other_companies");
-  const declVat = choice("decl_has_vat");
-  const declInps = choice("decl_inps_exceeded");
-  const declPublic = choice("decl_public_employee");
-
-  if (declOther === null || declVat === null || declInps === null || declPublic === null) {
+  // e-g: scelte con entrambe le risposte valide; una risposta mancante non
+  // deve mai passare come "no" implicito.
+  const scelte = {
+    earned: choice("decl_earned_threshold"),
+    unemployed: choice("decl_unemployed"),
+    social: choice("decl_social_security"),
+    pensioner: choice("decl_pensioner"),
+    vat: choice("decl_has_vat"),
+    publicEmployee: choice("decl_public_employee"),
+  };
+  if (Object.values(scelte).some((v) => v === null)) {
     return { error: "Rispondi a tutte le Dichiarazioni Referente" };
+  }
+
+  // g: il regime fiscale serve solo a chi ha la partita IVA, ma allora e' obbligatorio.
+  const vatRegime = text("decl_vat_regime");
+  if (scelte.vat === true && !vatRegime) {
+    return { error: "Indica il regime fiscale della tua partita IVA" };
+  }
+
+  // h: chi e' dipendente pubblico deve specificare quale dei due casi dell'Art. 53.
+  const publicFullTime = choice("decl_public_full_time");
+  if (scelte.publicEmployee === true && publicFullTime === null) {
+    return {
+      error: "Indica se sei part-time al 50% o a tempo pieno con autorizzazione dell'Ente",
+    };
   }
 
   // I riferimenti bancari sono facoltativi, ma se compilati devono essere
@@ -76,15 +100,22 @@ export async function signIncaricatoContract(
     p_bank_holder: text("bank_holder"),
     p_iban: text("iban"),
     p_swift: text("swift"),
-    p_decl_other_companies: declOther,
-    p_decl_has_vat: declVat,
-    p_decl_inps_exceeded: declInps,
-    p_decl_public_employee: declPublic,
     p_signing_place: text("signing_place"),
     p_contract_version: CONTRACT_VERSION,
+    p_decl_adult: true,
+    p_decl_honorability: true,
+    p_decl_no_compete: true,
+    p_decl_no_conflict: true,
+    p_decl_earned_threshold: scelte.earned,
+    p_decl_unemployed: scelte.unemployed,
+    p_decl_social_security: scelte.social,
+    p_decl_pensioner: scelte.pensioner,
+    p_decl_has_vat: scelte.vat,
+    p_decl_vat_regime: vatRegime || null,
+    p_decl_public_employee: scelte.publicEmployee,
+    p_decl_public_full_time: publicFullTime,
     p_signed_ip: signedIp,
     p_signed_user_agent: userAgent,
-    p_decl_clean_record: true,
   });
 
   if (error) return { error: error.message };

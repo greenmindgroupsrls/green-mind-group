@@ -23,10 +23,14 @@ export type ContractData = {
   bankHolder: string;
   iban: string;
   swift: string;
-  declOtherCompanies: boolean;
+  declEarnedThreshold: boolean;
+  declUnemployed: boolean;
+  declSocialSecurity: boolean;
+  declPensioner: boolean;
   declHasVat: boolean;
-  declInpsExceeded: boolean;
+  declVatRegime: string;
   declPublicEmployee: boolean;
+  declPublicFullTime: boolean | null;
   signingPlace: string;
   contractVersion: string;
   // assenti in anteprima: il documento esce marcato come bozza
@@ -161,31 +165,71 @@ export async function buildContractPdf(
   // ---- dichiarazioni ----
   section("Dichiarazioni Referente");
   const box = (v: boolean) => (v ? "[X]" : "[ ]");
-  const decl = (label: string, siNo: boolean) => {
-    draw(label, MARGIN, y, { size: 9 });
-    draw(`${box(siNo)} SI   ${box(!siNo)} NO`, A4.w - MARGIN - 95, y, { size: 9, font: bold });
-    y -= 16;
+
+  // a-d sono affermazioni: se il contratto e' firmato sono per forza vere,
+  // quindi si stampano barrate.
+  const afferma = (righe: string[]) => {
+    draw("[X]", MARGIN, y, { font: bold, size: 8.5 });
+    righe.forEach((r, i) => {
+      draw(r, MARGIN + 20, y - i * 10, { size: 8 });
+    });
+    y -= righe.length * 10 + 5;
   };
-  decl("a) Incaricato da altre imprese di vendita diretta a domicilio", data.declOtherCompanies);
-  decl("b) In possesso di Partita IVA", data.declHasVat);
-  decl("c) Superamento di EUR 5.000 netti annui (ai fini INPS)", data.declInpsExceeded);
-  decl("d) Dipendente pubblico", data.declPublicEmployee);
-  // La (e) e' una dichiarazione affermata con spunta obbligatoria nel form,
-  // non una domanda: nel PDF si rende come casella barrata, coerente con
-  // a-d, cosi' il documento mostra che e' stata dichiarata esplicitamente.
-  y -= 2;
-  draw("[X]", MARGIN, y, { font: bold, size: 9 });
-  draw(
-    "e) Dichiara di NON essere stato dichiarato fallito, di NON aver riportato condanne,",
-    MARGIN + 20,
-    y,
-    { size: 8.5 },
+  afferma([
+    "a) Dichiara di essere maggiorenne e in possesso della capacita' di agire, oltre che di",
+    "intendere e di volere.",
+  ]);
+  afferma([
+    "b) Dichiara di possedere i requisiti di onorabilita' di cui all'Art. 71 del D.Lgs. n. 59/2010.",
+  ]);
+  afferma([
+    "c) Dichiara di non essere vincolato ad alcun soggetto terzo da accordi di non concorrenza",
+    "o accordi limitativi di altro genere.",
+  ]);
+  afferma([
+    "d) Dichiara che l'attivita' di Incaricato non genera conflitti di interessi e non necessita di",
+    "approvazioni o autorizzazioni da parte di datori di lavoro, soci in affari o terzi.",
+  ]);
+
+  y -= 4;
+  const scelta = (label: string, valore: boolean, si = "SI", no = "NO") => {
+    draw(label, MARGIN, y, { size: 8.5 });
+    draw(`${box(valore)} ${si}   ${box(!valore)} ${no}`, A4.w - MARGIN - 110, y, {
+      size: 8.5,
+      font: bold,
+    });
+    y -= 14;
+  };
+  scelta(
+    "e) Nell'anno corrente ha guadagnato EUR 6.410,00 lordi dall'attivita' di Incaricato",
+    data.declEarnedThreshold,
   );
-  y -= 11;
-  draw("di NON avere carichi pendenti né di essere sottoposto a misure di prevenzione.", MARGIN + 20, y, {
-    size: 8.5,
-  });
-  y -= 20;
+  scelta("f) E' disoccupato", data.declUnemployed);
+  scelta("f) E' iscritto alla gestione previdenziale", data.declSocialSecurity);
+  scelta("f) E' pensionato", data.declPensioner);
+  scelta("g) Possiede partita IVA inerente al presente contratto", data.declHasVat);
+  if (data.declHasVat && data.declVatRegime) {
+    draw(`Regime fiscale: ${data.declVatRegime}`, MARGIN + 20, y, { size: 8.5, color: DIM });
+    y -= 11;
+    draw("(da allegare: certificato di attribuzione della partita IVA)", MARGIN + 20, y, {
+      size: 7.5,
+      color: DIM,
+    });
+    y -= 13;
+  }
+  scelta("h) E' un dipendente pubblico", data.declPublicEmployee);
+  if (data.declPublicEmployee && data.declPublicFullTime !== null) {
+    draw(
+      data.declPublicFullTime
+        ? "[X] A tempo pieno o part-time oltre il 50%: autorizzazione dell'Ente ottenuta."
+        : "[X] Part-time al 50%: non occorre l'autorizzazione dell'Ente.",
+      MARGIN + 20,
+      y,
+      { size: 8 },
+    );
+    y -= 13;
+  }
+  y -= 8;
 
   // ---- accettazione ----
   section("Accettazione");
