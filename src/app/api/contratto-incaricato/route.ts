@@ -120,6 +120,7 @@ export async function POST(request: Request) {
   const data: ContractData = {
     ...base,
     birthPlace: t("birth_place"),
+    birthProvince: t("birth_province"),
     citizenship: t("citizenship"),
     profession: t("profession"),
     documentType: t("document_type"),
@@ -169,6 +170,7 @@ export async function GET() {
   const data: ContractData = {
     ...base,
     birthPlace: contract.birth_place ?? "",
+    birthProvince: contract.birth_province ?? "",
     citizenship: contract.citizenship ?? "",
     profession: contract.profession ?? "",
     documentType: contract.document_type ?? "",

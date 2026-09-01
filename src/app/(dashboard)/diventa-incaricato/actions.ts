@@ -67,6 +67,7 @@ export async function signIncaricatoContract(
   const supabase = await createClient();
   const { error } = await supabase.rpc("sign_incaricato_contract", {
     p_birth_place: text("birth_place"),
+    p_birth_province: text("birth_province"),
     p_citizenship: text("citizenship"),
     p_profession: text("profession"),
     p_document_type: text("document_type"),

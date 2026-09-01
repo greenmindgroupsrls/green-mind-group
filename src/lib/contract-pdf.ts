@@ -13,6 +13,7 @@ export type ContractData = {
   address: string;
   birthDate: string;
   birthPlace: string;
+  birthProvince: string;
   citizenship: string;
   profession: string;
   documentType: string;
@@ -141,7 +142,12 @@ export async function buildContractPdf(
   section("Dati dell'Incaricato");
   row("Cognome", data.lastName, "Nome", data.firstName);
   row("Indirizzo", data.address);
-  row("Nato/a il", data.birthDate, "a", data.birthPlace);
+  row(
+    "Nato/a il",
+    data.birthDate,
+    "a",
+    data.birthProvince ? `${data.birthPlace} (${data.birthProvince})` : data.birthPlace,
+  );
   row("Cellulare", data.phone, "Email", data.email);
   row("Cittadinanza", data.citizenship, "Professione", data.profession);
   row("Documento", `${data.documentType} ${data.documentNumber}`.trim());

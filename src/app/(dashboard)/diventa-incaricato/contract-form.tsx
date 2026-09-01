@@ -4,6 +4,7 @@ import { useActionState, useRef, useState } from "react";
 import { FileText, Loader2 } from "lucide-react";
 import { signIncaricatoContract, type BecomeIncaricatoState } from "./actions";
 import { BankFields } from "@/components/bank-fields";
+import { PROVINCE_ITALIANE } from "@/lib/province";
 
 const initialState: BecomeIncaricatoState = { error: null };
 
@@ -188,7 +189,8 @@ export function ContractForm({
 
       <Section title="Dati da completare">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Luogo di nascita" name="birth_place" required placeholder="es. Verona" />
+          <Field label="Comune di nascita" name="birth_place" required placeholder="es. Verona" />
+          <Select label="Provincia di nascita" name="birth_province" required options={PROVINCE_ITALIANE} />
           <Select label="Cittadinanza" name="citizenship" required options={CITTADINANZE} />
           <Field label="Professione" name="profession" placeholder="es. Impiegato" />
           <Select label="Tipo di documento" name="document_type" required options={TIPI_DOCUMENTO} />

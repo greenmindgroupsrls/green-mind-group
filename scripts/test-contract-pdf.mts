@@ -16,6 +16,7 @@ const data: ContractData = {
   address: "Via Città di Nizza 12, 37100 Verona, Veneto, Italia",
   birthDate: "01 dicembre 1990",
   birthPlace: "Verona",
+  birthProvince: "VR",
   citizenship: "Italiana",
   profession: "Imprenditore",
   documentType: "Carta d'identità",
