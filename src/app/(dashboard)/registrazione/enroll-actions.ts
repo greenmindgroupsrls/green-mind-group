@@ -128,8 +128,16 @@ export async function enrollMemberWithSale(
     is_national_vat_id: accountType === "company" ? isNationalVatId : false,
   });
 
+  // Chi ha comprato serve al nuovo piano compensi: sulle prime due vendite di
+  // ciascuno, l'acquirente viene ereditato dal VIP superiore ed e' quello a
+  // far scattare il pass-up. Senza questo dato la vendita paga solo la
+  // provvigione diretta.
   const { data: sale, error: saleError } = await supabase
-    .rpc("register_sale", { p_seller_code: sponsor.activity_code, p_quantity: quantity })
+    .rpc("register_sale", {
+      p_seller_code: sponsor.activity_code,
+      p_quantity: quantity,
+      p_buyer_code: newMember.activity_code,
+    })
     .single();
 
   if (saleError || !sale) {
