@@ -1,22 +1,26 @@
 import type { Member } from "./members";
-import type { CommissionEntry, Sale } from "./commissions";
+import type { CommissionEntry, CommissionKind, Sale } from "./commissions";
 import type { WithdrawalRequest } from "./withdrawals";
+
+export type Livello = 0 | 1 | 2 | 3 | 4;
 
 export type WalletOverview = {
   totalEarnings: number;
-  byLevel: Record<0 | 1 | 2 | 3, number>;
+  byLevel: Record<Livello, number>;
 };
 
 // Riepilogo del portafoglio di un membro: tutto ciò che ha guadagnato,
 // suddiviso per livello (0 = vendita diretta propria, 1-3 = commissioni
 // ricevute dal proprio team — le "3 forme di pagamento" del sistema).
 export function buildWalletOverview(entries: CommissionEntry[], code: number): WalletOverview {
-  const byLevel: Record<0 | 1 | 2 | 3, number> = { 0: 0, 1: 0, 2: 0, 3: 0 };
+  // Il livello 4 e' la quota del Royal Pool: senza di lui quei soldi
+  // sparirebbero dal saldo pur essendo stati accreditati.
+  const byLevel: Record<Livello, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
   let totalEarnings = 0;
 
   for (const entry of entries) {
     if (entry.beneficiary_code !== code) continue;
-    byLevel[entry.level] += entry.amount;
+    if (entry.level in byLevel) byLevel[entry.level] += entry.amount;
     totalEarnings += entry.amount;
   }
 
@@ -45,7 +49,8 @@ export function computeAvailableBalance(
 
 export type CommissionRow = {
   id: number;
-  level: 1 | 2 | 3;
+  level: Livello;
+  kind: CommissionKind | null;
   amount: number;
   createdAt: string;
   sellerCode: number;
@@ -68,11 +73,14 @@ export function buildCommissionRows(
   return entries
     .filter((e) => e.beneficiary_code === code && e.level !== 0)
     .map((e) => {
-      const sale = saleById.get(e.sale_id);
+      // Le quote del Royal Pool non hanno una vendita dietro: il venditore
+      // resta vuoto e la riga si riconosce dal tipo.
+      const sale = e.sale_id === null ? undefined : saleById.get(e.sale_id);
       const seller = sale ? memberByCode.get(sale.seller_code) : undefined;
       return {
         id: e.id,
-        level: e.level as 1 | 2 | 3,
+        level: e.level,
+        kind: e.kind ?? null,
         amount: e.amount,
         createdAt: e.created_at,
         sellerCode: seller?.activity_code ?? sale?.seller_code ?? 0,

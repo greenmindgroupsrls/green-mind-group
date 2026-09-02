@@ -95,7 +95,8 @@ export function buildNetworkActivity(
   }
   const level0AmountBySale = new Map<number, number>();
   for (const e of entries) {
-    if (e.level === 0) level0AmountBySale.set(e.sale_id, e.amount);
+    // Le quote del Royal Pool non hanno vendita: non entrano in questa mappa.
+    if (e.level === 0 && e.sale_id !== null) level0AmountBySale.set(e.sale_id, e.amount);
   }
 
   const MATCH_WINDOW_MS = 60_000;

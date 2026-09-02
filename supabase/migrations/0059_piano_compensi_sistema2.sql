@@ -580,3 +580,55 @@ revoke execute on function public.liquida_royal_pool() from anon;
 -- pagherebbero la diretta senza far scattare il pass-up. L'accensione e'
 -- una riga a parte, eseguita dopo la pubblicazione:
 --   update compensation_settings set plan2_active_from = now() where id = 1;
+
+-- === 11. Tariffe modificabili dal Centro di controllo =====================
+create or replace function public.admin_update_plan2_settings(
+  p_direct_rate numeric,
+  p_passup_rate numeric,
+  p_pool_rate numeric,
+  p_passup_quota integer,
+  p_royal_directs integer
+)
+returns compensation_settings
+language plpgsql
+security definer
+set search_path to 'public'
+as $function$
+declare
+  chiamante integer := current_member_code();
+  aggiornate compensation_settings;
+begin
+  if chiamante is null or chiamante <> 0 then
+    raise exception 'Non autorizzato';
+  end if;
+
+  if p_direct_rate < 0 or p_passup_rate < 0 or p_pool_rate < 0 then
+    raise exception 'Le tariffe non possono essere negative';
+  end if;
+  if p_passup_quota < 0 then
+    raise exception 'Le vendite da cedere non possono essere negative';
+  end if;
+  if p_royal_directs < 1 then
+    raise exception 'Servono almeno 1 VIP diretto per la qualifica Royal';
+  end if;
+
+  update compensation_settings
+  set plan2_direct_rate = p_direct_rate,
+      plan2_passup_rate = p_passup_rate,
+      plan2_pool_rate = p_pool_rate,
+      plan2_passup_quota = p_passup_quota,
+      plan2_royal_directs = p_royal_directs
+  where id = 1
+  returning * into aggiornate;
+
+  insert into admin_audit_log (actor_code, action_type, target_code, details)
+  values (chiamante, 'plan2_settings_updated', null,
+    jsonb_build_object('diretta', p_direct_rate, 'pass_up', p_passup_rate,
+                       'pool', p_pool_rate, 'quota', p_passup_quota,
+                       'royal_diretti', p_royal_directs));
+
+  return aggiornate;
+end;
+$function$;
+
+revoke execute on function public.admin_update_plan2_settings(numeric, numeric, numeric, integer, integer) from anon;

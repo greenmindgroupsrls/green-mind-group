@@ -8,13 +8,20 @@ export type Sale = {
   created_at: string;
 };
 
+// Sistema 2: 'diretta' e' la provvigione di chi vende, 'pass_up' quella che
+// sale al primo VIP, 'pool_royal' la quota del Royal Pool. Le righe del piano
+// precedente non hanno tipo e si leggono dal livello.
+export type CommissionKind = "diretta" | "pass_up" | "pool_royal";
+
 export type CommissionEntry = {
   id: number;
-  sale_id: number;
+  // Nullo sulle quote del Royal Pool: non nascono da una singola vendita.
+  sale_id: number | null;
   beneficiary_code: number;
-  level: 0 | 1 | 2 | 3;
+  level: 0 | 1 | 2 | 3 | 4;
   amount: number;
   created_at: string;
+  kind?: CommissionKind | null;
 };
 
 // Mirror di register_sale() (vedi supabase/migrations/0002_ranks_and_commissions.sql).

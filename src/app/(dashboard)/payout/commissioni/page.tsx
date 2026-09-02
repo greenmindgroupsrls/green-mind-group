@@ -5,6 +5,7 @@ import { buildWalletOverview, buildCommissionRows } from "@/lib/payout-data";
 import { formatActivityCode } from "@/lib/activity-code";
 import { StatCard } from "@/components/stat-card";
 import { ExportCsvButton } from "./export-csv-button";
+import { etichettaProvvigione, coloreProvvigione } from "@/lib/piano-compensi";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -20,27 +21,15 @@ function formatDate(iso: string) {
   });
 }
 
-// Le uniche 3 forme di commissione del sistema: quanto ricevi dalle vendite
-// del tuo team ai livelli 1, 2 e 3 (la vendita diretta propria, livello 0,
-// non è una "commissione" e si vede nella Panoramica).
-const CATEGORY_LABEL: Record<1 | 2 | 3, string> = {
-  1: "Commissione Livello 1",
-  2: "Commissione Livello 2",
-  3: "Commissione Livello 3",
-};
-
-const CATEGORY_BADGE_CLASS: Record<1 | 2 | 3, string> = {
-  1: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
-  2: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400",
-  3: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
-};
-
 export default async function PayoutCommissioniPage() {
   const [currentMember, network] = await Promise.all([getCurrentMember(), loadNetworkData()]);
   const code = network.usingMockData ? 0 : (currentMember?.activity_code ?? 0);
 
   const overview = buildWalletOverview(network.entries, code);
-  const totalCommissions = overview.byLevel[1] + overview.byLevel[2] + overview.byLevel[3];
+  // Tutto quello che non e' la propria vendita diretta: i livelli del piano
+  // vecchio, il pass-up e la quota del Royal Pool del Sistema 2.
+  const totalCommissions =
+    overview.byLevel[1] + overview.byLevel[2] + overview.byLevel[3] + overview.byLevel[4];
   const rows = buildCommissionRows(network.entries, network.sales, network.members, code);
 
   return (
@@ -101,9 +90,9 @@ export default async function PayoutCommissioniPage() {
                   </td>
                   <td className="px-6 py-3">
                     <span
-                      className={`text-xs font-medium rounded-full px-2.5 py-1 ${CATEGORY_BADGE_CLASS[r.level]}`}
+                      className={`text-xs font-medium rounded-full px-2.5 py-1 ${coloreProvvigione(r.kind, r.level)}`}
                     >
-                      {CATEGORY_LABEL[r.level]}
+                      {etichettaProvvigione(r.kind, r.level)}
                     </span>
                   </td>
                   <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">

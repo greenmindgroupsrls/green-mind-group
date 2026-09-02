@@ -12,6 +12,7 @@ import { StatCard } from "@/components/stat-card";
 import { NetworkAreaChart } from "@/components/charts/network-area-chart";
 import { RankDistribution } from "@/components/charts/rank-distribution";
 import { MyRankCard } from "@/components/my-rank-card";
+import { PassUpLinesCard } from "@/components/pass-up-lines-card";
 
 // La mappa mondo trascina un dataset SVG da ~1.2MB (@svg-maps/world):
 // caricata solo lato client e solo quando serve, così non gonfia il bundle
@@ -130,13 +131,9 @@ export function DashboardView({
         </div>
 
         <div className="flex flex-col gap-4">
-          <MyRankCard
-            members={members}
-            sales={sales}
-            ranks={ranks}
-            rootCode={rootCode}
-            isRoot={isRoot}
-          />
+          <MyRankCard members={members} ranks={ranks} rootCode={rootCode} />
+
+          <PassUpLinesCard members={members} ranks={ranks} rootCode={rootCode} />
 
           <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
             <h2 className="font-semibold text-gray-900 dark:text-white">Distribuzione rank</h2>

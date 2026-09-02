@@ -3,12 +3,7 @@
 import { Download } from "lucide-react";
 import { formatActivityCode } from "@/lib/activity-code";
 import type { CommissionRow } from "@/lib/payout-data";
-
-const CATEGORY_LABEL: Record<1 | 2 | 3, string> = {
-  1: "Commissione Livello 1",
-  2: "Commissione Livello 2",
-  3: "Commissione Livello 3",
-};
+import { etichettaProvvigione } from "@/lib/piano-compensi";
 
 function csvEscape(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
@@ -22,7 +17,7 @@ export function ExportCsvButton({ rows }: { rows: CommissionRow[] }) {
         new Date(r.createdAt).toLocaleDateString("it-IT"),
         r.sellerUsername,
         formatActivityCode(r.sellerCode),
-        CATEGORY_LABEL[r.level],
+        etichettaProvvigione(r.kind, r.level),
         r.amount.toFixed(2).replace(".", ","),
       ]
         .map(csvEscape)

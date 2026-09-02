@@ -8,6 +8,7 @@ import type { ControlCenterMember } from "./control-center-explorer";
 import { ControlCenterTabs } from "./control-center-tabs";
 import type { AuditLogRow } from "./audit-log-view";
 import type { CompensationSettings } from "./compensation-settings-view";
+import type { RoyalPoolInfo } from "./royal-pool-view";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +58,8 @@ export default async function ControlCenterPage() {
     { data: entryRows },
     { data: auditRows },
     { data: compensationRow },
+    { data: poolRows },
+    { data: ultimaChiusuraRow },
   ] = await Promise.all([
     supabase.from("members").select("*").order("activity_code", { ascending: true }),
     supabase
@@ -73,9 +76,18 @@ export default async function ControlCenterPage() {
       .limit(200),
     supabase
       .from("compensation_settings")
-      .select("level0_rate, level1_rate, level2_rate, level3_rate")
+      .select(
+        "level0_rate, level1_rate, level2_rate, level3_rate, plan2_active_from, plan2_direct_rate, plan2_passup_rate, plan2_pool_rate, plan2_passup_quota, plan2_royal_directs",
+      )
       .eq("id", 1)
       .single(),
+    supabase.from("royal_pool_entries").select("amount, settlement_id"),
+    supabase
+      .from("royal_pool_settlements")
+      .select("settled_at, total_amount, royal_count, share")
+      .order("settled_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ]);
 
   const members = (memberRows ?? []) as Member[];
@@ -142,6 +154,36 @@ export default async function ControlCenterPage() {
     level1Rate: compensationRow?.level1_rate ?? 100,
     level2Rate: compensationRow?.level2_rate ?? 50,
     level3Rate: compensationRow?.level3_rate ?? 20,
+    attivoDa: compensationRow?.plan2_active_from
+      ? new Date(compensationRow.plan2_active_from).toLocaleDateString("it-IT", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })
+      : null,
+    direttaRate: compensationRow?.plan2_direct_rate ?? 170,
+    passUpRate: compensationRow?.plan2_passup_rate ?? 80,
+    poolRate: compensationRow?.plan2_pool_rate ?? 31.72,
+    passUpQuota: compensationRow?.plan2_passup_quota ?? 2,
+    royalDiretti: compensationRow?.plan2_royal_directs ?? 10,
+  };
+
+  // Stato del Royal Pool: quanto c'e' da distribuire e a quanti.
+  const poolDaLiquidare = (poolRows ?? []).filter((r) => r.settlement_id === null);
+  const royalPool: RoyalPoolInfo = {
+    accantonato: poolDaLiquidare.reduce((somma, r) => somma + Number(r.amount), 0),
+    vendite: poolDaLiquidare.length,
+    royalQualificati: members.filter(
+      (m) => m.activity_code !== 0 && ranks[m.activity_code] === "royal",
+    ).length,
+    ultimaChiusura: ultimaChiusuraRow
+      ? {
+          data: new Date(ultimaChiusuraRow.settled_at).toLocaleDateString("it-IT"),
+          totale: Number(ultimaChiusuraRow.total_amount),
+          quantiRoyal: ultimaChiusuraRow.royal_count,
+          quota: Number(ultimaChiusuraRow.share),
+        }
+      : null,
   };
 
   return (
@@ -155,6 +197,7 @@ export default async function ControlCenterPage() {
           members={controlCenterMembers}
           auditLog={auditLog}
           compensationSettings={compensationSettings}
+          royalPool={royalPool}
         />
       </div>
     </div>

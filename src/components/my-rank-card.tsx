@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { Crown, TrendingUp } from "lucide-react";
 import type { Member } from "@/lib/members";
-import type { Sale } from "@/lib/commissions";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
 
 const RANK_STYLE: Record<Rank, { badge: string; icona: string; barra: string }> = {
@@ -24,54 +23,42 @@ const RANK_STYLE: Record<Rank, { badge: string; icona: string; barra: string }> 
   },
 };
 
-// Le soglie replicano compute_member_ranks() nel database (vedi migration
-// 0034_document_actual_rank_logic.sql):
-//   VIP   -> N diretti che hanno registrato almeno una vendita. N vale 2 se
-//            anche tu hai venduto, altrimenti 10.
-//   ROYAL -> 10 VIP/Royal in tutta la discendenza, non solo tra i diretti.
-const ROYAL_RICHIESTI = 10;
+// Le soglie replicano il Sistema 2 nel database (vedi migration
+// 0059_piano_compensi_sistema2.sql):
+//   VIP   -> aver ceduto al VIP superiore le prime 2 vendite qualificanti.
+//   ROYAL -> 10 VIP agganciati direttamente sotto di se' nella struttura,
+//            compresi quelli arrivati per eredita' dai pass-up.
+// Sono le stesse soglie del database: se cambiano la', vanno cambiate qui.
+const VENDITE_PER_VIP = 2;
+const VIP_PER_ROYAL = 10;
 
 export function MyRankCard({
   members,
-  sales,
   ranks,
   rootCode,
-  isRoot,
 }: {
   members: Member[];
-  sales: Sale[];
   ranks: Record<number, Rank>;
   rootCode: number;
-  isRoot: boolean;
 }) {
   const mioRank: Rank = ranks[rootCode] ?? "standard";
   const stile = RANK_STYLE[mioRank];
 
   const progresso = useMemo(() => {
-    const hoVenduto = sales.some((s) => s.seller_code === rootCode);
-    const venditoriDiretti = new Set(sales.map((s) => s.seller_code));
-    const direttiAttivi = members.filter(
-      (m) => m.ref_sponsor_code === rootCode && venditoriDiretti.has(m.activity_code),
+    const io = members.find((m) => m.activity_code === rootCode);
+    const cedute = io?.passed_up_count ?? 0;
+
+    // Royal si conta sui diretti nella STRUTTURA, non su chi si e' iscritto
+    // di persona: dopo un pass-up l'ereditato diventa un diretto a tutti gli
+    // effetti, ed e' cosi' che lo conta anche il database.
+    const vipDiretti = members.filter(
+      (m) =>
+        m.parent_code === rootCode &&
+        (ranks[m.activity_code] === "vip" || ranks[m.activity_code] === "royal"),
     ).length;
-    const vipRichiesti = hoVenduto ? 2 : 10;
 
-    // Discendenti VIP/Royal in tutto il sotto-albero strutturale.
-    const figliDi = new Map<number, number[]>();
-    for (const m of members) {
-      if (m.parent_code === null) continue;
-      figliDi.set(m.parent_code, [...(figliDi.get(m.parent_code) ?? []), m.activity_code]);
-    }
-    let vipInRete = 0;
-    const daVisitare = [...(figliDi.get(rootCode) ?? [])];
-    while (daVisitare.length > 0) {
-      const c = daVisitare.pop()!;
-      const r = ranks[c];
-      if (r === "vip" || r === "royal") vipInRete += 1;
-      daVisitare.push(...(figliDi.get(c) ?? []));
-    }
-
-    return { hoVenduto, direttiAttivi, vipRichiesti, vipInRete };
-  }, [members, sales, ranks, rootCode]);
+    return { cedute, vipDiretti };
+  }, [members, ranks, rootCode]);
 
   // Obiettivo successivo: da Standard si punta a VIP, da VIP a Royal.
   // Il traguardo si ricava SEMPRE dal rank reale, mai da isRoot: altrimenti
@@ -83,19 +70,17 @@ export function MyRankCard({
       : mioRank === "standard"
         ? {
             verso: "VIP",
-            attuale: progresso.direttiAttivi,
-            totale: progresso.vipRichiesti,
-            cosa: "diretti che hanno già acquistato",
-            nota: progresso.hoVenduto
-              ? null
-              : "Registrando un tuo acquisto la soglia scende da 10 a 2.",
+            attuale: progresso.cedute,
+            totale: VENDITE_PER_VIP,
+            cosa: "vendite di qualifica cedute",
+            nota: "Le prime due vendite vanno al VIP sopra di te. Dopo sei libero: i tuoi iscritti restano tuoi.",
           }
         : {
             verso: "Royal",
-            attuale: progresso.vipInRete,
-            totale: ROYAL_RICHIESTI,
-            cosa: "VIP o Royal nella tua rete",
-            nota: null,
+            attuale: progresso.vipDiretti,
+            totale: VIP_PER_ROYAL,
+            cosa: "VIP diretti nella tua struttura",
+            nota: "Con 10 VIP diretti entri nel Royal Pool.",
           };
 
   const percentuale = obiettivo
@@ -151,8 +136,8 @@ export function MyRankCard({
         </div>
       ) : (
         <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">
-          Hai raggiunto il livello più alto del programma.
-          {isRoot && " L'account aziendale è sempre Royal."}
+          Hai raggiunto il livello più alto del programma e partecipi al Royal Pool.
+          {rootCode === 0 && " L'account aziendale è sempre Royal."}
         </p>
       )}
     </div>
