@@ -14,9 +14,10 @@
 // La cartella prodotta contiene dati personali (codici fiscali, IBAN,
 // documenti d'identita'): tienila su un disco che consideri riservato.
 
-import { writeFileSync, mkdirSync, readFileSync, existsSync, cpSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync, cpSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createInterface } from "node:readline/promises";
 
 const radice = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -39,24 +40,44 @@ if (!URL_SUPABASE) {
   console.error("Manca NEXT_PUBLIC_SUPABASE_URL (dovrebbe essere in .env.local).");
   process.exit(1);
 }
-if (!CHIAVE) {
-  console.error(
-    "Manca SUPABASE_SERVICE_ROLE_KEY.\n\n" +
-      "Crea un file .env.backup nella cartella del progetto con dentro:\n" +
-      "  SUPABASE_SERVICE_ROLE_KEY=la-chiave\n\n" +
-      "La chiave si trova su Supabase > Project Settings > API > service_role.\n" +
-      "Il file e' gia' escluso da git: non finira' mai online.",
+const percorsoChiave = join(radice, ".env.backup");
+
+// Se la chiave non c'e' la si chiede qui e la si salva: cosi' chi usa lo
+// script non deve creare file a mano ne' sapere dove vanno messi.
+async function chiediChiave(): Promise<string> {
+  console.log(
+    "\nPrima volta: serve la chiave segreta di Supabase.\n\n" +
+      "Dove si prende:\n" +
+      "  1. Vai su supabase.com ed entra nel progetto\n" +
+      "  2. Ingranaggio in fondo alla colonna di sinistra (Project Settings)\n" +
+      "  3. Voce API Keys\n" +
+      "  4. Copia la chiave SEGRETA: si chiama 'secret' (inizia per sb_secret_)\n" +
+      "     oppure 'service_role' (lunghissima, inizia per eyJ)\n" +
+      "     NON quella 'anon' o 'publishable': quella e' pubblica e non funziona\n",
   );
-  process.exit(1);
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const risposta = (await rl.question("Incolla qui la chiave e premi INVIO: ")).trim();
+  rl.close();
+  if (!risposta) {
+    console.error("\nNessuna chiave inserita. Rilancia quando ce l'hai sottomano.");
+    process.exit(1);
+  }
+  writeFileSync(percorsoChiave, `SUPABASE_SERVICE_ROLE_KEY=${risposta}\n`);
+  console.log("\nChiave salvata. Le prossime volte non te la chiedero' piu'.\n");
+  return risposta;
 }
 
-const intestazioni = { apikey: CHIAVE, Authorization: `Bearer ${CHIAVE}` };
+const chiave = CHIAVE ?? (await chiediChiave());
+const intestazioni = { apikey: chiave, Authorization: `Bearer ${chiave}` };
 
 const stamp = new Date().toISOString().slice(0, 16).replace("T", "_").replace(":", "");
 const destinazione = env.BACKUP_DIR ?? join(radice, "..", "backup-green-mind-group", stamp);
 
+class ChiaveRifiutata extends Error {}
+
 async function chiedi(url: string, opzioni: RequestInit = {}) {
   const r = await fetch(url, { ...opzioni, headers: { ...intestazioni, ...(opzioni.headers ?? {}) } });
+  if (r.status === 401 || r.status === 403) throw new ChiaveRifiutata();
   if (!r.ok) throw new Error(`${r.status} ${r.statusText} su ${url}`);
   return r;
 }
@@ -122,6 +143,23 @@ async function salvaFile() {
 }
 
 // --- esecuzione ------------------------------------------------------------
+// Una chiave sbagliata e' l'errore piu' probabile: invece di lasciare un
+// messaggio tecnico si cancella quella salvata, cosi' al giro dopo lo script
+// la richiede di nuovo da solo.
+process.on("uncaughtException", (e) => {
+  if (e instanceof ChiaveRifiutata) {
+    if (existsSync(percorsoChiave)) rmSync(percorsoChiave);
+    console.error(
+      "\nLa chiave non e' stata accettata da Supabase.\n" +
+        "Probabilmente era quella pubblica ('anon') invece di quella segreta.\n" +
+        "L'ho cancellata: rilancia il backup e te ne chiedera' una nuova.\n",
+    );
+  } else {
+    console.error(`\nQualcosa non ha funzionato: ${e.message}\n`);
+  }
+  process.exit(1);
+});
+
 console.log(`Copia di sicurezza in corso...\n  destinazione: ${destinazione}\n`);
 
 const tabelle = await salvaTabelle();
