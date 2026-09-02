@@ -58,39 +58,6 @@ export async function updateMemberProfile(
 
 export type CompensationSettingsState = { error: string | null; success: boolean };
 
-export async function updateCompensationSettings(
-  _prevState: CompensationSettingsState,
-  formData: FormData,
-): Promise<CompensationSettingsState> {
-  try {
-    await requireRoot();
-  } catch {
-    return { error: "Non autorizzato", success: false };
-  }
-
-  const level0 = Number(formData.get("level0_rate"));
-  const level1 = Number(formData.get("level1_rate"));
-  const level2 = Number(formData.get("level2_rate"));
-  const level3 = Number(formData.get("level3_rate"));
-
-  if ([level0, level1, level2, level3].some((v) => Number.isNaN(v) || v < 0)) {
-    return { error: "Tariffe non valide", success: false };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("admin_update_compensation_settings", {
-    p_level0_rate: level0,
-    p_level1_rate: level1,
-    p_level2_rate: level2,
-    p_level3_rate: level3,
-  });
-
-  if (error) return { error: error.message, success: false };
-
-  revalidatePath("/centro-di-controllo");
-  return { error: null, success: true };
-}
-
 export async function setMemberRankOverride(targetCode: number, rank: Rank | null) {
   await requireRoot();
 

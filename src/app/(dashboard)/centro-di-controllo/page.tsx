@@ -77,7 +77,7 @@ export default async function ControlCenterPage() {
     supabase
       .from("compensation_settings")
       .select(
-        "level0_rate, level1_rate, level2_rate, level3_rate, plan2_active_from, plan2_direct_rate, plan2_passup_rate, plan2_pool_rate, plan2_passup_quota, plan2_royal_directs",
+        "plan2_active_from, plan2_direct_rate, plan2_passup_rate, plan2_pool_rate, plan2_passup_quota, plan2_royal_directs",
       )
       .eq("id", 1)
       .single(),
@@ -150,10 +150,6 @@ export default async function ControlCenterPage() {
   }));
 
   const compensationSettings: CompensationSettings = {
-    level0Rate: compensationRow?.level0_rate ?? 100,
-    level1Rate: compensationRow?.level1_rate ?? 100,
-    level2Rate: compensationRow?.level2_rate ?? 50,
-    level3Rate: compensationRow?.level3_rate ?? 20,
     attivoDa: compensationRow?.plan2_active_from
       ? new Date(compensationRow.plan2_active_from).toLocaleDateString("it-IT", {
           day: "2-digit",
