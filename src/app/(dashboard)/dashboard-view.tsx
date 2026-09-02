@@ -59,6 +59,7 @@ export function DashboardView({
   rootCode,
   isRoot,
   announcementsSlot,
+  azioniSlot,
 }: {
   members: Member[];
   sales: Sale[];
@@ -69,6 +70,7 @@ export function DashboardView({
   rootCode: number;
   isRoot: boolean;
   announcementsSlot?: React.ReactNode;
+  azioniSlot?: React.ReactNode;
 }) {
   const data = useMemo(
     () => buildDashboardData(members, sales, entries, ranks, rootCode),
@@ -121,13 +123,18 @@ export function DashboardView({
         />
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 mt-4">
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900 dark:text-white">Team</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Nuovi iscritti per mese</p>
-          <div className="mt-4">
-            <NetworkAreaChart data={data.signupSeries} />
+      {/* items-start: senza, la card del grafico si allunga fino all'altezza
+          della colonna di destra e lascia sotto una fascia bianca vuota. */}
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 mt-4 items-start">
+        <div className="flex flex-col gap-4">
+          <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+            <h2 className="font-semibold text-gray-900 dark:text-white">Team</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Nuovi iscritti per mese</p>
+            <div className="mt-4">
+              <NetworkAreaChart data={data.signupSeries} />
+            </div>
           </div>
+          {azioniSlot}
         </div>
 
         <div className="flex flex-col gap-4">

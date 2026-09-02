@@ -8,6 +8,7 @@ import { DashboardView } from "./dashboard-view";
 import { AnnouncementsFeed } from "./announcements-feed";
 import { ClientDashboard } from "./client-dashboard";
 import { ContractReminder } from "./contract-reminder";
+import { NextActions } from "./next-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -98,6 +99,11 @@ export default async function Home() {
         isRoot={isRoot}
         announcementsSlot={
           <AnnouncementsFeed isRoot={isRoot} usingMockData={usingMockData || loadFailed} />
+        }
+        azioniSlot={
+          !usingMockData && !loadFailed && currentMember ? (
+            <NextActions activityCode={currentMember.activity_code} />
+          ) : null
         }
       />
     </div>
