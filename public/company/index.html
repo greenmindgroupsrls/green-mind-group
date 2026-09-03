@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VORTIX — Potenza senza limiti.</title>
+<meta name="description" content="VORTIX trasforma i tuoi scarti alimentari in acqua, direttamente sotto il lavello. Tecnologia a forza centrifuga, senza lame. Made in Italy, 5 anni di garanzia.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VORTIX">
+<meta property="og:title" content="VORTIX — Potenza senza limiti.">
+<meta property="og:description" content="VORTIX trasforma i tuoi scarti alimentari in acqua, direttamente sotto il lavello. Tecnologia a forza centrifuga, senza lame. Made in Italy, 5 anni di garanzia.">
+<meta property="og:image" content="https://sito-three-eosin.vercel.app/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VORTIX — Potenza senza limiti.">
+<meta name="twitter:description" content="VORTIX trasforma i tuoi scarti alimentari in acqua, direttamente sotto il lavello. Tecnologia a forza centrifuga, senza lame.">
+<meta name="twitter:image" content="https://sito-three-eosin.vercel.app/assets/og-image.jpg">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bc292fdbe85b41cab86073342f214263"}'></script><!-- End Cloudflare Web Analytics -->
+</head>
+<body>
+
+<!--
+  ============================================================
+  NOTE
+  - Dati tecnici da scheda ufficiale N.T.A. (VORTIX ETC11): 1 HP,
+    22.000 giri/min a vuoto, 11.000 a pieno carico, 800W/230V,
+    2,4 kg, corpo in resina/fibra di vetro, piatto/anello dentato
+    inox AISI. Made in Italy — N.T.A., Varese.
+  - Claim NON confermati da scheda tecnica (da verificare prima
+    della pubblicazione): livello di rumorosità in dB, tempo
+    esatto di installazione, metodi di pagamento, ragione
+    sociale/P.IVA del negozio online, email/telefono reali.
+  - Email/telefono/indirizzo qui sotto sono segnaposto: sostituire
+    con i recapiti reali prima di andare online.
+  - Nessuna recensione inventata.
+  - Il modale "Prenota una dimostrazione" salva davvero le
+    prenotazioni su Supabase (progetto "vortix", tabella
+    "bookings"). Chiave pubblica e URL sono in js/main.js — sono
+    dati pensati per stare nel codice pubblico, protetti dalle
+    policy di Row Level Security lato database (solo INSERT
+    consentito, nessuna lettura dei dati clienti dal sito).
+  ============================================================
+-->
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<header id="site-header">
+  <div class="wrap nav">
+    <a href="#top" class="logo">
+      <span class="logo-disc" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><g class="spin"><circle cx="24" cy="24" r="21" class="disc-rim"/><circle cx="24" cy="24" r="3.4" class="disc-hub"/><g class="disc-spokes">
+          <line x1="24" y1="6" x2="24" y2="16"/><line x1="24" y1="32" x2="24" y2="42"/>
+          <line x1="6" y1="24" x2="16" y2="24"/><line x1="32" y1="24" x2="42" y2="24"/>
+          <line x1="10.9" y1="10.9" x2="17.8" y2="17.8"/><line x1="30.2" y1="30.2" x2="37.1" y2="37.1"/>
+          <line x1="37.1" y1="10.9" x2="30.2" y2="17.8"/><line x1="17.8" y1="30.2" x2="10.9" y2="37.1"/>
+        </g></g></svg>
+      </span>
+      VORTIX<span class="dot">.</span>
+    </a>
+    <nav class="links">
+      <a href="#tecnologia">Tecnologia</a>
+      <a href="#potenza">Potenza</a>
+      <a href="#vantaggi">Vantaggi</a>
+      <a href="#prima-dopo">Prima e dopo</a>
+      <a href="#prezzo">Prezzo</a>
+    </nav>
+    <div class="nav-cta">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambia tema chiaro/scuro" title="Cambia tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.1 2.1M17 17l2.1 2.1M19 5l-2.1 2.1M7 17l-2.1 2.1" stroke-linecap="round"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+      <a href="https://green-mind-group.vercel.app" target="_blank" rel="noopener" class="price-pill">Area clienti</a>
+      <a href="#prezzo" class="btn btn-primary btn-sm js-book-demo">Prenota demo</a>
+    </div>
+    <button id="nav-burger" class="nav-burger" type="button" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <canvas class="aurora-canvas" id="aurora-canvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <div class="hero-copy reveal">
+      <div class="eyebrow glass-pill"><span class="dot-live" aria-hidden="true"></span>Dissipatore alimentare · Forza centrifuga</div>
+      <h1>Potenza<br><span class="ink-accent">senza limiti.</span></h1>
+      <p class="lead">Il secchio dell'umido va in pensione. VORTIX riduce gli scarti di cucina in particelle microscopiche e le convoglia con l'acqua, all'istante, sotto il lavello.</p>
+      <div class="hero-ctas">
+        <a href="#storia" class="btn btn-primary">Scopri Vortix</a>
+        <a href="#prima-dopo" class="link-more">Vedi il prima e dopo <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="hero-media reveal">
+      <div class="hero-stage">
+        <img src="assets/img/product-cutout.webp" alt="VORTIX, dissipatore alimentare a forza centrifuga" width="802" height="1488" loading="eager">
+        <div class="rpm-tag mono">
+          <span class="rpm-tag-dot"></span>11.000 <small>RPM</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#marquee" class="scroll-cue" aria-label="Scorri">
+    <span>Scorri</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v15M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</section>
+
+<!-- ============ MARQUEE TICKER ============ -->
+<div class="marquee" id="marquee">
+  <div class="marquee-track mono">
+    <span>11.000 RPM A PIENO CARICO</span><span class="sep">◆</span>
+    <span>22.000 RPM A VUOTO</span><span class="sep">◆</span>
+    <span>1 HP DI POTENZA</span><span class="sep">◆</span>
+    <span>ZERO LAME</span><span class="sep">◆</span>
+    <span>800 W / 230 V</span><span class="sep">◆</span>
+    <span>5 ANNI DI GARANZIA</span><span class="sep">◆</span>
+    <span>MADE IN ITALY</span><span class="sep">◆</span>
+    <span>11.000 RPM A PIENO CARICO</span><span class="sep">◆</span>
+    <span>22.000 RPM A VUOTO</span><span class="sep">◆</span>
+    <span>1 HP DI POTENZA</span><span class="sep">◆</span>
+    <span>ZERO LAME</span><span class="sep">◆</span>
+    <span>800 W / 230 V</span><span class="sep">◆</span>
+    <span>5 ANNI DI GARANZIA</span><span class="sep">◆</span>
+    <span>MADE IN ITALY</span><span class="sep">◆</span>
+  </div>
+</div>
+
+<!-- ============ STORIA / PROBLEMA ============ -->
+<section class="section tint" id="storia">
+  <div class="wrap narrative reveal">
+    <div class="eyebrow center">Un fastidio quotidiano</div>
+    <h2 class="center">Il secchio dell'umido è il problema<br>che nessuno aveva ancora risolto.</h2>
+    <p class="lead center">Raccogliere. Chiudere il sacchetto. Portarlo giù. Lavare il secchio. Ricominciare il giorno dopo.<br>
+      Un rito che si ripete da decenni in ogni casa — finché qualcuno non ha deciso che poteva finire per sempre.</p>
+  </div>
+  <div class="wrap problem-grid reveal">
+    <ul class="problem-list">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Odori sgradevoli che restano in cucina</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Moscerini e insetti attirati dai rifiuti organici</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Sacchetti che gocciolano e si rompono</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Bidoni da svuotare e lavare ogni giorno</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Spazio sprecato sotto il lavello</li>
+    </ul>
+    <div class="turn">
+      <div class="eyebrow accent">La svolta</div>
+      <h3 class="big">VORTIX non nasconde il problema.<br>Lo elimina.</h3>
+      <p>In pochi istanti, VORTIX riduce gli scarti alimentari in particelle microscopiche e le convoglia con l'acqua direttamente nello scarico. Niente più raccolta, niente più trasporto, niente più cattivi odori.</p>
+      <a href="#tecnologia" class="link-more">Scopri la tecnologia <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COME FUNZIONA ============ -->
+<section class="section light" id="come-funziona">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Come funziona</div>
+      <h2 class="center">Semplice come lavare le mani.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="num mono">01</div>
+        <h3>Getti gli scarti</h3>
+        <p>Butta gli avanzi organici direttamente nel lavello, come faresti sempre.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">02</div>
+        <h3>Attivi Vortix</h3>
+        <p>Un semplice tocco avvia il ciclo, in tutta sicurezza.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">03</div>
+        <h3>Forza centrifuga</h3>
+        <p>A 11.000 giri/min gli scarti vengono polverizzati per impatto, senza lame.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">04</div>
+        <h3>Scarico automatico</h3>
+        <p>Il tutto viene eliminato con l'acqua corrente. Fine della storia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TECNOLOGIA ============ -->
+<section class="section dark-section" id="tecnologia">
+  <div class="wrap tech-split reveal">
+    <div class="tech-media glass">
+      <model-viewer
+        id="mv-spaccato"
+        src="assets/3d/vortix-spaccato.glb"
+        alt="Modello 3D di VORTIX, il dissipatore a forza centrifuga"
+        camera-controls
+        auto-rotate
+        auto-rotate-delay="1400"
+        rotation-per-second="14deg"
+        interaction-prompt="none"
+        shadow-intensity="0.9"
+        exposure="1.05"
+        environment-image="neutral"
+        camera-orbit="10deg 75deg auto"
+        field-of-view="30deg"
+        loading="eager"
+        reveal="auto">
+      </model-viewer>
+    </div>
+    <div>
+      <div class="eyebrow">La tecnologia</div>
+      <h2>Non è un tritarifiuti.<br>È un principio diverso di potenza.</h2>
+      <p class="lead">A differenza dei trituratori tradizionali a lama, VORTIX usa la forza centrifuga per polverizzare gli scarti per impatto, non per taglio. Un principio più semplice. Più sicuro. Costruito per durare.</p>
+      <ul class="tech-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Nessuna lama: zero rischio di incidenti domestici</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Motore a doppio isolamento, massima sicurezza</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>1 HP, 22.000 giri/min a vuoto — 11.000 a pieno carico</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Piatto e anello dentato in acciaio inox AISI</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RPM DIAL — SIGNATURE ============ -->
+<section class="section dial-section" id="potenza">
+  <div class="wrap dial-wrap reveal">
+    <div class="section-head">
+      <div class="eyebrow accent center">Il cuore di Vortix</div>
+      <h2 class="center">Undicimila giri al minuto.<br>Zero lame.</h2>
+      <p class="center lead">Il disco a forza centrifuga è l'unica parte in movimento: nessun filo, nessun taglio, solo velocità pura convertita in pressione.</p>
+    </div>
+    <div class="dial-row">
+      <div class="dial" data-target="11000" data-max="22000">
+        <svg viewBox="0 0 240 240" class="dial-svg">
+          <circle cx="120" cy="120" r="104" class="dial-track"/>
+          <circle cx="120" cy="120" r="104" class="dial-progress dial-progress-outer" data-ratio="1"/>
+          <circle cx="120" cy="120" r="86" class="dial-track dial-track-inner"/>
+          <circle cx="120" cy="120" r="86" class="dial-progress dial-progress-inner" data-ratio="0.5"/>
+        </svg>
+        <div class="dial-readout">
+          <div class="dial-value mono"><span class="dial-num">0</span></div>
+          <div class="dial-label">GIRI / MIN — PIENO CARICO</div>
+        </div>
+      </div>
+      <div class="dial-legend">
+        <div class="legend-row"><span class="swatch swatch-outer"></span>22.000 rpm <small>a vuoto</small></div>
+        <div class="legend-row"><span class="swatch swatch-inner"></span>11.000 rpm <small>a pieno carico</small></div>
+        <div class="stat-chips">
+          <div class="chip"><b class="mono">1</b><span>HP</span></div>
+          <div class="chip"><b class="mono">800</b><span>Watt</span></div>
+          <div class="chip"><b class="mono">2,4</b><span>kg</span></div>
+          <div class="chip"><b class="mono">230</b><span>Volt</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VANTAGGI ============ -->
+<section class="section tint" id="vantaggi">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow center">Vantaggi</div>
+      <h2 class="center">Una cucina più pulita, igienica e moderna.</h2>
+    </div>
+    <div class="benefits reveal">
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3C7 8 5 11 5 14a7 7 0 0 0 14 0c0-3-2-6-7-11z"/></svg></div>
+        <h3>Zero odori</h3>
+        <p>Elimina i cattivi odori alla fonte, non li nasconde.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Igienico e sicuro</h3>
+        <p>Nessun contatto diretto con i rifiuti, nessuna lama esposta.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Veloce</h3>
+        <p>Trasforma gli scarti in pochi istanti, senza sforzo.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3C7 8 5 11 5 14a7 7 0 0 0 14 0c0-3-2-6-7-11z"/></svg></div>
+        <h3>Ecologico</h3>
+        <p>Riduce i rifiuti da smaltire e l'impatto ambientale della tua cucina.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M19 5 5 19" stroke-linecap="round"/></svg></div>
+        <h3>Silenzioso</h3>
+        <p>Progettato per non disturbare la famiglia né i vicini.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-6 9 6v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg></div>
+        <h3>Salvaspazio</h3>
+        <p>Nessun secchio, nessun bidone: più spazio libero in cucina.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PER CHI ============ -->
+<section class="section light">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Ideale per</div>
+      <h2 class="center">Pensato per ogni cucina.<br>Anche per il tuo palazzo.</h2>
+      <p class="center">VORTIX si adatta a case private, condomini e attività professionali.</p>
+    </div>
+    <div class="audience-grid reveal">
+      <div class="audience-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg>
+        <span>Case &amp; Condomini</span>
+      </div>
+      <div class="audience-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v6a3 3 0 0 0 6 0V2M9 8v14M18 2v20M15 8h6"/></svg>
+        <span>Ristoranti</span>
+      </div>
+      <div class="audience-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9 4v16M4 9h16M4 14h16"/></svg>
+        <span>Hotel</span>
+      </div>
+      <div class="audience-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h2l2 12h11l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="16" cy="20" r="1"/></svg>
+        <span>Supermercati</span>
+      </div>
+      <div class="audience-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="1"/><path d="M8 8V5h8v3"/></svg>
+        <span>Uffici &amp; Scuole</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSTALLAZIONE ============ -->
+<section class="section tint">
+  <div class="wrap install-split reveal">
+    <div>
+      <div class="eyebrow accent">Installazione</div>
+      <h2>Nessuna modifica.<br>Nessun pensiero.</h2>
+      <p class="lead">VORTIX si collega alla piletta del lavello esattamente come un normale elettrodomestico: nessun intervento strutturale sull'impianto idraulico di casa.</p>
+      <ul class="tech-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Attacchi inclusi per pilette da 2" e 3"</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Compatibile con lavelli in ceramica, inox e materiali sintetici</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Scarico Ø 40 mm, troppo pieno/lavastoviglie Ø 22 mm</li>
+      </ul>
+    </div>
+    <div class="install-media glass">
+      <img src="assets/img/install-diagram.png" alt="Schema di montaggio ufficiale VORTIX sotto il lavello" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============ VITA IN CUCINA ============ -->
+<section class="section tint">
+  <div class="wrap life-split reveal">
+    <div class="life-media glass">
+      <video
+        src="assets/video/vortix-lifestyle.mp4"
+        poster="assets/video/vortix-lifestyle-poster.jpg"
+        autoplay muted loop playsinline
+        aria-label="VORTIX in una cucina moderna, pronto per l'installazione sotto il lavello">
+      </video>
+    </div>
+    <div class="life-copy">
+      <div class="eyebrow">Nella tua cucina</div>
+      <h2>Discreto sopra.<br>Potente sotto.</h2>
+      <p class="lead">Una volta installato, VORTIX scompare alla vista: resta solo il gesto naturale di gettare gli scarti nel lavello, sapendo che il resto è già stato risolto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIMA / DOPO ============ -->
+<section class="section light" id="prima-dopo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Prima e dopo</div>
+      <h2 class="center">Cose che spariscono<br>quando entra VORTIX.</h2>
+    </div>
+    <div class="compare-grid reveal">
+      <div class="compare-col before">
+        <h3>Prima</h3>
+        <ul class="compare-list">
+          <li>Sacchetti che gocciolano</li>
+          <li>Odori dell'umido in cucina</li>
+          <li>Moscerini e insetti</li>
+          <li>Secchio da lavare ogni giorno</li>
+          <li>Viaggi fino al bidone</li>
+          <li>Spazio sprecato sotto il lavello</li>
+        </ul>
+      </div>
+      <div class="compare-col after">
+        <h3>Dopo</h3>
+        <ul class="compare-list">
+          <li>Scarichi direttamente nel lavello</li>
+          <li>Aria pulita, sempre</li>
+          <li>Zero moscerini</li>
+          <li>Nessun secchio, nessun odore</li>
+          <li>Zero trasporti, zero pensieri</li>
+          <li>Spazio libero sotto il lavello</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GARANZIA ============ -->
+<section class="section dark-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow center">Zero rischi</div>
+      <h2 class="center">La nostra garanzia.</h2>
+      <p class="center">Investire in VORTIX è una scelta sicura: qualità italiana, assistenza vera, copertura a lungo termine.</p>
+    </div>
+    <div class="guarantee reveal">
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/></svg>
+        <h3>5 anni di garanzia</h3>
+        <p>Copertura ufficiale su motore e componenti.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a4 4 0 0 1-4.8 4.8L7 20l-2-2 9.1-9.1A4 4 0 0 1 18.9 4l-3.1 3.1z"/></svg>
+        <h3>Assistenza italiana</h3>
+        <p>Supporto tecnico diretto, senza call center esteri.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <h3>Nessun impegno</h3>
+        <p>Prova VORTIX a casa tua prima di decidere, senza obbligo d'acquisto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRENOTA DEMO ============ -->
+<section class="section light" id="prezzo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Provalo prima di scegliere</div>
+      <h2 class="center">Vedi VORTIX dal vivo, a casa tua.</h2>
+    </div>
+    <div class="price-card reveal">
+      <div class="demo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      </div>
+      <p class="demo-lead">Un tecnico VORTIX viene a casa tua, installa il dispositivo sotto il tuo lavello e te lo mostra in funzione. Nessun impegno all'acquisto.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Dimostrazione gratuita a domicilio</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>5 anni di garanzia inclusa</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Assistenza tecnica italiana</li>
+      </ul>
+      <a href="#contatti" class="btn btn-primary btn-block js-book-demo">Prenota una dimostrazione direttamente a casa tua</a>
+      <p class="note mt">Hai domande prima di prenotare? <a href="#faq" class="inline-link">Leggi le FAQ</a> o <a href="#contatti" class="inline-link">contattaci</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section tint" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Domande frequenti</div>
+      <h2 class="center">Tutto quello che devi sapere.</h2>
+    </div>
+    <div class="faq reveal">
+      <details class="faq-item" open>
+        <summary>Devo modificare l'impianto idraulico di casa?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">No. VORTIX si installa sotto il lavello come un normale elettrodomestico, tramite la piletta di scarico. Include gli attacchi per pilette da 2" e da 3", compatibili sia con lavelli in ceramica che in acciaio/materiali sintetici, senza interventi strutturali sull'impianto.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Fa rumore?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">VORTIX è progettato con isolamento antivibrazione: la rumorosità è contenuta, per un funzionamento discreto in cucina.</div>
+      </details>
+      <details class="faq-item">
+        <summary>È adatto anche a un condominio?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">Sì. Riducendo gli scarti organici che finiscono nelle tubature, VORTIX aiuta a prevenire otturazioni nelle colonne di scarico condivise dal palazzo.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Quanto dura l'installazione?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">Il collegamento è semplice — piletta, guarnizione, ghiera di fissaggio e allaccio elettrico — paragonabile all'installazione di un normale elettrodomestico sotto lavello.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Cosa posso gettare in VORTIX?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">Tutti gli scarti organici alimentari, senza limitazioni: bucce, avanzi di frutta e verdura, gusci d'uovo, fondi di caffè, e anche i rifiuti più difficili come ossa, gusci di noci o alimenti filamentosi. Non vanno invece inseriti materiali non organici (plastica, vetro, metallo, tappi di sughero, elastici e simili).</div>
+      </details>
+      <details class="faq-item">
+        <summary>Richiede manutenzione?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">No, VORTIX è progettato per durare nel tempo senza manutenzione. Per mantenerlo sempre fresco, un consiglio pratico è centrifugare occasionalmente del ghiaccio o mezzo limone.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Cosa succede in caso di guasto?<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="a">VORTIX è coperto da 5 anni di garanzia con assistenza tecnica italiana.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINALE ============ -->
+<section class="final-cta">
+  <div class="wrap reveal">
+    <div class="cta-glass glass">
+      <h2>Basta con il secchio dell'umido.</h2>
+      <p class="lead">Passa a VORTIX: la tecnologia che trasforma i tuoi scarti in acqua, per una cucina più pulita, igienica e moderna.</p>
+      <a href="#prezzo" class="btn btn-primary js-book-demo">Prenota una dimostrazione a casa tua</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SONDAGGIO ============ -->
+<section class="section tint" id="sondaggio">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow accent center">Raccontaci la tua cucina</div>
+      <h2 class="center">15 domande, 3 minuti.<br>Un buono da 250€ per te.</h2>
+      <p class="center lead">Aiutaci a capire le tue abitudini in cucina: a fine percorso ricevi un codice sconto da usare sul tuo VORTIX.</p>
+    </div>
+    <div class="survey-frame glass reveal">
+      <iframe id="survey-iframe" src="sondaggio.html" title="Sondaggio VORTIX — Racconta la tua cucina" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contatti">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4 class="footer-brand">VORTIX</h4>
+        <p class="footer-about">Potenza senza limiti. Tecnologia a forza centrifuga, progettata e prodotta in Italia da N.T.A. — Nuove Tecnologie per l'Ambiente, Varese.</p>
+      </div>
+      <div>
+        <h4>Prodotto</h4>
+        <ul>
+          <li><a href="#tecnologia">Tecnologia</a></li>
+          <li><a href="#vantaggi">Vantaggi</a></li>
+          <li><a href="#prima-dopo">Prima e dopo</a></li>
+          <li><a href="#prezzo">Prezzo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Assistenza</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contatti">Contattaci</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="termini.html">Termini e condizioni</a></li>
+          <li><a href="disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contatti</h4>
+        <ul>
+          <li><a href="mailto:greenmindgroupsrls@gmail.com">greenmindgroupsrls@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>VORTIX © 2026. Tutti i diritti riservati.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODALE PRENOTAZIONE DEMO ============ -->
+<div class="booking-overlay" id="booking-overlay" aria-hidden="true">
+  <div class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+    <button type="button" class="booking-close" id="booking-close" aria-label="Chiudi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="booking-steps-indicator">
+      <span class="booking-dot active" data-step-dot="1"></span>
+      <span class="booking-dot" data-step-dot="2"></span>
+      <span class="booking-dot" data-step-dot="3"></span>
+    </div>
+
+    <!-- STEP 1: calendario -->
+    <div class="booking-step" data-step="1">
+      <div class="eyebrow accent">Passo 1 di 3</div>
+      <h3 id="booking-title" class="big">Scegli data e ora.</h3>
+      <p class="booking-sub">Un tecnico VORTIX verrà a casa tua per la dimostrazione gratuita.</p>
+
+      <div class="booking-cal">
+        <div class="booking-cal-head">
+          <button type="button" class="booking-cal-nav" id="cal-prev" aria-label="Mese precedente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="booking-cal-title" id="cal-month-label">—</span>
+          <button type="button" class="booking-cal-nav" id="cal-next" aria-label="Mese successivo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="booking-cal-weekdays">
+          <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+        </div>
+        <div class="booking-cal-grid" id="cal-grid"></div>
+      </div>
+
+      <div class="booking-times" id="booking-times" hidden>
+        <div class="booking-times-label mono">Orari disponibili</div>
+        <div class="booking-times-grid" id="times-grid"></div>
+      </div>
+
+      <div class="booking-nav">
+        <span></span>
+        <button type="button" class="btn btn-primary" id="step1-next" disabled>Continua</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: dati -->
+    <div class="booking-step" data-step="2" hidden>
+      <div class="eyebrow accent">Passo 2 di 3</div>
+      <h3 class="big">I tuoi dati.</h3>
+      <p class="booking-sub">Ci servono per confermare l'appuntamento e indicare al tecnico dove venire.</p>
+
+      <div class="booking-recap mono" id="booking-recap"></div>
+
+      <form class="booking-form" id="booking-form">
+        <input type="text" id="bk-name" placeholder="Nome e cognome" required>
+        <input type="tel" id="bk-phone" placeholder="Telefono" required>
+        <input type="email" id="bk-email" placeholder="Email" required>
+        <input type="text" id="bk-address" placeholder="Indirizzo (via, città, CAP)" required>
+        <textarea id="bk-notes" placeholder="Note per il tecnico (facoltativo)" rows="2"></textarea>
+        <label class="consent">
+          <input type="checkbox" id="bk-consent" required>
+          <span>Acconsento al trattamento dei miei dati personali per essere ricontattato e per organizzare la dimostrazione, ai sensi del Regolamento (UE) 2016/679 (GDPR).</span>
+        </label>
+      </form>
+
+      <p class="booking-error" id="booking-error" hidden></p>
+
+      <div class="booking-nav">
+        <button type="button" class="btn-ghost" id="step2-back">Indietro</button>
+        <button type="button" class="btn btn-primary" id="step2-next" disabled>Conferma prenotazione</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: conferma -->
+    <div class="booking-step booking-step-final" data-step="3" hidden>
+      <div class="booking-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="big">Richiesta inviata!</h3>
+      <p class="booking-sub" id="booking-final-recap">Ti contatteremo entro 24 ore per confermare l'appuntamento.</p>
+      <button type="button" class="btn btn-primary" id="booking-done">Fatto</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

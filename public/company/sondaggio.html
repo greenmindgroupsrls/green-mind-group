@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<script>
+  if (window.self !== window.top) {
+    document.documentElement.classList.add('embedded');
+  }
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Vortix — Racconta la tua cucina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light only;
+    --soil:#0B2529;
+    --soil-2:#123640;
+    --parchment:#FFFFFF;
+    --surface:#E8DCC8;
+    --surface-hover:#DCCDAE;
+    --sprout:#0E2E33;
+    --sprout-dark:#082024;
+    --ember:#B29B72;
+    --ink:#0B2529;
+    --ink-soft:#3E5C60;
+    --line: rgba(20,21,13,0.18);
+  }
+  *{box-sizing:border-box;}
+  html{ background:#FFFFFF; color-scheme: light only; }
+  html,body{margin:0;padding:0;}
+  body{
+    background:#FFFFFF;
+    color:#0B2529;
+    font-family:'General Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  html.embedded, html.embedded body{ min-height:0; }
+  .shell{
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    min-height:100vh;
+  }
+  html.embedded .shell{ min-height:0; }
+  @media (max-width: 860px){
+    .shell{grid-template-columns:1fr;}
+  }
+
+  /* ---- Side rail with the signature "compost jar" gauge ---- */
+  .rail{
+    background: var(--surface);
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+  }
+  @media (min-width: 861px){
+    .rail{ border-bottom:none; border-right:1px solid var(--line); }
+  }
+  @media (max-width: 860px){
+    .rail{
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px 20px;
+    }
+  }
+  @media (max-width: 480px){
+    .rail{ padding:14px 16px; }
+  }
+  .brand{
+    font-family:'General Sans', sans-serif;
+    font-weight:600;
+    font-size:22px;
+    letter-spacing:0.01em;
+    color:var(--ink);
+  }
+  @media (max-width:480px){ .brand{ font-size:18px; } }
+  .brand span{color:var(--sprout-dark);}
+  .rail-top{display:flex;flex-direction:column;gap:36px;}
+  @media (max-width:860px){ .rail-top{flex-direction:row; align-items:center; gap:16px;} }
+
+  .gauge-wrap{display:flex; align-items:center; gap:16px;}
+  .gauge{
+    width:14px;
+    height:220px;
+    border-radius:8px;
+    background: rgba(28,23,18,0.10);
+    position:relative;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  @media (max-width:860px){ .gauge{width:130px; height:8px;} }
+  @media (max-width:480px){ .gauge{width:84px;} }
+  .gauge-fill{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    width:100%;
+    height:0%;
+    background: linear-gradient(180deg, var(--sprout) 0%, var(--sprout-dark) 100%);
+    transition: height 0.6s cubic-bezier(.4,0,.2,1);
+    border-radius:8px;
+  }
+  @media (max-width:860px){
+    .gauge-fill{ height:100% !important; width:0%; transition:width 0.6s cubic-bezier(.4,0,.2,1); bottom:0; top:0;}
+  }
+  .gauge-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color: var(--ink-soft);
+    line-height:1.5;
+  }
+  .gauge-label b{
+    display:block;
+    font-size:20px;
+    color:var(--ink);
+    font-weight:500;
+  }
+  @media (max-width:480px){
+    .gauge-label{ font-size:10px; }
+    .gauge-label b{ font-size:16px; }
+  }
+  .rail-copy{
+    font-size:13px;
+    line-height:1.6;
+    color: var(--ink-soft);
+    max-width:220px;
+  }
+  @media (max-width:860px){ .rail-copy{display:none;} }
+  .rail-bottom{font-size:12px; color:var(--ink-soft); opacity:0.7; font-family:'JetBrains Mono',monospace;}
+  @media (max-width:860px){ .rail-bottom{display:none;} }
+
+  /* ---- Main stage ---- */
+  .stage{
+    background:#FFFFFF;
+    padding: 64px 64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  @media (max-width:860px){ .stage{padding:28px 20px; align-items:flex-start;} }
+  @media (max-width:480px){ .stage{padding:22px 16px;} }
+
+  .card{
+    background:#FFFFFF;
+    width:100%;
+    max-width:560px;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color: var(--sprout-dark);
+    margin-bottom:14px;
+  }
+
+  h1.q{
+    font-family:'General Sans', sans-serif;
+    font-weight:600;
+    font-size:clamp(22px, 5vw, 32px);
+    line-height:1.25;
+    margin:0 0 8px 0;
+    color:#0B2529;
+  }
+  .sub{
+    font-size:14.5px;
+    color:#3E5C60;
+    line-height:1.55;
+    margin:0 0 28px 0;
+  }
+  @media (max-width:480px){
+    .sub{ margin-bottom:20px; font-size:14px; }
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:28px;
+  }
+  @media (max-width:480px){ .options{ gap:8px; margin-bottom:20px; } }
+  .opt{
+    border:1px solid var(--line);
+    background: #E8DCC8;
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:15px;
+    cursor:pointer;
+    text-align:left;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+    font-family:'General Sans', sans-serif;
+    color:#0B2529;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  @media (max-width:480px){ .opt{ padding:12px 14px; font-size:14.5px; } }
+  .opt:hover{ border-color:var(--sprout-dark); background:rgba(14,46,51,0.08); }
+  .opt.selected{ border-color:var(--sprout-dark); background:rgba(14,46,51,0.14); font-weight:500; }
+  .opt .mark{
+    width:18px;height:18px;border-radius:5px;border:1.5px solid var(--ink-soft);
+    flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  }
+  .opt.selected .mark{ background:var(--sprout-dark); border-color:var(--sprout-dark); }
+  .opt.selected .mark::after{content:"✓"; color:var(--parchment); font-size:12px;}
+  .opt.radio .mark{ border-radius:50%; }
+
+  .scale-row{ display:flex; gap:8px; margin-bottom:28px; }
+  @media (max-width:480px){ .scale-row{ gap:6px; margin-bottom:6px; } }
+  .scale-btn{
+    flex:1; padding:14px 0; border-radius:10px; border:1px solid var(--line);
+    background:#E8DCC8; font-family:'JetBrains Mono', monospace; font-size:15px;
+    cursor:pointer; color:#0B2529; transition:.15s ease;
+  }
+  @media (max-width:480px){ .scale-btn{ padding:11px 0; font-size:14px; } }
+  .scale-btn:hover{border-color:var(--sprout-dark);}
+  .scale-btn.selected{ background:var(--sprout-dark); border-color:var(--sprout-dark); color:#FFFFFF; }
+  .scale-caption{ display:flex; justify-content:space-between; font-size:11px; color:#3E5C60; margin-top:-18px; margin-bottom:28px; font-family:'JetBrains Mono', monospace;}
+  @media (max-width:480px){ .scale-caption{ margin-bottom:20px; } }
+
+  input[type=text], input[type=email]{
+    width:100%; padding:14px 16px; border-radius:10px; border:1px solid var(--line);
+    background:var(--surface); font-size:15px; font-family:'General Sans', sans-serif;
+    margin-bottom:16px; color:var(--ink);
+  }
+  @media (max-width:480px){ input[type=text], input[type=email]{ padding:12px 14px; margin-bottom:12px; } }
+  input[type=text]:focus, input[type=email]:focus{ outline:2px solid var(--sprout-dark); outline-offset:1px; border-color:transparent;}
+
+  .consent{
+    display:flex; gap:10px; align-items:flex-start; font-size:12.5px; color:var(--ink-soft);
+    line-height:1.5; margin-bottom:24px; cursor:pointer;
+  }
+  @media (max-width:480px){ .consent{ margin-bottom:18px; font-size:12px; } }
+  .consent input{ margin-top:3px; accent-color:var(--sprout-dark); flex-shrink:0; }
+
+  .nav-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .btn{
+    font-family:'General Sans', sans-serif;
+    font-weight:500; font-size:14.5px;
+    padding:13px 26px; border-radius:10px; border:none; cursor:pointer;
+    transition:.15s ease;
+  }
+  @media (max-width:480px){
+    .nav-row{ position:sticky; bottom:0; background:var(--parchment); padding-top:10px; margin-top:4px; }
+    .btn{ padding:13px 18px; flex:1; }
+    .btn-ghost{ flex:0 0 auto; padding:13px 10px; }
+  }
+  .btn-primary{ background:var(--ink); color:var(--parchment); }
+  .btn-primary:hover{ background:var(--sprout-dark); }
+  .btn-primary:disabled{ background:#B9B2A2; cursor:not-allowed; }
+  .btn-ghost{ background:transparent; color:var(--ink-soft); }
+  .btn-ghost:hover{ color:var(--ink); }
+
+  .info-box{
+    background: rgba(14,46,51,0.10);
+    border:1px solid rgba(14,46,51,0.35);
+    border-radius:12px;
+    padding:22px 22px;
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--ink);
+    margin-bottom:28px;
+  }
+  @media (max-width:480px){ .info-box{ padding:16px 16px; font-size:14px; margin-bottom:20px; } }
+  .info-box b{color:var(--sprout-dark);}
+  .insight-reveal{ animation: reveal .35s ease; }
+  @keyframes reveal{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* Intro + final */
+  .center-block{ text-align:left; }
+  .badge{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:12px;
+    background:var(--ember); color:var(--soil); padding:5px 12px; border-radius:100px;
+    margin-bottom:18px; font-weight:500;
+  }
+  .voucher{
+    border:1.5px dashed var(--sprout-dark);
+    border-radius:14px;
+    padding:28px;
+    text-align:center;
+    background: var(--surface);
+    margin: 24px 0 20px 0;
+  }
+  @media (max-width:480px){ .voucher{ padding:20px 16px; margin:18px 0 16px 0; } }
+  .voucher .amount{
+    font-family:'General Sans', sans-serif; font-weight:700; font-size:52px; color:var(--sprout-dark); line-height:1;
+  }
+  @media (max-width:480px){ .voucher .amount{ font-size:42px; } }
+  .voucher .code{
+    font-family:'JetBrains Mono', monospace; font-size:18px; letter-spacing:0.08em;
+    background:var(--soil); color:var(--parchment); padding:10px 18px; border-radius:8px;
+    display:inline-block; margin-top:16px;
+  }
+  @media (max-width:480px){ .voucher .code{ font-size:15px; padding:9px 14px; letter-spacing:0.04em; } }
+  .fine-print{ font-size:11.5px; color:var(--ink-soft); line-height:1.6; margin-top:18px; }
+
+  .progress-text{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:#3E5C60;
+    margin-bottom:10px;
+  }
+</style>
+
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bc292fdbe85b41cab86073342f214263"}'></script><!-- End Cloudflare Web Analytics -->
+</head>
+<body>
+
+<div class="shell">
+  <div class="rail">
+    <div class="rail-top">
+      <div class="brand">VORTIX<span>.</span></div>
+      <div class="gauge-wrap">
+        <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div>
+        <div class="gauge-label">Avanzamento<b id="gaugeLabel">0%</b></div>
+      </div>
+    </div>
+    <div class="rail-copy" id="railCopy">
+      Ogni risposta riduce il "peso" del sondaggio, proprio come Vortix riduce il volume dei tuoi rifiuti alimentari in cucina.
+    </div>
+    <div class="rail-bottom">SONDAGGIO · NTAMBIENTE</div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card"></div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// Data model
+// ---------------------------------------------------------------
+const answers = {};
+
+const steps = [
+  { type:'intro' },
+
+  { type:'q', key:'q1', kind:'single', q:'Quanti chili di scarti alimentari produce indicativamente la tua famiglia in una settimana?',
+    options:['Meno di 1 kg','Tra 1 e 3 kg','Tra 3 e 5 kg','Più di 5 kg'],
+    insight:'Vortix riduce il volume degli scarti trattati fino all\'80%: meno peso da gestire, meno viaggi al bidone, meno ingombro in cucina.' },
+
+  { type:'q', key:'q2', kind:'single', q:'Dove tieni gli scarti alimentari prima di buttarli?',
+    options:['Sotto il lavello','In balcone o in terrazzo','In un mastello dedicato','Li porto fuori subito'],
+    insight:'Vortix sta direttamente sul piano di lavoro, vicino a dove cucini: niente più contenitori da nascondere o portare avanti e indietro.' },
+
+  { type:'q', key:'q3', kind:'scale', q:'Quanto spesso senti cattivi odori provenire dal bidone dell\'umido in cucina?',
+    left:'Mai', right:'Molto spesso',
+    insight:'Vortix tratta gli scarti subito dopo ogni conferimento, neutralizzando gli odori alla fonte invece di lasciarli accumulare.' },
+
+  { type:'q', key:'q4', kind:'single', q:'Quante volte a settimana porti fuori il sacchetto dell\'umido?',
+    options:['1 volta','2–3 volte','Quasi ogni giorno','Più volte al giorno'],
+    insight:'Riducendo drasticamente il volume degli scarti, con Vortix questi viaggi diventano molto meno frequenti.' },
+
+  { type:'q', key:'q5', kind:'single', q:'Ti è mai capitato di rimandare la preparazione di un piatto (pesce, verdure, ecc.) per non doverne gestire subito gli scarti?',
+    options:['Spesso','Qualche volta','Mai'],
+    insight:'Con Vortix puoi smaltire ogni scarto nel momento stesso in cui cucini, senza pensarci due volte.' },
+
+  { type:'q', key:'q6', kind:'multi', q:'Quali di queste attività legate ai rifiuti alimentari trovi più fastidiose? (seleziona tutte quelle che si applicano)',
+    options:['Raccogliere gli scarti durante la preparazione','Portare fuori il sacchetto','Pulire il bidone','Gestire gli odori','Comprare sacchetti o mastelli compostabili'],
+    insight:'Vortix automatizza gran parte di questo processo: bastano pochi secondi al giorno per liberarsene.' },
+
+  { type:'q', key:'q7', kind:'single', q:'Quanto spazio libero hai in cucina per un piccolo elettrodomestico da banco?',
+    options:['Molto spazio libero','Un piccolo angolo','Pochissimo spazio'],
+    insight:'Vortix è pensato per stare su un piano di lavoro con l\'ingombro di una macchina da caffè.' },
+
+  { type:'q', key:'q8', kind:'scale', q:'Quanto ti dà fastidio il rumore degli elettrodomestici in cucina (frullatore, lavastoviglie, ecc.)?',
+    left:'Per niente', right:'Moltissimo',
+    insight:'Vortix è progettato per un funzionamento silenzioso, pensato per restare acceso anche mentre si è in cucina.' },
+
+  { type:'q', key:'q9', kind:'single', q:'Quanto spendi indicativamente al mese in sacchetti compostabili, mastelli o prodotti anti-odore per l\'umido?',
+    options:['Niente','Pochi euro','5–10€','Oltre 10€'],
+    insight:'Questi costi ricorrenti si riducono nel tempo, contribuendo ad ammortizzare l\'investimento in Vortix.' },
+
+  { type:'q', key:'q10', kind:'single', q:'Sai se il tuo comune prevede riduzioni sulla tassa rifiuti (TARI) per chi differenzia meglio l\'organico?',
+    options:['Sì, il mio comune lo prevede','Non lo so','No'],
+    insight:'Riducendo il volume degli scarti conferiti, Vortix può aiutarti a rientrare più facilmente in questo tipo di agevolazioni, dove previste.' },
+
+  { type:'q', key:'q11', kind:'single', q:'Quante persone vivono in casa con te?',
+    options:['1 persona','2 persone','3–4 persone','5 o più persone'],
+    insight:'Più persone in casa, più scarti prodotti ogni giorno: è proprio nei nuclei numerosi che la riduzione di volume di Vortix si nota di più.' },
+
+  { type:'q', key:'q12', kind:'single', q:'Vivi in un condominio o in una casa indipendente?',
+    options:['Condominio','Casa indipendente','Altro'],
+    insight:'In condominio, dove i bidoni sono spesso condivisi, ridurre odori e volume fa la differenza anche per il vicinato.' },
+
+  { type:'q', key:'q13', kind:'text', q:'In che città o zona vivi?', placeholder:'Es. Milano, zona Navigli' },
+
+  { type:'q', key:'q14', kind:'scale', q:'Ora che hai visto come funziona, quanto ti piacerebbe avere Vortix nella tua cucina?',
+    left:'Per niente', right:'Moltissimo' },
+
+  { type:'q', key:'q15', kind:'scale', q:'Con quanta probabilità acquisteresti Vortix se potessi averlo in cucina da subito?',
+    left:'Molto improbabile', right:'Molto probabile',
+    insight:'Per aiutarti a decidere, ti offriamo un buono da 250€ da scontare sull\'acquisto: lo trovi nell\'ultimo passaggio.' },
+
+  { type:'contact' },
+
+  { type:'final' }
+];
+
+let idx = 0;
+
+function totalAnswerable(){
+  return steps.filter(s => s.type==='q' || s.type==='contact').length;
+}
+function answeredSoFar(){
+  let n = 0;
+  steps.forEach(s=>{
+    if(s.type==='q' && answers[s.key] !== undefined) n++;
+    if(s.type==='contact' && answers['contactDone']) n++;
+  });
+  return n;
+}
+
+function updateGauge(){
+  const pct = Math.round((answeredSoFar() / totalAnswerable()) * 100);
+  document.getElementById('gaugeFill').style.height = pct + '%';
+  document.getElementById('gaugeFill').style.width = pct + '%';
+  document.getElementById('gaugeLabel').textContent = pct + '%';
+}
+
+function render(){
+  const step = steps[idx];
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+
+  if(step.type === 'intro'){
+    card.innerHTML = `
+      <div class="center-block">
+        <div class="badge">15 domande · circa 3 minuti</div>
+        <h1 class="q">Raccontaci la tua cucina, ricevi un buono da 250€ su Vortix</h1>
+        <p class="sub">Vortix è il dispositivo che riduce il volume dei rifiuti alimentari e i cattivi odori direttamente in cucina. Rispondi a un breve sondaggio: a fine percorso ricevi un buono sconto di 250€ da utilizzare sull'acquisto.</p>
+        <div class="nav-row" style="justify-content:flex-start;">
+          <button class="btn btn-primary" onclick="next()">Inizia il sondaggio</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if(step.type === 'info'){
+    card.innerHTML = `
+      <div class="eyebrow">${step.eyebrow}</div>
+      <h1 class="q">${step.title}</h1>
+      <div class="info-box">${step.body}</div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="prev()">Indietro</button>
+        <button class="btn btn-primary" onclick="next()">Continua</button>
+      </div>`;
+    return;
+  }
+
+  if(step.type === 'q'){
+    const n = steps.slice(0, idx+1).filter(s=>s.type==='q').length;
+    let inner = `<div class="progress-text">Domanda ${n} di 15</div><h1 class="q">${step.q}</h1>`;
+
+    if(step.kind === 'single'){
+      inner += `<div class="options">` + step.options.map(o => `
+        <div class="opt radio ${answers[step.key]===o?'selected':''}" onclick="selectSingle('${step.key}','${o.replace(/'/g,"\\'")}')">
+          <span class="mark"></span>${o}
+        </div>`).join('') + `</div>`;
+    }
+
+    if(step.kind === 'multi'){
+      const sel = answers[step.key] || [];
+      inner += `<div class="options">` + step.options.map(o => `
+        <div class="opt ${sel.includes(o)?'selected':''}" onclick="toggleMulti('${step.key}','${o.replace(/'/g,"\\'")}')">
+          <span class="mark"></span>${o}
+        </div>`).join('') + `</div>`;
+    }
+
+    if(step.kind === 'scale'){
+      const sel = answers[step.key];
+      inner += `<div class="scale-row">` + [1,2,3,4,5].map(v => `
+        <button class="scale-btn ${sel===v?'selected':''}" onclick="selectScale('${step.key}',${v})">${v}</button>`).join('') + `</div>
+        <div class="scale-caption"><span>${step.left}</span><span>${step.right}</span></div>`;
+    }
+
+    if(step.kind === 'text'){
+      inner += `<input type="text" id="textInput" placeholder="${step.placeholder}" value="${answers[step.key]||''}" oninput="answers['${step.key}']=this.value; refreshNav();">`;
+    }
+
+    const isAnswered =
+      (step.kind==='single' || step.kind==='scale') ? answers[step.key] !== undefined :
+      (step.kind==='multi') ? (answers[step.key]||[]).length > 0 :
+      false;
+
+    if(step.insight && isAnswered){
+      inner += `<div class="info-box insight-reveal"><b>Lo sapevi?</b> ${step.insight}</div>`;
+    }
+
+    inner += `<div class="nav-row">
+        <button class="btn btn-ghost" onclick="prev()">Indietro</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="next()">Continua</button>
+      </div>`;
+    card.innerHTML = inner;
+    refreshNav();
+    return;
+  }
+
+  if(step.type === 'contact'){
+    card.innerHTML = `
+      <div class="progress-text">Ultimo passaggio</div>
+      <h1 class="q">Dove ti inviamo il buono da 250€?</h1>
+      <p class="sub">Lasciaci i tuoi dati: riceverai il codice sconto e potrai essere tra i primi a provare Vortix.</p>
+      <input type="text" id="cName" placeholder="Nome e cognome" value="${answers.name||''}" oninput="answers.name=this.value; refreshNav();">
+      <input type="email" id="cEmail" placeholder="Indirizzo email" value="${answers.email||''}" oninput="answers.email=this.value; refreshNav();">
+      <label class="consent">
+        <input type="checkbox" id="cConsent" ${answers.consent?'checked':''} onchange="answers.consent=this.checked; refreshNav();">
+        <span>Acconsento al trattamento dei miei dati personali da parte di NTAMBIENTE per l'invio del buono sconto e di comunicazioni informative su Vortix, ai sensi del Regolamento (UE) 2016/679 (GDPR). Potrò revocare il consenso in qualsiasi momento.</span>
+      </label>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="prev()">Indietro</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="submitContact()">Ricevi il buono</button>
+      </div>`;
+    refreshNav();
+    return;
+  }
+
+  if(step.type === 'final'){
+    const code = answers.voucherCode || generateCode();
+    answers.voucherCode = code;
+    card.innerHTML = `
+      <div class="center-block">
+        <div class="badge">Sondaggio completato</div>
+        <h1 class="q">Ora sai come Vortix cambia la tua cucina${answers.name ? ', ' + answers.name.split(' ')[0] : ''}</h1>
+        <p class="sub">Meno volume, meno odori, meno tempo perso: è il momento di provarlo. Ecco il tuo buono da 250€, valido sul primo acquisto. Il codice arriva anche via email all'indirizzo che ci hai lasciato.</p>
+        <div class="voucher">
+          <div class="amount">250€</div>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:4px;">di sconto sul tuo Vortix</div>
+          <div class="code">${code}</div>
+        </div>
+        <p class="fine-print">Il buono è valido per un singolo utilizzo sull'acquisto di un dispositivo Vortix. Termini, validità e modalità di utilizzo saranno confermati via email. Importo e condizioni indicativi, da verificare prima della pubblicazione della campagna.</p>
+      </div>`;
+    return;
+  }
+}
+
+function selectSingle(key, val){ answers[key] = val; render(); updateGauge(); }
+function selectScale(key, val){ answers[key] = val; render(); updateGauge(); }
+function toggleMulti(key, val){
+  if(!answers[key]) answers[key] = [];
+  const arr = answers[key];
+  const i = arr.indexOf(val);
+  if(i === -1) arr.push(val); else arr.splice(i,1);
+  render(); updateGauge();
+}
+
+function refreshNav(){
+  const step = steps[idx];
+  const btn = document.getElementById('nextBtn');
+  if(!btn) return;
+  let ok = true;
+  if(step.type === 'q'){
+    if(step.kind === 'single' || step.kind === 'scale') ok = answers[step.key] !== undefined;
+    if(step.kind === 'multi') ok = (answers[step.key] || []).length > 0;
+    if(step.kind === 'text') ok = (answers[step.key] || '').trim().length > 0;
+  }
+  if(step.type === 'contact'){
+    ok = (answers.name||'').trim().length>0 && /\S+@\S+\.\S+/.test(answers.email||'') && !!answers.consent;
+  }
+  btn.disabled = !ok;
+}
+
+function generateCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = 'VORTIX-';
+  for(let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function next(){
+  const step = steps[idx];
+  if(step.type === 'q'){
+    if(step.kind === 'single' || step.kind === 'scale'){
+      if(answers[step.key] === undefined) return;
+    }
+    if(step.kind === 'multi'){
+      if(!(answers[step.key] && answers[step.key].length)) return;
+    }
+    if(step.kind === 'text'){
+      if(!(answers[step.key] && answers[step.key].trim().length)) return;
+    }
+  }
+  idx = Math.min(idx+1, steps.length-1);
+  render(); updateGauge();
+  window.scrollTo(0,0);
+}
+function prev(){
+  idx = Math.max(idx-1, 0);
+  render(); updateGauge();
+  window.scrollTo(0,0);
+}
+function submitContact(){
+  const name = (answers.name||'').trim();
+  const email = (answers.email||'').trim();
+  if(!name || !/\S+@\S+\.\S+/.test(email) || !answers.consent) return;
+  answers.contactDone = true;
+  // Placeholder: in produzione, qui va la chiamata al backend/CRM
+  // per registrare il lead e inviare il buono via email.
+  idx = Math.min(idx+1, steps.length-1);
+  render(); updateGauge();
+  window.scrollTo(0,0);
+}
+
+render();
+updateGauge();
+</script>
+</body>
+</html>
