@@ -177,10 +177,6 @@ export function AppShell({
               {testi.nav[chiave]}
             </Link>
           ))}
-
-          <div className="px-3 pt-3">
-            <LanguageSwitcher corrente={lingua} etichetta={testi.lingua.cambia} />
-          </div>
         </nav>
         {currentMember && (
           <div className="px-3 py-4 border-t border-gray-200 dark:border-white/10 flex items-center gap-3">
@@ -231,13 +227,15 @@ export function AppShell({
             <Menu size={20} />
           </button>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher corrente={lingua} etichetta={testi.lingua.cambia} compatto />
+
             <div className="relative">
               <button
                 type="button"
                 onClick={toggleNotif}
                 className="relative h-9 w-9 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-200 transition-colors"
-                aria-label="Notifiche"
-                title={unreadCount > 0 ? `${unreadCount} messaggi non letti` : "Notifiche"}
+                aria-label={testi.nav.notifiche}
+                title={testi.nav.notifiche}
               >
                 <Bell size={18} />
                 {unreadCount > 0 && (
@@ -262,7 +260,7 @@ export function AppShell({
                     </div>
                     {notifications.length === 0 ? (
                       <p className="px-4 py-8 text-sm text-gray-400 dark:text-gray-500 text-center">
-                        Nessuna notifica.
+                        {testi.nav.nessunaNotifica}
                       </p>
                     ) : (
                       <ul className="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-white/5">
