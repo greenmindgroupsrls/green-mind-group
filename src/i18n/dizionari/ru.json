@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "dashboard": "Панель",
+    "registrazione": "Регистрация",
+    "team": "Команда",
+    "marketing": "Маркетинг",
+    "payout": "Выплаты",
+    "shop": "Магазин",
+    "eventi": "События",
+    "centroDiControllo": "Центр управления",
+    "messaggi": "Сообщения",
+    "support": "Поддержка",
+    "impostazioni": "Настройки",
+    "esci": "Выйти",
+    "notifiche": "Уведомления",
+    "nessunaNotifica": "Нет уведомлений",
+    "cercaMenu": "Поиск в меню"
+  },
+  "lingua": {
+    "titolo": "Язык",
+    "descrizione": "Язык бэк-офиса. Выбор сохраняется на этом устройстве.",
+    "cambia": "Сменить язык"
+  },
+  "tempo": {
+    "adesso": "только что",
+    "minutiFa": "{n} мин назад",
+    "oreFa": "{n} ч назад",
+    "giorniFa": "{n} д назад"
+  },
+  "comune": {
+    "salva": "Сохранить",
+    "annulla": "Отмена",
+    "conferma": "Подтвердить",
+    "chiudi": "Закрыть",
+    "caricamento": "Загрузка...",
+    "errore": "Произошла ошибка",
+    "riprova": "Повторить",
+    "cerca": "Поиск",
+    "nessunRisultato": "Ничего не найдено"
+  }
+}

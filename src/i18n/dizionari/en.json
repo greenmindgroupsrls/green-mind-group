@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "registrazione": "Registration",
+    "team": "Team",
+    "marketing": "Marketing",
+    "payout": "Payout",
+    "shop": "Shop",
+    "eventi": "Events",
+    "centroDiControllo": "Control centre",
+    "messaggi": "Messages",
+    "support": "Support",
+    "impostazioni": "Settings",
+    "esci": "Sign out",
+    "notifiche": "Notifications",
+    "nessunaNotifica": "No notifications",
+    "cercaMenu": "Search the menu"
+  },
+  "lingua": {
+    "titolo": "Language",
+    "descrizione": "The language of the back office. Your choice is saved on this device.",
+    "cambia": "Change language"
+  },
+  "tempo": {
+    "adesso": "just now",
+    "minutiFa": "{n} min ago",
+    "oreFa": "{n} h ago",
+    "giorniFa": "{n} d ago"
+  },
+  "comune": {
+    "salva": "Save",
+    "annulla": "Cancel",
+    "conferma": "Confirm",
+    "chiudi": "Close",
+    "caricamento": "Loading...",
+    "errore": "Something went wrong",
+    "riprova": "Try again",
+    "cerca": "Search",
+    "nessunRisultato": "No results"
+  }
+}

@@ -22,6 +22,9 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { signOut } from "@/lib/auth-actions";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import type { Dizionario } from "@/i18n/dizionario";
+import type { Lingua } from "@/i18n/config";
 import { MemberAvatar } from "./member-avatar";
 import { formatActivityCode } from "@/lib/activity-code";
 import { createClient } from "@/lib/supabase/client";
@@ -39,16 +42,16 @@ function timeAgo(iso: string) {
 }
 
 const MAIN_NAV_ITEMS = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, incaricatoOnly: false, rootOnly: false, highlighted: false },
-  { href: "/registrazione", label: "Registrazione", icon: ClipboardPlus, incaricatoOnly: true, rootOnly: false, highlighted: false },
-  { href: "/albero", label: "Team", icon: Network, incaricatoOnly: true, rootOnly: false, highlighted: false },
-  { href: "/marketing", label: "Marketing", icon: Megaphone, incaricatoOnly: true, rootOnly: false, highlighted: false },
-  { href: "/payout", label: "Payout", icon: Wallet, incaricatoOnly: true, rootOnly: false, highlighted: false },
-  { href: "/shop", label: "Shop", icon: ShoppingBag, incaricatoOnly: false, rootOnly: false, highlighted: false },
-  { href: "/eventi", label: "Eventi", icon: CalendarClock, incaricatoOnly: false, rootOnly: true, highlighted: true },
+  { href: "/", chiave: "dashboard" as const, icon: LayoutDashboard, incaricatoOnly: false, rootOnly: false, highlighted: false },
+  { href: "/registrazione", chiave: "registrazione" as const, icon: ClipboardPlus, incaricatoOnly: true, rootOnly: false, highlighted: false },
+  { href: "/albero", chiave: "team" as const, icon: Network, incaricatoOnly: true, rootOnly: false, highlighted: false },
+  { href: "/marketing", chiave: "marketing" as const, icon: Megaphone, incaricatoOnly: true, rootOnly: false, highlighted: false },
+  { href: "/payout", chiave: "payout" as const, icon: Wallet, incaricatoOnly: true, rootOnly: false, highlighted: false },
+  { href: "/shop", chiave: "shop" as const, icon: ShoppingBag, incaricatoOnly: false, rootOnly: false, highlighted: false },
+  { href: "/eventi", chiave: "eventi" as const, icon: CalendarClock, incaricatoOnly: false, rootOnly: true, highlighted: true },
   {
     href: "/centro-di-controllo",
-    label: "Centro di controllo",
+    chiave: "centroDiControllo" as const,
     icon: ShieldCheck,
     incaricatoOnly: false,
     rootOnly: true,
@@ -57,9 +60,9 @@ const MAIN_NAV_ITEMS = [
 ];
 
 const BOTTOM_NAV_ITEMS = [
-  { href: "/messaggi", label: "Messaggi", icon: MessageSquare },
-  { href: "/support", label: "Support", icon: LifeBuoy },
-  { href: "/impostazioni", label: "Impostazioni", icon: Settings },
+  { href: "/messaggi", chiave: "messaggi" as const, icon: MessageSquare },
+  { href: "/support", chiave: "support" as const, icon: LifeBuoy },
+  { href: "/impostazioni", chiave: "impostazioni" as const, icon: Settings },
 ];
 
 export function AppShell({
@@ -67,6 +70,8 @@ export function AppShell({
   currentMember,
   unreadCount = 0,
   notifications = [],
+  testi,
+  lingua,
 }: {
   children: React.ReactNode;
   currentMember: {
@@ -77,6 +82,8 @@ export function AppShell({
   } | null;
   unreadCount?: number;
   notifications?: RecentNotification[];
+  testi: Dizionario;
+  lingua: Lingua;
 }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -142,7 +149,7 @@ export function AppShell({
           </button>
         </div>
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
-          {visibleMainNavItems.map(({ href, label, icon: Icon, highlighted }) => (
+          {visibleMainNavItems.map(({ href, chiave, icon: Icon, highlighted }) => (
             <Link
               key={href}
               href={href}
@@ -154,12 +161,12 @@ export function AppShell({
               }
             >
               <Icon size={18} />
-              {label}
+              {testi.nav[chiave]}
             </Link>
           ))}
         </nav>
         <nav className="px-3 py-4 flex flex-col gap-1 border-t border-gray-200 dark:border-white/10">
-          {BOTTOM_NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+          {BOTTOM_NAV_ITEMS.map(({ href, chiave, icon: Icon }) => (
             <Link
               key={href}
               href={href}
@@ -167,9 +174,13 @@ export function AppShell({
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <Icon size={18} />
-              {label}
+              {testi.nav[chiave]}
             </Link>
           ))}
+
+          <div className="px-3 pt-3">
+            <LanguageSwitcher corrente={lingua} etichetta={testi.lingua.cambia} />
+          </div>
         </nav>
         {currentMember && (
           <div className="px-3 py-4 border-t border-gray-200 dark:border-white/10 flex items-center gap-3">
@@ -191,8 +202,8 @@ export function AppShell({
               <button
                 type="submit"
                 className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
-                aria-label="Esci"
-                title="Esci"
+                aria-label={testi.nav.esci}
+                title={testi.nav.esci}
               >
                 <LogOut size={16} />
               </button>

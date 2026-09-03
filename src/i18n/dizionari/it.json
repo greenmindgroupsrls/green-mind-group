@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "registrazione": "Registrazione",
+    "team": "Team",
+    "marketing": "Marketing",
+    "payout": "Payout",
+    "shop": "Shop",
+    "eventi": "Eventi",
+    "centroDiControllo": "Centro di controllo",
+    "messaggi": "Messaggi",
+    "support": "Support",
+    "impostazioni": "Impostazioni",
+    "esci": "Esci",
+    "notifiche": "Notifiche",
+    "nessunaNotifica": "Nessuna notifica",
+    "cercaMenu": "Cerca nel menu"
+  },
+  "lingua": {
+    "titolo": "Lingua",
+    "descrizione": "La lingua del back office. La scelta resta salvata su questo dispositivo.",
+    "cambia": "Cambia lingua"
+  },
+  "tempo": {
+    "adesso": "adesso",
+    "minutiFa": "{n} min fa",
+    "oreFa": "{n} h fa",
+    "giorniFa": "{n} g fa"
+  },
+  "comune": {
+    "salva": "Salva",
+    "annulla": "Annulla",
+    "conferma": "Conferma",
+    "chiudi": "Chiudi",
+    "caricamento": "Caricamento...",
+    "errore": "Si è verificato un errore",
+    "riprova": "Riprova",
+    "cerca": "Cerca",
+    "nessunRisultato": "Nessun risultato"
+  }
+}

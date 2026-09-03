@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "registrazione": "Inscription",
+    "team": "Équipe",
+    "marketing": "Marketing",
+    "payout": "Paiements",
+    "shop": "Boutique",
+    "eventi": "Événements",
+    "centroDiControllo": "Centre de contrôle",
+    "messaggi": "Messages",
+    "support": "Assistance",
+    "impostazioni": "Paramètres",
+    "esci": "Se déconnecter",
+    "notifiche": "Notifications",
+    "nessunaNotifica": "Aucune notification",
+    "cercaMenu": "Rechercher dans le menu"
+  },
+  "lingua": {
+    "titolo": "Langue",
+    "descrizione": "La langue du back-office. Votre choix est enregistré sur cet appareil.",
+    "cambia": "Changer de langue"
+  },
+  "tempo": {
+    "adesso": "à l'instant",
+    "minutiFa": "il y a {n} min",
+    "oreFa": "il y a {n} h",
+    "giorniFa": "il y a {n} j"
+  },
+  "comune": {
+    "salva": "Enregistrer",
+    "annulla": "Annuler",
+    "conferma": "Confirmer",
+    "chiudi": "Fermer",
+    "caricamento": "Chargement...",
+    "errore": "Une erreur est survenue",
+    "riprova": "Réessayer",
+    "cerca": "Rechercher",
+    "nessunRisultato": "Aucun résultat"
+  }
+}
