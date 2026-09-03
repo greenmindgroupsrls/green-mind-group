@@ -92,12 +92,21 @@ function renderEmailHtml(params: {
 // L'invio email e' best-effort: se RESEND_API_KEY non e' ancora configurata
 // (provider non collegato via Vercel Marketplace), l'azione che ha chiamato
 // questa funzione resta comunque valida — semplicemente non parte la mail.
-async function sendEmail(params: { to: string; subject: string; text: string; html: string }) {
+// `from` si puo' forzare: le email delle prenotazioni Vortix partono con
+// l'intestazione del prodotto, non con quella del back office.
+export async function sendEmail(params: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  from?: string;
+}) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
 
   const resend = new Resend(apiKey);
-  const from = process.env.RESEND_FROM_EMAIL || "Green Mind Group <onboarding@resend.dev>";
+  const from =
+    params.from ?? process.env.RESEND_FROM_EMAIL ?? "Green Mind Group <onboarding@resend.dev>";
 
   try {
     await resend.emails.send({

@@ -296,11 +296,11 @@
     var WEEKDAYS_IT = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
     var TIME_SLOTS = ['09:00','10:30','12:00','14:30','16:00','17:30'];
 
-    var SUPABASE_URL = 'https://yybswupvlpexnnsnuakc.supabase.co';
-    var SUPABASE_KEY = 'sb_publishable_riGniHSWn1Z5YxHqNRv6zg_DF3fHHoM';
-    var sb = (window.supabase && window.supabase.createClient)
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-      : null;
+    // Le prenotazioni passano dal back office, sullo stesso dominio: non
+    // serve piu' nessun client di database ne' nessuna chiave dentro la
+    // pagina. Prima qui c'era l'indirizzo e la chiave pubblica di un
+    // progetto Supabase separato.
+    var API_PRENOTAZIONI = '/api/prenotazioni';
 
     function toISODate(date){
       var m = String(date.getMonth() + 1).padStart(2, '0');
@@ -392,16 +392,18 @@
       timesGrid.innerHTML = '<div class="booking-times-loading">Verifica disponibilità…</div>';
       var thisRequest = ++timesRequestId;
 
-      if(!sb){ renderTimes(); return; }
-
-      sb.from('booking_slots')
-        .select('booking_time')
-        .eq('booking_date', toISODate(date))
-        .then(function(res){
-          if(thisRequest !== timesRequestId) return; // stale response, a newer date was picked meanwhile
-          if(!res.error && res.data){
-            takenTimes = res.data.map(function(row){ return row.booking_time; });
-          }
+      fetch(API_PRENOTAZIONI + '?data=' + encodeURIComponent(toISODate(date)))
+        .then(function(res){ return res.ok ? res.json() : { occupati: [] }; })
+        .then(function(dati){
+          if(thisRequest !== timesRequestId) return; // risposta vecchia: nel frattempo e' stata scelta un'altra data
+          takenTimes = (dati && dati.occupati) ? dati.occupati : [];
+          renderTimes();
+        })
+        .catch(function(){
+          if(thisRequest !== timesRequestId) return;
+          // Se la verifica non riesce si mostrano tutti gli orari: a fermare
+          // un doppione ci pensa comunque il controllo al momento dell'invio.
+          takenTimes = [];
           renderTimes();
         });
     }
@@ -462,11 +464,6 @@
     step2Next.addEventListener('click', function(){
       hideBookingError();
 
-      if(!sb){
-        showBookingError('Servizio di prenotazione non disponibile al momento. Riprova più tardi o contattaci direttamente.');
-        return;
-      }
-
       var payload = {
         name: document.getElementById('bk-name').value.trim(),
         phone: document.getElementById('bk-phone').value.trim(),
@@ -481,21 +478,35 @@
       step2Next.disabled = true;
       step2Next.textContent = 'Invio in corso…';
 
-      sb.from('bookings').insert(payload).then(function(res){
+      fetch(API_PRENOTAZIONI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        return res.json().catch(function(){ return {}; }).then(function(dati){
+          return { status: res.status, ok: res.ok, dati: dati };
+        });
+      }).then(function(esito){
         step2Next.disabled = false;
         step2Next.textContent = originalLabel;
 
-        if(res.error){
-          if(res.error.code === '23505'){
+        if(!esito.ok){
+          if(esito.status === 409){
             showBookingError('Questo orario è appena stato prenotato da qualcun altro. Torna al passo 1 e scegline un altro.');
           } else {
-            showBookingError('Non siamo riusciti a salvare la prenotazione. Riprova tra poco.');
+            showBookingError((esito.dati && esito.dati.error && esito.status === 400)
+              ? esito.dati.error
+              : 'Non siamo riusciti a salvare la prenotazione. Riprova tra poco.');
           }
           return;
         }
 
         finalRecapEl.textContent = 'Ti contatteremo entro 24 ore per confermare l\'appuntamento di ' + formatSelectedDate() + ' alle ' + selectedTime + '.';
         goToStep(3);
+      }).catch(function(){
+        step2Next.disabled = false;
+        step2Next.textContent = originalLabel;
+        showBookingError('Non siamo riusciti a salvare la prenotazione. Controlla la connessione e riprova.');
       });
     });
 

@@ -51,6 +51,10 @@ export async function proxy(request: NextRequest) {
   // Webhook server-to-server (es. Vortix che manda un nuovo lead): nessuna
   // sessione utente, autenticato via segreto condiviso nel route handler.
   const isWebhookRoute = pathname.startsWith("/api/leads/");
+  // Le prenotazioni dal sito Vortix: chi prenota non ha un account, quindi
+  // la strada deve restare aperta. La convalida dei dati e il vincolo di
+  // unicita' sullo slot stanno nel route handler e nel database.
+  const isPrenotazioneRoute = pathname.startsWith("/api/prenotazioni");
   // /company e' il sito prodotto Vortix montato via rewrite (vedi
   // next.config.ts): pagina pubblica, non fa parte del back office, deve
   // restare raggiungibile da chiunque senza login.
@@ -72,6 +76,7 @@ export async function proxy(request: NextRequest) {
     !isReferralLinkRoute &&
     !isLegalRoute &&
     !isWebhookRoute &&
+    !isPrenotazioneRoute &&
     !isCompanyRoute
   ) {
     const redirectUrl = new URL("/login", request.url);
