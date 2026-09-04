@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { sendOrderStatusEmail } from "@/lib/email";
 import type { ShopOrder, ShopOrderStatus } from "@/lib/shop-orders";
@@ -26,5 +26,20 @@ export async function setOrderStatus(id: number, status: ShopOrderStatus) {
     }
   }
 
+  revalidatePath("/shop/ordini");
+}
+
+// La conferma del pagamento e' il momento in cui nascono le provvigioni:
+// diretta allo sponsor di chi ha comprato, pass-up, indennizzo e quota
+// Royal. Oggi la da' l'azienda a mano; quando ci sara' il sistema di
+// pagamento chiamera' la stessa funzione del database e qui non cambiera'
+// nulla.
+export async function confirmOrderPayment(id: number) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("conferma_pagamento_ordine", { p_order_id: id });
+  if (error) throw new Error(error.message);
+
+  // Le provvigioni appena create cambiano i dati di rete.
+  revalidateTag("network-data", { expire: 0 });
   revalidatePath("/shop/ordini");
 }

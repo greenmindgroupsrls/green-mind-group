@@ -11,13 +11,14 @@ export type CommissionEntryResult = {
   amount: number;
 };
 
+// L'iscrizione non produce piu' vendite ne' provvigioni: e' gratuita.
+// Quelle nascono quando l'iscritto compra dal negozio e il pagamento viene
+// confermato.
 export type EnrollState = {
   error: string | null;
   success: {
     activity_code: number;
     username: string;
-    sale_id: number;
-    entries: CommissionEntryResult[];
   } | null;
 };
 
@@ -42,13 +43,6 @@ export async function enrollMemberWithSale(
   const isNationalVatId = formData.get("is_national_vat_id") === "on";
   const termsAccepted = formData.get("terms") === "on";
   const role = String(formData.get("role") ?? "cliente") === "incaricato" ? "incaricato" : "cliente";
-  const quantity = 1;
-  // Il modello acquistato: le provvigioni sono percentuali sul suo
-  // imponibile, quindi va scelto anche in fase di iscrizione.
-  const productId = Number(String(formData.get("product_id") ?? "").trim());
-  if (!Number.isInteger(productId) || productId <= 0) {
-    return { error: "Scegli il prodotto acquistato", success: null };
-  }
 
   if (!firstName) return { error: "Nome obbligatorio", success: null };
   if (!lastName) return { error: "Cognome obbligatorio", success: null };
@@ -134,32 +128,6 @@ export async function enrollMemberWithSale(
     is_national_vat_id: accountType === "company" ? isNationalVatId : false,
   });
 
-  // Chi ha comprato serve al nuovo piano compensi: sulle prime due vendite di
-  // ciascuno, l'acquirente viene ereditato dal VIP superiore ed e' quello a
-  // far scattare il pass-up. Senza questo dato la vendita paga solo la
-  // provvigione diretta.
-  const { data: sale, error: saleError } = await supabase
-    .rpc("register_sale", {
-      p_seller_code: sponsor.activity_code,
-      p_quantity: quantity,
-      p_buyer_code: newMember.activity_code,
-      p_product_id: productId,
-    })
-    .single();
-
-  if (saleError || !sale) {
-    return {
-      error: `Iscritto creato ma vendita non registrata: ${saleError?.message ?? "errore sconosciuto"}. Puoi registrarla da "Registrazione" → "Cliente esistente".`,
-      success: null,
-    };
-  }
-
-  const saleRow = sale as { id: number };
-  const { data: entries } = await supabase
-    .from("commission_entries")
-    .select("beneficiary_code, level, amount")
-    .eq("sale_id", saleRow.id);
-
   revalidatePath("/albero");
   revalidatePath("/");
   revalidateTag("network-data", { expire: 0 });
@@ -169,8 +137,6 @@ export async function enrollMemberWithSale(
     success: {
       activity_code: newMember.activity_code,
       username: newMember.username,
-      sale_id: saleRow.id,
-      entries: (entries ?? []).sort((a, b) => a.level - b.level),
     },
   };
 }

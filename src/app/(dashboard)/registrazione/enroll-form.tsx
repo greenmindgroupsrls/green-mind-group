@@ -6,23 +6,14 @@ import { enrollMemberWithSale, type EnrollState } from "./enroll-actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { formatActivityCode } from "@/lib/activity-code";
 import { PasswordInput } from "@/components/password-input";
-import { ProductPicker } from "@/components/product-picker";
-import type { Product } from "@/lib/products";
 
 const initialState: EnrollState = { error: null, success: null };
-
-const LEVEL_LABEL: Record<number, string> = {
-  0: "Tua commissione",
-  1: "Livello 1",
-  2: "Livello 2",
-  3: "Livello 3",
-};
 
 const inputClass =
   "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
-export function EnrollForm({ products }: { products: Product[] }) {
+export function EnrollForm() {
   const [state, formAction, pending] = useActionState(enrollMemberWithSale, initialState);
   const [accountType, setAccountType] = useState<"individual" | "company">("individual");
   const [role, setRole] = useState<"cliente" | "incaricato">("cliente");
@@ -90,7 +81,6 @@ export function EnrollForm({ products }: { products: Product[] }) {
         </div>
         <input type="hidden" name="role" value={role} />
 
-        <ProductPicker products={products} className={inputClass} labelClassName={labelClass} />
         <input type="hidden" name="account_type" value={accountType} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -209,36 +199,18 @@ export function EnrollForm({ products }: { products: Product[] }) {
       </form>
 
       {state.success && (
-        <div className="rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
+        <div className="glass-card overflow-hidden">
           <div className="px-4 py-2.5 bg-green-50 dark:bg-green-500/10 text-sm font-medium text-green-700 dark:text-green-400">
             Iscritto {state.success.username} — codice attività{" "}
             {formatActivityCode(state.success.activity_code)}
           </div>
-          {state.success.entries.length > 0 && (
-            <table className="glass-table w-full text-sm">
-              <thead>
-                <tr className="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-[var(--glass-edge)]">
-                  <th className="px-4 py-2 font-medium">Livello</th>
-                  <th className="px-4 py-2 font-medium text-right">Importo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {state.success.entries.map((entry) => (
-                  <tr
-                    key={`${entry.beneficiary_code}-${entry.level}`}
-                    className="border-b border-gray-100 dark:border-white/5 last:border-0"
-                  >
-                    <td className="px-4 py-2.5 text-gray-600 dark:text-gray-300">
-                      {LEVEL_LABEL[entry.level] ?? entry.level}
-                    </td>
-                    <td className="px-4 py-2.5 text-right font-medium text-gray-900 dark:text-white">
-                      {entry.amount.toLocaleString("it-IT", { style: "currency", currency: "EUR" })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          {/* Niente provvigioni da mostrare: l'iscrizione e' gratuita e le
+              provvigioni nascono quando l'iscritto compra dal negozio e il
+              pagamento viene confermato. */}
+          <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+            L&apos;iscrizione è gratuita e non genera provvigioni. Le provvigioni nascono quando
+            questa persona acquista dal negozio e il pagamento viene confermato.
+          </p>
         </div>
       )}
     </div>

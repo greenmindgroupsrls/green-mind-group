@@ -8,6 +8,7 @@ import {
   type ShopOrderItem,
 } from "@/lib/shop-orders";
 import { OrderStatusSelect } from "./order-status-select";
+import { ConfirmPaymentButton } from "./confirm-payment-button";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -117,7 +118,20 @@ export default async function ShopOrdersPage() {
                       >
                         {SHOP_ORDER_STATUS_LABEL[order.status]}
                       </span>
-                      <OrderStatusSelect id={order.id} status={order.status} />
+                      {/* Finche' non e' pagato, la cosa da fare e' una
+                          sola: confermare l'incasso. Gli altri stati
+                          servono dopo. */}
+                      {order.paid_at === null && order.status !== "cancelled" ? (
+                        <ConfirmPaymentButton
+                          id={order.id}
+                          totale={formatEuro(order.total_amount)}
+                        />
+                      ) : null}
+                      <OrderStatusSelect
+                        id={order.id}
+                        status={order.status}
+                        pagato={order.paid_at !== null}
+                      />
                     </div>
                   ) : (
                     <span
