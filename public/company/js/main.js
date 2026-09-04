@@ -427,10 +427,16 @@
       renderCalendar();
     });
 
+    var bookingModal = bookingOverlay.querySelector('.booking-modal');
+
     function goToStep(n){
       bookingSteps.forEach(function(s){
         s.hidden = (parseInt(s.getAttribute('data-step'), 10) !== n);
       });
+      // Il passo dei dati ha molti campi: sta su due colonne solo se la
+      // finestra e' piu' larga, altrimenti tornerebbe a essere una colonna
+      // lunghissima da scorrere.
+      bookingModal.classList.toggle('wide', n === 2);
       bookingDots.forEach(function(dot){
         dot.classList.toggle('active', parseInt(dot.getAttribute('data-step-dot'), 10) <= n);
       });
@@ -442,13 +448,161 @@
     });
     step2Back.addEventListener('click', function(){ goToStep(1); });
 
+    // ---- Indirizzo: regione -> provincia -> comune -> CAP ----------------
+    // Gli elenchi arrivano dal back office (/api/comuni) invece di essere
+    // dentro la pagina: il file completo dei comuni italiani pesa 271 KB e
+    // non ha senso scaricarlo tutto per farne scegliere uno.
+    var selRegione  = document.getElementById('bk-regione');
+    var selProvincia= document.getElementById('bk-provincia');
+    var selComune   = document.getElementById('bk-comune');
+    var selCap      = document.getElementById('bk-cap');
+    var geo = null;          // { regioni: {nome: [sigle]}, province: {sigla: nome} }
+    var comuniCache = {};    // sigla provincia -> elenco comuni
+
+    function svuota(sel, testo){
+      sel.innerHTML = '<option value="">' + testo + '</option>';
+      sel.disabled = true;
+    }
+
+    function caricaGeografia(){
+      if(geo) return Promise.resolve(geo);
+      return fetch('/api/comuni')
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){
+          if(!d) return null;
+          geo = d;
+          var nomi = Object.keys(d.regioni).sort();
+          selRegione.innerHTML = '<option value="">Seleziona…</option>';
+          nomi.forEach(function(nome){
+            var o = document.createElement('option');
+            o.value = nome; o.textContent = nome;
+            selRegione.appendChild(o);
+          });
+          return d;
+        })
+        .catch(function(){ return null; });
+    }
+
+    selRegione.addEventListener('change', function(){
+      svuota(selComune, '—'); svuota(selCap, '—');
+      var sigle = geo && geo.regioni[selRegione.value];
+      if(!sigle){ svuota(selProvincia, '—'); checkStep2Valid(); return; }
+      selProvincia.innerHTML = '<option value="">Seleziona…</option>';
+      sigle.slice().sort(function(a,b){
+        return geo.province[a].localeCompare(geo.province[b], 'it');
+      }).forEach(function(sigla){
+        var o = document.createElement('option');
+        o.value = sigla; o.textContent = geo.province[sigla] + ' (' + sigla + ')';
+        selProvincia.appendChild(o);
+      });
+      selProvincia.disabled = false;
+      checkStep2Valid();
+    });
+
+    selProvincia.addEventListener('change', function(){
+      svuota(selComune, 'Caricamento…'); svuota(selCap, '—');
+      var sigla = selProvincia.value;
+      if(!sigla){ svuota(selComune, '—'); checkStep2Valid(); return; }
+
+      var riempi = function(elenco){
+        comuniCache[sigla] = elenco;
+        selComune.innerHTML = '<option value="">Seleziona…</option>';
+        elenco.forEach(function(c){
+          var o = document.createElement('option');
+          o.value = c.n; o.textContent = c.n;
+          selComune.appendChild(o);
+        });
+        selComune.disabled = false;
+        checkStep2Valid();
+      };
+
+      if(comuniCache[sigla]) { riempi(comuniCache[sigla]); return; }
+      fetch('/api/comuni?provincia=' + encodeURIComponent(sigla))
+        .then(function(r){ return r.ok ? r.json() : { comuni: [] }; })
+        .then(function(d){ riempi(d.comuni || []); })
+        .catch(function(){ svuota(selComune, 'Non disponibile'); checkStep2Valid(); });
+    });
+
+    selComune.addEventListener('change', function(){
+      var elenco = comuniCache[selProvincia.value] || [];
+      var trovato = elenco.filter(function(c){ return c.n === selComune.value; })[0];
+      var caps = trovato ? trovato.c : [];
+
+      if(caps.length === 0){ svuota(selCap, '—'); checkStep2Valid(); return; }
+
+      selCap.innerHTML = '';
+      // Un comune solo ha quasi sempre un CAP: si compila da se'. Le citta'
+      // grandi ne hanno decine (Verona 22) e li' il CAP dipende dalla via,
+      // quindi si sceglie.
+      if(caps.length > 1){
+        var vuoto = document.createElement('option');
+        vuoto.value = ''; vuoto.textContent = 'Seleziona…';
+        selCap.appendChild(vuoto);
+      }
+      caps.forEach(function(cap){
+        var o = document.createElement('option');
+        o.value = cap; o.textContent = cap;
+        selCap.appendChild(o);
+      });
+      selCap.disabled = false;
+      checkStep2Valid();
+    });
+
+    // ---- Controlli campo per campo ---------------------------------------
+    // Il telefono italiano: si accettano spazi, punti, trattini e prefisso
+    // internazionale, perche' ognuno lo scrive a modo suo. Conta che resti
+    // un numero di lunghezza plausibile.
+    function telefonoValido(v){
+      var pulito = v.replace(/[\s.\-()]/g, '');
+      if(pulito.indexOf('+') === 0) pulito = pulito.slice(1);
+      return /^[0-9]{8,15}$/.test(pulito);
+    }
+    function emailValida(v){
+      return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v);
+    }
+
+    var CONTROLLI = {
+      'bk-name':   { ok: function(v){ return v.trim().length >= 2; },
+                     msg: 'Inserisci nome e cognome.' },
+      'bk-phone':  { ok: telefonoValido,
+                     msg: 'Numero non valido: servono almeno 8 cifre.' },
+      'bk-email':  { ok: emailValida,
+                     msg: 'Email non valida: controlla che ci sia la chiocciola e il punto.' },
+      'bk-via':    { ok: function(v){ return v.trim().length >= 3; },
+                     msg: 'Inserisci la via o la piazza.' },
+      'bk-civico': { ok: function(v){ return v.trim().length >= 1; },
+                     msg: 'Inserisci il numero civico.' }
+    };
+
+    function segnala(id, mostraErrore){
+      var campo = document.getElementById(id);
+      var regola = CONTROLLI[id];
+      var valido = regola.ok(campo.value);
+      var avviso = bookingForm.querySelector('.bk-hint[data-for="' + id + '"]');
+      // Il rosso solo se il campo e' stato compilato e lasciato: mentre uno
+      // scrive non si segnala nulla.
+      var errore = mostraErrore && campo.value.trim() !== '' && !valido;
+      campo.classList.toggle('invalid', errore);
+      if(avviso) avviso.textContent = errore ? regola.msg : '';
+      return valido;
+    }
+
+    Object.keys(CONTROLLI).forEach(function(id){
+      var campo = document.getElementById(id);
+      campo.addEventListener('blur', function(){ segnala(id, true); });
+      campo.addEventListener('input', function(){
+        if(campo.classList.contains('invalid')) segnala(id, true);
+        checkStep2Valid();
+      });
+    });
+
     function checkStep2Valid(){
-      var name = document.getElementById('bk-name').value.trim();
-      var phone = document.getElementById('bk-phone').value.trim();
-      var email = document.getElementById('bk-email').value.trim();
-      var address = document.getElementById('bk-address').value.trim();
+      var tuttiOk = Object.keys(CONTROLLI).every(function(id){
+        return CONTROLLI[id].ok(document.getElementById(id).value);
+      });
+      var indirizzoOk = selRegione.value && selProvincia.value && selComune.value && selCap.value;
       var consent = document.getElementById('bk-consent').checked;
-      step2Next.disabled = !(name && phone && /\S+@\S+\.\S+/.test(email) && address && consent);
+      step2Next.disabled = !(tuttiOk && indirizzoOk && consent);
     }
     bookingForm.addEventListener('input', checkStep2Valid);
     bookingForm.addEventListener('change', checkStep2Valid);
@@ -464,11 +618,18 @@
     step2Next.addEventListener('click', function(){
       hideBookingError();
 
+      // L'indirizzo viaggia a pezzi: e' il back office a ricomporlo, cosi'
+      // la forma della riga e' decisa in un posto solo.
       var payload = {
         name: document.getElementById('bk-name').value.trim(),
         phone: document.getElementById('bk-phone').value.trim(),
         email: document.getElementById('bk-email').value.trim(),
-        address: document.getElementById('bk-address').value.trim(),
+        via: document.getElementById('bk-via').value.trim(),
+        civico: document.getElementById('bk-civico').value.trim(),
+        comune: selComune.value,
+        provincia: selProvincia.value,
+        cap: selCap.value,
+        regione: selRegione.value,
         notes: document.getElementById('bk-notes').value.trim() || null,
         booking_date: toISODate(selectedDate),
         booking_time: selectedTime
@@ -523,6 +684,10 @@
       renderTimes();
       updateStep1Nav();
       bookingForm.reset();
+      caricaGeografia();
+      svuota(selProvincia, '—'); svuota(selComune, '—'); svuota(selCap, '—');
+      bookingForm.querySelectorAll('.invalid').forEach(function(el){ el.classList.remove('invalid'); });
+      bookingForm.querySelectorAll('.bk-hint').forEach(function(el){ el.textContent = ''; });
       checkStep2Valid();
       hideBookingError();
       goToStep(1);

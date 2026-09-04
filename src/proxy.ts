@@ -54,7 +54,10 @@ export async function proxy(request: NextRequest) {
   // Le prenotazioni dal sito Vortix: chi prenota non ha un account, quindi
   // la strada deve restare aperta. La convalida dei dati e il vincolo di
   // unicita' sullo slot stanno nel route handler e nel database.
-  const isPrenotazioneRoute = pathname.startsWith("/api/prenotazioni");
+  // Prenotazioni ed elenchi geografici: entrambe servono al modulo del sito
+  // pubblico, dove chi compila non ha un account.
+  const isPrenotazioneRoute =
+    pathname.startsWith("/api/prenotazioni") || pathname.startsWith("/api/comuni");
   // /company e' il sito prodotto Vortix montato via rewrite (vedi
   // next.config.ts): pagina pubblica, non fa parte del back office, deve
   // restare raggiungibile da chiunque senza login.

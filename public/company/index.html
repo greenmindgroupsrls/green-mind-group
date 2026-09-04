@@ -590,6 +590,8 @@
       <h3 id="booking-title" class="big">Scegli data e ora.</h3>
       <p class="booking-sub">Un tecnico VORTIX verrà a casa tua per la dimostrazione gratuita.</p>
 
+      <div class="booking-body">
+      <div class="booking-panes">
       <div class="booking-cal">
         <div class="booking-cal-head">
           <button type="button" class="booking-cal-nav" id="cal-prev" aria-label="Mese precedente">
@@ -610,6 +612,8 @@
         <div class="booking-times-label mono">Orari disponibili</div>
         <div class="booking-times-grid" id="times-grid"></div>
       </div>
+      </div>
+      </div>
 
       <div class="booking-nav">
         <span></span>
@@ -621,21 +625,73 @@
     <div class="booking-step" data-step="2" hidden>
       <div class="eyebrow accent">Passo 2 di 3</div>
       <h3 class="big">I tuoi dati.</h3>
-      <p class="booking-sub">Ci servono per confermare l'appuntamento e indicare al tecnico dove venire.</p>
 
       <div class="booking-recap mono" id="booking-recap"></div>
 
+      <div class="booking-body">
       <form class="booking-form" id="booking-form">
-        <input type="text" id="bk-name" placeholder="Nome e cognome" required>
-        <input type="tel" id="bk-phone" placeholder="Telefono" required>
-        <input type="email" id="bk-email" placeholder="Email" required>
-        <input type="text" id="bk-address" placeholder="Indirizzo (via, città, CAP)" required>
-        <textarea id="bk-notes" placeholder="Note per il tecnico (facoltativo)" rows="2"></textarea>
+        <div class="bk-grid">
+          <label class="bk-field">
+            <span>Nome e cognome</span>
+            <input type="text" id="bk-name" autocomplete="name" required>
+            <em class="bk-hint" data-for="bk-name"></em>
+          </label>
+          <label class="bk-field">
+            <span>Telefono</span>
+            <input type="tel" id="bk-phone" autocomplete="tel" inputmode="tel" placeholder="es. 348 1234567" required>
+            <em class="bk-hint" data-for="bk-phone"></em>
+          </label>
+        </div>
+
+        <label class="bk-field">
+          <span>Email</span>
+          <input type="email" id="bk-email" autocomplete="email" inputmode="email" required>
+          <em class="bk-hint" data-for="bk-email"></em>
+        </label>
+
+        <div class="bk-grid bk-grid-3">
+          <label class="bk-field">
+            <span>Regione</span>
+            <select id="bk-regione" required><option value="">Seleziona…</option></select>
+          </label>
+          <label class="bk-field">
+            <span>Provincia</span>
+            <select id="bk-provincia" required disabled><option value="">—</option></select>
+          </label>
+          <label class="bk-field">
+            <span>Comune</span>
+            <select id="bk-comune" required disabled><option value="">—</option></select>
+          </label>
+        </div>
+
+        <div class="bk-grid bk-grid-indirizzo">
+          <label class="bk-field">
+            <span>CAP</span>
+            <select id="bk-cap" required disabled><option value="">—</option></select>
+          </label>
+          <label class="bk-field">
+            <span>Via o piazza</span>
+            <input type="text" id="bk-via" autocomplete="address-line1" placeholder="es. Via San Pietro" required>
+            <em class="bk-hint" data-for="bk-via"></em>
+          </label>
+          <label class="bk-field">
+            <span>Civico</span>
+            <input type="text" id="bk-civico" inputmode="numeric" placeholder="12" required>
+            <em class="bk-hint" data-for="bk-civico"></em>
+          </label>
+        </div>
+
+        <label class="bk-field">
+          <span>Note per il tecnico <em>(facoltativo)</em></span>
+          <textarea id="bk-notes" rows="1"></textarea>
+        </label>
+
         <label class="consent">
           <input type="checkbox" id="bk-consent" required>
           <span>Acconsento al trattamento dei miei dati personali per essere ricontattato e per organizzare la dimostrazione, ai sensi del Regolamento (UE) 2016/679 (GDPR).</span>
         </label>
       </form>
+      </div>
 
       <p class="booking-error" id="booking-error" hidden></p>
 

@@ -67,11 +67,31 @@ export async function POST(request: Request) {
 
   const b = (body ?? {}) as Record<string, unknown>;
 
+  // L'indirizzo arriva a pezzi dal modulo e viene ricomposto qui: cosi' la
+  // forma della riga che finisce nel lead e' decisa in un posto solo, e non
+  // dipende da come il sito mette insieme le parole. Resta accettata anche
+  // la forma vecchia a riga unica, per non rompere nulla.
+  const via = testo(b.via, 200);
+  const civico = testo(b.civico, 20);
+  const comune = testo(b.comune, 120);
+  const provincia = testo(b.provincia, 4).toUpperCase();
+  const cap = testo(b.cap, 5);
+
+  const indirizzoComposto = via
+    ? [
+        [via, civico].filter(Boolean).join(" "),
+        [cap, comune].filter(Boolean).join(" "),
+        provincia ? `(${provincia})` : "",
+      ]
+        .filter(Boolean)
+        .join(", ")
+    : "";
+
   const prenotazione: Prenotazione = {
     name: testo(b.name, 120),
     phone: testo(b.phone, 40),
     email: testo(b.email, 200).toLowerCase(),
-    address: testo(b.address, 300) || null,
+    address: indirizzoComposto || testo(b.address, 300) || null,
     notes: testo(b.notes, 1000) || null,
     booking_date: testo(b.booking_date, 10) || null,
     booking_time: testo(b.booking_time, 5) || null,

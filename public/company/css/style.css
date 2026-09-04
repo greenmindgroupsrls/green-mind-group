@@ -522,10 +522,30 @@ footer ul a:hover{ color: var(--lime); }
 }
 .booking-overlay.open{ opacity:1; visibility:visible; transition: opacity .3s var(--ease); }
 .booking-modal{
-  position:relative; width:100%; max-width:460px; max-height:88vh; overflow-y:auto;
+  position:relative; width:100%; max-width:460px; max-height:94vh;
+  display:flex; flex-direction:column; overflow:hidden;
   background: var(--surface); border:1px solid var(--hairline); border-radius: var(--radius-lg);
-  padding: 40px 32px 32px; box-shadow: var(--shadow);
+  padding: 36px 32px 28px; box-shadow: var(--shadow);
   transform: translateY(16px) scale(.98); transition: transform .35s var(--ease);
+}
+/* Il passo dei dati ha piu' campi: gli serve piu' larghezza per stare su due
+   colonne invece di allungarsi in verticale. */
+.booking-modal.wide{ max-width:680px; }
+
+/* Ogni passo e' una colonna: il corpo si restringe se serve, i pulsanti
+   restano fuori dallo scorrimento e quindi sempre visibili. */
+.booking-step{ display:flex; flex-direction:column; min-height:0; flex:1; }
+.booking-step[hidden]{ display:none; }
+.booking-body{ flex:1; min-height:0; overflow-y:auto; margin:0 -4px; padding:0 4px; }
+
+/* Calendario e orari affiancati: prima gli orari comparivano sotto e
+   costringevano a scorrere proprio nel momento della scelta. */
+.booking-panes{ display:grid; gap:18px; }
+@media (min-width:520px){
+  .booking-panes{ grid-template-columns: 1fr 152px; align-items:start; }
+  .booking-panes .booking-times{ margin-top:0; }
+  .booking-panes .booking-times-grid{ flex-direction:column; }
+  .booking-panes .booking-time-chip{ width:100%; text-align:center; }
 }
 .booking-overlay.open .booking-modal{ transform: translateY(0) scale(1); }
 .booking-close{
@@ -573,9 +593,46 @@ footer ul a:hover{ color: var(--lime); }
 .booking-time-chip.selected{ background: var(--lime); color: var(--lime-ink); border-color: var(--lime); }
 .booking-time-chip.disabled{ color: var(--ink-faint); border-color: var(--hairline); opacity:.55; cursor:not-allowed; text-decoration: line-through; }
 
+.booking-nav{ flex-shrink:0; }
 .booking-recap{ background: var(--bg); border:1px solid var(--hairline); border-radius: var(--radius-sm); padding:12px 16px; font-size:.85rem; color: var(--lime); margin-bottom:20px; }
 
-.booking-form{ display:flex; flex-direction:column; gap:12px; margin-bottom:22px; }
+.booking-form{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.bk-grid{ display:grid; gap:10px; }
+@media (min-width:520px){
+  .bk-grid{ grid-template-columns: 1fr 1fr; }
+  /* Tre per riga: sei campi d'indirizzo su tre righe da due facevano
+     scorrere il modulo proprio mentre si compila. CAP e civico sono corti e
+     non meritano lo spazio della via. */
+  .bk-grid-3{ grid-template-columns: 1fr 1fr 1fr; }
+  .bk-grid-indirizzo{ grid-template-columns: 104px 1fr 92px; }
+}
+.bk-field{ display:flex; flex-direction:column; gap:5px; min-width:0; }
+.bk-field > span{ font-size:.78rem; color: var(--ink-dim); font-weight:500; }
+.bk-field > span em{ color: var(--ink-faint); font-style:normal; font-weight:400; }
+.booking-form select{
+  width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--hairline-strong);
+  background: var(--bg); color: var(--ink); font-family: var(--font-display); font-size:.95rem;
+  transition: border-color .2s;
+}
+.booking-form select:focus{ outline:none; border-color: var(--lime); }
+.booking-form select:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* Il rosso compare solo dopo che il campo e' stato lasciato: segnare un
+   errore mentre uno sta ancora scrivendo e' solo fastidioso. */
+.booking-form .invalid input,
+.booking-form input.invalid,
+.booking-form select.invalid{ border-color:#c0392b; }
+.booking-form .invalid input:focus,
+.booking-form input.invalid:focus,
+.booking-form select.invalid:focus{ border-color:#c0392b; }
+.bk-hint{ font-size:.74rem; color:#c0392b; font-style:normal; min-height:0; }
+.booking-form .consent{ font-size:.78rem; line-height:1.45; }
+/* Sul passo dei dati il titolo e il riquadro del riepilogo si stringono:
+   sono gli unici pixel rimasti da recuperare per non far scorrere nulla. */
+.booking-step[data-step="2"] h3{ font-size:1.5rem; margin-bottom:10px; }
+.booking-step[data-step="2"] .booking-recap{ padding:9px 14px; margin-bottom:14px; }
+.booking-form textarea{ min-height:44px; }
+.bk-hint:empty{ display:none; }
 .booking-form input, .booking-form textarea{
   width:100%; padding:13px 15px; border-radius:10px; border:1px solid var(--hairline-strong);
   background: var(--bg); color: var(--ink); font-family: var(--font-display); font-size:.95rem;
