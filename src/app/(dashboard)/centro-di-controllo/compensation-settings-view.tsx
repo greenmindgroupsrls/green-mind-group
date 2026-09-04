@@ -1,7 +1,12 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { updatePlan2Settings, type CompensationSettingsState } from "./actions";
+import {
+  updatePlan2Settings,
+  updateProductPrices,
+  type CompensationSettingsState,
+  type ListinoState,
+} from "./actions";
 
 const labelClass = "text-xs font-medium text-gray-500 dark:text-gray-400";
 const inputClass =
@@ -18,10 +23,11 @@ export type CompensationSettings = {
   royalDiretti: number;
   // Serve solo a mostrare quanto fa ogni percentuale in euro: senza, chi
   // scrive "16" non ha modo di sapere se sono 169 o 182.
-  prodotti: { nome: string; prezzo: number }[];
+  prodotti: { id: number; nome: string; prezzo: number }[];
 };
 
 const initialState: CompensationSettingsState = { error: null, success: false };
+const listinoIniziale: ListinoState = { error: null, success: false };
 
 function euro(v: number) {
   return v.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -69,6 +75,13 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
   const [royal, setRoyal] = useState(settings.royalPct);
   const [upline, setUpline] = useState(settings.uplinePct);
   const [iva, setIva] = useState(settings.ivaPct);
+  const [prezzi, setPrezzi] = useState<Record<number, number>>(
+    Object.fromEntries(settings.prodotti.map((p) => [p.id, p.prezzo])),
+  );
+  const [statoListino, azioneListino, salvandoListino] = useActionState(
+    updateProductPrices,
+    listinoIniziale,
+  );
 
   const somma = diretta + passUp + royal + upline;
   const troppo = somma > 100;
@@ -77,8 +90,9 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
   // qui si mostra il risultato in euro per ogni modello, cosi' chi scrive un
   // numero vede subito quanto significa davvero.
   const anteprima = settings.prodotti.map((p) => {
-    const imponibile = p.prezzo / (1 + iva / 100);
+    const imponibile = (prezzi[p.id] ?? p.prezzo) / (1 + iva / 100);
     return {
+      id: p.id,
       nome: p.nome,
       imponibile,
       diretta: (imponibile * diretta) / 100,
@@ -190,42 +204,6 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
           </label>
         </div>
 
-        {anteprima.length > 0 && (
-          <div className="rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
-            <div className="px-4 py-2 bg-gray-50 dark:bg-white/5 text-xs font-medium text-gray-600 dark:text-gray-300">
-              Quanto fa in euro, per ogni modello
-            </div>
-            <div className="overflow-x-auto">
-              <table className="glass-table w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                    <th className="px-4 py-2 font-medium">Prodotto</th>
-                    <th className="px-4 py-2 font-medium text-right">Imponibile</th>
-                    <th className="px-4 py-2 font-medium text-right">Diretta</th>
-                    <th className="px-4 py-2 font-medium text-right">Pass-up</th>
-                    <th className="px-4 py-2 font-medium text-right">Royal</th>
-                    <th className="px-4 py-2 font-medium text-right">Indennizzo</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {anteprima.map((r) => (
-                    <tr key={r.nome} className="border-t border-[var(--glass-edge)]">
-                      <td className="px-4 py-2 text-gray-900 dark:text-white">{r.nome}</td>
-                      <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">
-                        {euro(r.imponibile)}
-                      </td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.diretta)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.passUp)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.royal)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.upline)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
         <p className="text-xs text-gray-500 dark:text-gray-400">
           Le modifiche valgono sulle vendite future. Quelle già registrate restano come sono state
           pagate.
@@ -244,6 +222,82 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
           )}
           {state.error && <span className="text-xs text-red-600 dark:text-red-400">{state.error}</span>}
         </div>
+      </form>
+
+      {/* Il listino e' un modulo a parte: un modulo dentro l'altro non e'
+          HTML valido. I campi dei prezzi stanno dentro la tabella e la
+          raggiungono con l'attributo form, cosi' si vede il prezzo accanto
+          a quello che genera. */}
+      <form action={azioneListino} id="listino" className="flex flex-col gap-3 mt-6">
+        {anteprima.length > 0 && (
+          <div className="rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
+            <div className="px-4 py-2 bg-gray-50 dark:bg-white/5 text-xs font-medium text-gray-600 dark:text-gray-300">
+              Listino e provvigioni per modello — cambia un prezzo e vedi subito il risultato
+            </div>
+            <div className="overflow-x-auto">
+              <table className="glass-table w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
+                    <th className="px-4 py-2 font-medium">Prodotto</th>
+                    <th className="px-4 py-2 font-medium text-right">Prezzo</th>
+                    <th className="px-4 py-2 font-medium text-right">Imponibile</th>
+                    <th className="px-4 py-2 font-medium text-right">Diretta</th>
+                    <th className="px-4 py-2 font-medium text-right">Pass-up</th>
+                    <th className="px-4 py-2 font-medium text-right">Royal</th>
+                    <th className="px-4 py-2 font-medium text-right">Indennizzo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {anteprima.map((r) => (
+                    <tr key={r.nome} className="border-t border-[var(--glass-edge)]">
+                      <td className="px-4 py-2 text-gray-900 dark:text-white">{r.nome}</td>
+                      <td className="px-4 py-2 text-right">
+                        <input
+                          form="listino"
+                          name={`prezzo_${r.id}`}
+                          type="number"
+                          step="0.01"
+                          min="0.01"
+                          value={prezzi[r.id] ?? ""}
+                          onChange={(e) =>
+                            setPrezzi((v) => ({ ...v, [r.id]: Number(e.target.value) }))
+                          }
+                          className={`${inputClass} w-28 text-right`}
+                        />
+                      </td>
+                      <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">
+                        {euro(r.imponibile)}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.diretta)}</td>
+                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.passUp)}</td>
+                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.royal)}</td>
+                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.upline)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={salvandoListino}
+            className="glass-btn-soft rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 w-fit disabled:opacity-50"
+          >
+            {salvandoListino ? "Salvataggio..." : "Salva listino"}
+          </button>
+          {statoListino.success && (
+            <span className="text-xs text-emerald-600 dark:text-emerald-400">Listino salvato</span>
+          )}
+          {statoListino.error && (
+            <span className="text-xs text-red-600 dark:text-red-400">{statoListino.error}</span>
+          )}
+        </div>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          Le provvigioni sono percentuali sull&apos;imponibile: cambiando un prezzo si adeguano da
+          sole. Quelle già maturate restano come sono state calcolate.
+        </p>
       </form>
     </div>
   );

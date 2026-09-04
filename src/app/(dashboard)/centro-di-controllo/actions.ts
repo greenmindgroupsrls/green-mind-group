@@ -194,3 +194,42 @@ export async function settleRoyalPool(
     },
   };
 }
+
+export type ListinoState = { error: string | null; success: boolean };
+
+// Il listino: le provvigioni sono percentuali sull'imponibile, quindi
+// cambiando il prezzo si adeguano da sole e non c'e' nessuna tariffa da
+// ritoccare. Quelle gia' generate restano come sono state calcolate.
+export async function updateProductPrices(
+  _prevState: ListinoState,
+  formData: FormData,
+): Promise<ListinoState> {
+  try {
+    await requireRoot();
+  } catch {
+    return { error: "Non autorizzato", success: false };
+  }
+
+  const prezzi: { id: number; price: number }[] = [];
+  for (const [chiave, valore] of formData.entries()) {
+    const m = /^prezzo_(\d+)$/.exec(chiave);
+    if (!m) continue;
+    const price = Number(String(valore).replace(",", "."));
+    if (Number.isNaN(price) || price <= 0) {
+      return { error: "I prezzi devono essere maggiori di zero", success: false };
+    }
+    prezzi.push({ id: Number(m[1]), price });
+  }
+
+  if (prezzi.length === 0) {
+    return { error: "Nessun prezzo da aggiornare", success: false };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_update_product_prices", { p_prezzi: prezzi });
+  if (error) return { error: error.message, success: false };
+
+  revalidatePath("/centro-di-controllo");
+  revalidatePath("/shop");
+  return { error: null, success: true };
+}

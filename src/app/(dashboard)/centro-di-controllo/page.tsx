@@ -83,7 +83,7 @@ export default async function ControlCenterPage() {
       .eq("id", 1)
       .single(),
     supabase.from("royal_pool_entries").select("amount, settlement_id, beneficiary_code"),
-    supabase.from("products").select("name, price").eq("active", true).order("id"),
+    supabase.from("products").select("id, name, price").eq("active", true).order("id"),
     supabase
       .from("royal_pool_settlements")
       .select("settled_at, total_amount, royal_count, share")
@@ -166,7 +166,7 @@ export default async function ControlCenterPage() {
     ivaPct: Number(compensationRow?.vat_rate ?? 22),
     passUpQuota: compensationRow?.plan2_passup_quota ?? 2,
     royalDiretti: compensationRow?.plan2_royal_directs ?? 10,
-    prodotti: (prodottiRows ?? []).map((p) => ({ nome: p.name, prezzo: Number(p.price) })),
+    prodotti: (prodottiRows ?? []).map((p) => ({ id: p.id, nome: p.name, prezzo: Number(p.price) })),
   };
 
   // Stato del Royal Pool: quanto c'e' da distribuire e a quanti.

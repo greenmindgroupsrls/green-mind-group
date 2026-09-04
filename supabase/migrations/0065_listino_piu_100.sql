@@ -10,3 +10,11 @@
 -- c'e' storico con i prezzi vecchi da preservare.
 update products set price = 1390.00 where slug = 'vortix-5-anni';
 update products set price = 1490.00 where slug = 'vortix-8-anni';
+
+-- Il listino si cambia dal Centro di controllo invece che dal database.
+-- Solo l'azienda, con annotazione nel registro delle azioni di cosa e'
+-- passato da quanto a quanto. Le provvigioni sono percentuali
+-- sull'imponibile e si adeguano da sole; quelle gia' maturate restano come
+-- sono state calcolate al momento del pagamento.
+-- (Il corpo di admin_update_product_prices() e' stato applicato al database
+-- con la migration corrispondente.)
