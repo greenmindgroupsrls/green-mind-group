@@ -120,7 +120,7 @@ export function EventiExplorer({
             <button
               type="button"
               onClick={handleNewEvent}
-              className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+              className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
             >
               <Plus size={16} /> Nuovo evento
             </button>
@@ -155,7 +155,7 @@ export function EventiExplorer({
           <button
             type="button"
             onClick={() => setInvitePanelEvent("generic")}
-            className="flex items-center gap-2 self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+            className="flex items-center gap-2 self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
           >
             <UserPlus size={16} /> Invita ospite
           </button>

@@ -26,7 +26,7 @@ export function ClientDashboard({ username }: { username: string }) {
         </div>
         <Link
           href="/shop"
-          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
         >
           Vai allo Shop
         </Link>
@@ -45,7 +45,7 @@ export function ClientDashboard({ username }: { username: string }) {
         </div>
         <Link
           href="/diventa-incaricato"
-          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
         >
           Diventa distributore
         </Link>

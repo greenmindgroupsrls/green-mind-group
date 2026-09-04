@@ -78,7 +78,7 @@ export function MarketingEventsList({
                 <button
                   type="button"
                   onClick={() => setInvitePanelEvent(ev)}
-                  className="flex items-center justify-center gap-1.5 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white shrink-0"
+                  className="flex items-center justify-center gap-1.5 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium shrink-0"
                 >
                   <UserPlus size={15} /> Invita Ospite
                 </button>

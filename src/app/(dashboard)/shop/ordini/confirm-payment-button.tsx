@@ -17,7 +17,7 @@ export function ConfirmPaymentButton({ id, totale }: { id: number; totale: strin
         <button
           type="button"
           onClick={() => { setChiede(true); setErrore(null); }}
-          className="glass-btn-primary rounded-lg px-3 py-1.5 text-xs font-medium text-white inline-flex items-center gap-1.5 w-fit"
+          className="glass-btn-primary rounded-lg px-3 py-1.5 text-xs font-medium inline-flex items-center gap-1.5 w-fit"
         >
           <BadgeEuro size={13} />
           Conferma pagamento
@@ -52,7 +52,7 @@ export function ConfirmPaymentButton({ id, totale }: { id: number; totale: strin
               }
             })
           }
-          className="glass-btn-primary rounded-lg px-3 py-1.5 text-xs font-medium text-white inline-flex items-center gap-1"
+          className="glass-btn-primary rounded-lg px-3 py-1.5 text-xs font-medium inline-flex items-center gap-1"
         >
           <Check size={12} />
           {inCorso ? "..." : "Sì, incassato"}

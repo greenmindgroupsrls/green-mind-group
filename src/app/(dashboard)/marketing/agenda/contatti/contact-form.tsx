@@ -27,7 +27,7 @@ export function ContactForm() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+        className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
       >
         + Nuovo contatto
       </button>
@@ -61,7 +61,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={pending}
-          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
         >
           {pending ? "Salvataggio..." : "Salva contatto"}
         </button>

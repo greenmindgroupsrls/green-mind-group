@@ -78,7 +78,7 @@ export default function CartPage() {
         </div>
         <Link
           href="/shop/checkout"
-          className="block text-center glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+          className="block text-center glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
         >
           Procedi al checkout
         </Link>

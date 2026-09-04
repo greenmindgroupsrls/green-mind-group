@@ -60,7 +60,7 @@ export default async function ContrattoFirmatoPage() {
           href="/api/contratto-incaricato"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+          className="inline-flex items-center gap-2 self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
         >
           <Download size={15} />
           Scarica il contratto firmato

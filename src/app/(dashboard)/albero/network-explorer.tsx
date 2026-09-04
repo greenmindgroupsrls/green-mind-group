@@ -203,7 +203,7 @@ export function NetworkExplorer({
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={handleSearch}
-            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium"
           >
             Cerca
           </button>

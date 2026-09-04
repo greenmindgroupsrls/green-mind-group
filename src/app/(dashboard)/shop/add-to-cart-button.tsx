@@ -24,7 +24,7 @@ export function AddToCartButton({ product }: { product: Product }) {
     <button
       type="button"
       onClick={handleClick}
-      className="mt-4 w-full glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+      className="mt-4 w-full glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
     >
       {added ? "Aggiunto ✓" : "Aggiungi al carrello"}
     </button>

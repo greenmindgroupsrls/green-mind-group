@@ -31,8 +31,8 @@ export function EnrollForm() {
                 onClick={() => setRole("cliente")}
                 className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                   role === "cliente"
-                    ? "bg-accent text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                    ? "bg-accent text-[var(--accent-fg)] shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 Cliente
@@ -42,8 +42,8 @@ export function EnrollForm() {
                 onClick={() => setRole("incaricato")}
                 className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                   role === "incaricato"
-                    ? "bg-accent text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                    ? "bg-accent text-[var(--accent-fg)] shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 Incaricato
@@ -59,8 +59,8 @@ export function EnrollForm() {
                 onClick={() => setAccountType("individual")}
                 className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                   accountType === "individual"
-                    ? "bg-accent text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                    ? "bg-accent text-[var(--accent-fg)] shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 Privato
@@ -70,8 +70,8 @@ export function EnrollForm() {
                 onClick={() => setAccountType("company")}
                 className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                   accountType === "company"
-                    ? "bg-accent text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                    ? "bg-accent text-[var(--accent-fg)] shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 Azienda
@@ -185,9 +185,9 @@ export function EnrollForm() {
           <button
             type="submit"
             disabled={pending}
-            className="flex-1 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+            className="flex-1 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
           >
-            {pending ? "Iscrizione in corso..." : "Iscrivi e registra vendita"}
+            {pending ? "Iscrizione in corso..." : "Iscrivi"}
           </button>
         </div>
 

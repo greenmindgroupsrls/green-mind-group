@@ -320,7 +320,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
           <button
             type="submit"
             disabled={editPending}
-            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 w-fit"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 w-fit"
           >
             {editPending ? "Salvataggio..." : "Salva anagrafica"}
           </button>

@@ -35,7 +35,7 @@ export function LeadViewSwitch({
               onClick={() => setVista(k)}
               className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                 vista === k
-                  ? "bg-accent text-white shadow-sm"
+                  ? "bg-accent text-[var(--accent-fg)] shadow-sm"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
               }`}
             >

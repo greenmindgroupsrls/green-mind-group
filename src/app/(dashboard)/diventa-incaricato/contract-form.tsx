@@ -455,7 +455,7 @@ export function ContractForm({
         <button
           type="submit"
           disabled={pending}
-          className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+          className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-50"
         >
           {pending
             ? "Firma in corso..."

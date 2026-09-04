@@ -126,7 +126,7 @@ export function InviteGuestForm({
           <button
             type="submit"
             disabled={pending || (inviteType === "live" && events.length === 0)}
-            className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+            className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-50"
           >
             {pending ? "Invio..." : "Invita ospite"}
           </button>

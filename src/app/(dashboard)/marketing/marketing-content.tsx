@@ -134,7 +134,7 @@ export function MarketingContent({
               <button
                 type="button"
                 onClick={copyLink}
-                className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+                className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
               >
                 {linkCopied ? <Check size={16} /> : <Copy size={16} />}
                 {linkCopied ? "Copiato" : "Copia link"}

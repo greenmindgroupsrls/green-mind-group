@@ -29,7 +29,7 @@ export default function DashboardError({
       <button
         type="button"
         onClick={reset}
-        className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+        className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
       >
         Riprova
       </button>

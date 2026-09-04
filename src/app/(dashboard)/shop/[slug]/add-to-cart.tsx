@@ -68,7 +68,7 @@ export function AddToCart({ product }: { product: Product }) {
         <button
           type="button"
           onClick={handleBuyNow}
-          className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white"
+          className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium"
         >
           Acquista ora
         </button>

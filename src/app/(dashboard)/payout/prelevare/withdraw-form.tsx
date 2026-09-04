@@ -148,7 +148,7 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
       <button
         type="submit"
         disabled={pending || availableBalance < MIN_WITHDRAWAL_AMOUNT}
-        className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+        className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-50"
       >
         {pending ? "Invio in corso..." : "Richiedi prelievo"}
       </button>

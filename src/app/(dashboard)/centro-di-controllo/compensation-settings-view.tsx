@@ -213,7 +213,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
           <button
             type="submit"
             disabled={pending || troppo}
-            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 w-fit"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50 w-fit"
           >
             {pending ? "Salvataggio..." : "Salva parametri"}
           </button>

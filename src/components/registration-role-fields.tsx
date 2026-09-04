@@ -6,7 +6,7 @@ export type MemberRoleChoice = "cliente" | "incaricato";
 export type AccountTypeChoice = "individual" | "company";
 
 const toggleBtnBase = "rounded-md px-4 py-2 text-sm font-medium transition-colors";
-const toggleBtnActive = "bg-accent text-white shadow-sm";
+const toggleBtnActive = "bg-accent text-[var(--accent-fg)] shadow-sm";
 const toggleBtnInactive = "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white";
 const toggleWrapClass =
   "inline-flex rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-white/5 p-1 self-start";
