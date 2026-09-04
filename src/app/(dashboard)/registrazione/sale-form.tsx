@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { ProductPicker } from "@/components/product-picker";
+import type { Product } from "@/lib/products";
 import { registerSale, type RegisterSaleState } from "./sale-actions";
 
 const initialState: RegisterSaleState = { error: null, success: null };
@@ -16,10 +18,12 @@ export function SaleForm({
   isRoot,
   ownCode,
   ownUsername,
+  products,
 }: {
   isRoot: boolean;
   ownCode: number | null;
   ownUsername: string | null;
+  products: Product[];
 }) {
   const [state, formAction, pending] = useActionState(registerSale, initialState);
 
@@ -48,6 +52,12 @@ export function SaleForm({
             </p>
           </div>
         )}
+
+        <ProductPicker
+          products={products}
+          className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          labelClassName="text-sm font-medium text-gray-700 dark:text-gray-300"
+        />
 
         <label className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">

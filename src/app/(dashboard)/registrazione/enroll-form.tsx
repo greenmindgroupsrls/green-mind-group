@@ -6,6 +6,8 @@ import { enrollMemberWithSale, type EnrollState } from "./enroll-actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { formatActivityCode } from "@/lib/activity-code";
 import { PasswordInput } from "@/components/password-input";
+import { ProductPicker } from "@/components/product-picker";
+import type { Product } from "@/lib/products";
 
 const initialState: EnrollState = { error: null, success: null };
 
@@ -20,7 +22,7 @@ const inputClass =
   "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
-export function EnrollForm() {
+export function EnrollForm({ products }: { products: Product[] }) {
   const [state, formAction, pending] = useActionState(enrollMemberWithSale, initialState);
   const [accountType, setAccountType] = useState<"individual" | "company">("individual");
   const [role, setRole] = useState<"cliente" | "incaricato">("cliente");
@@ -87,6 +89,8 @@ export function EnrollForm() {
           </div>
         </div>
         <input type="hidden" name="role" value={role} />
+
+        <ProductPicker products={products} className={inputClass} labelClassName={labelClass} />
         <input type="hidden" name="account_type" value={accountType} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

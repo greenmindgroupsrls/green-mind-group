@@ -29,7 +29,7 @@ export default async function PayoutCommissioniPage() {
   // Tutto quello che non e' la propria vendita diretta: i livelli del piano
   // vecchio, il pass-up e la quota del Royal Pool del Sistema 2.
   const totalCommissions =
-    overview.byLevel[1] + overview.byLevel[2] + overview.byLevel[3] + overview.byLevel[4];
+    overview.byLevel[1] + overview.byLevel[2] + overview.byLevel[3] + overview.byLevel[4] + overview.byLevel[5];
   const rows = buildCommissionRows(network.entries, network.sales, network.members, code);
 
   return (

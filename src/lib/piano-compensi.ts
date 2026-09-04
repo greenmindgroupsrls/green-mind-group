@@ -12,6 +12,8 @@ export function etichettaProvvigione(kind: CommissionKind | null, level: number)
       return "Vendita diretta";
     case "pass_up":
       return "Pass-up VIP";
+    case "upline":
+      return "Indennizzo linea ceduta";
     case "pool_royal":
       return "Quota Royal Pool";
     default:
@@ -27,6 +29,8 @@ export function coloreProvvigione(kind: CommissionKind | null, level: number): s
       return "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400";
     case "pass_up":
       return "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-400";
+    case "upline":
+      return "bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-400";
     case "pool_royal":
       return "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400";
     default:

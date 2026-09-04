@@ -43,6 +43,12 @@ export async function enrollMemberWithSale(
   const termsAccepted = formData.get("terms") === "on";
   const role = String(formData.get("role") ?? "cliente") === "incaricato" ? "incaricato" : "cliente";
   const quantity = 1;
+  // Il modello acquistato: le provvigioni sono percentuali sul suo
+  // imponibile, quindi va scelto anche in fase di iscrizione.
+  const productId = Number(String(formData.get("product_id") ?? "").trim());
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return { error: "Scegli il prodotto acquistato", success: null };
+  }
 
   if (!firstName) return { error: "Nome obbligatorio", success: null };
   if (!lastName) return { error: "Cognome obbligatorio", success: null };
@@ -137,6 +143,7 @@ export async function enrollMemberWithSale(
       p_seller_code: sponsor.activity_code,
       p_quantity: quantity,
       p_buyer_code: newMember.activity_code,
+      p_product_id: productId,
     })
     .single();
 

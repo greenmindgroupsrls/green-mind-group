@@ -2,7 +2,7 @@ import type { Member } from "./members";
 import type { CommissionEntry, CommissionKind, Sale } from "./commissions";
 import type { WithdrawalRequest } from "./withdrawals";
 
-export type Livello = 0 | 1 | 2 | 3 | 4;
+export type Livello = 0 | 1 | 2 | 3 | 4 | 5;
 
 export type WalletOverview = {
   totalEarnings: number;
@@ -15,7 +15,7 @@ export type WalletOverview = {
 export function buildWalletOverview(entries: CommissionEntry[], code: number): WalletOverview {
   // Il livello 4 e' la quota del Royal Pool: senza di lui quei soldi
   // sparirebbero dal saldo pur essendo stati accreditati.
-  const byLevel: Record<Livello, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
+  const byLevel: Record<Livello, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   let totalEarnings = 0;
 
   for (const entry of entries) {

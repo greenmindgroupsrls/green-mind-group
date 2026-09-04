@@ -3,10 +3,12 @@ import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import { PersonalLinkField } from "@/components/personal-link-field";
 import { IncaricatoOnlyNotice } from "@/components/incaricato-only-notice";
 import { EnrollForm } from "./enroll-form";
+import type { Product } from "@/lib/products";
 
 export default async function RegistrazionePage() {
   let slug: string | null = null;
   let isCliente = false;
+  let prodotti: Product[] = [];
 
   if (supabaseConfigured()) {
     const member = await getCurrentMember();
@@ -19,6 +21,15 @@ export default async function RegistrazionePage() {
         .eq("activity_code", member.activity_code)
         .single();
       slug = profile?.personal_domain || member.username;
+
+      // Il modello venduto decide gli importi: le provvigioni sono
+      // percentuali sull'imponibile del prodotto.
+      const { data: righeProdotti } = await supabase
+        .from("products")
+        .select("*")
+        .eq("active", true)
+        .order("id");
+      prodotti = (righeProdotti ?? []) as Product[];
     }
   }
 
@@ -42,7 +53,7 @@ export default async function RegistrazionePage() {
           )}
 
           <div className="mt-6 max-w-2xl rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
-            <EnrollForm />
+            <EnrollForm products={prodotti} />
           </div>
         </>
       )}

@@ -42,9 +42,20 @@ export async function registerSale(
       ? requestedSellerCode
       : caller.activity_code;
 
+  // Quale modello: da qui dipendono tutti gli importi, che sono percentuali
+  // sull'imponibile del prodotto venduto.
+  const productId = Number(String(formData.get("product_id") ?? "").trim());
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return { error: "Scegli il prodotto venduto", success: null };
+  }
+
   const supabase = await createClient();
   const { data: sale, error: saleError } = await supabase
-    .rpc("register_sale", { p_seller_code: sellerCode, p_quantity: quantity })
+    .rpc("register_sale", {
+      p_seller_code: sellerCode,
+      p_quantity: quantity,
+      p_product_id: productId,
+    })
     .single();
 
   if (saleError) {
