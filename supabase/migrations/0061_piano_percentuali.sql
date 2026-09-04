@@ -72,3 +72,17 @@ alter table compensation_settings
   drop column if exists plan2_direct_rate,
   drop column if exists plan2_passup_rate,
   drop column if exists plan2_pool_rate;
+
+-- CORREZIONE: chi e' gia' VIP o Royal non cede piu' linee.
+--
+-- Il pass-up e' il prezzo della qualifica: cedi le prime due vendite e in
+-- cambio diventi VIP. Chi la qualifica ce l'ha gia' - conquistata oppure
+-- assegnata a mano dall'azienda - quel prezzo l'ha gia' pagato.
+--
+-- Senza questo controllo i cinque account fondatori, Royal per assegnazione
+-- aziendale ma con passed_up_count a zero, avrebbero perso le prime due
+-- linee a testa: verificato in prova prima della correzione, il nuovo
+-- iscritto finiva sotto l'azienda e il pass-up lo incassava l'azienda.
+-- La condizione ora guarda il RANGO, non solo il contatore.
+-- (Il corpo aggiornato di register_sale() e' stato applicato al database
+-- con la migration corrispondente.)
