@@ -44,3 +44,13 @@ export async function setLeadAppointment(id: number, appointmentAt: string | nul
   if (error) throw new Error(error.message);
   revalidatePath("/marketing/lead");
 }
+
+// La cancellazione e' definitiva: il controllo su chi puo' farla sta nel
+// database, qui si passa solo la richiesta. Prima di sparire il lead finisce
+// nel registro delle azioni, cosi' resta traccia di cosa e' stato tolto.
+export async function deleteLead(id: number) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_delete_lead", { p_lead_id: id });
+  if (error) throw new Error(error.message);
+  revalidatePath("/marketing/lead");
+}

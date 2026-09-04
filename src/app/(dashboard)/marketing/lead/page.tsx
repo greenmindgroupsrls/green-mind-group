@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import { LeadRowActions } from "./lead-row-actions";
+import { LeadDeleteAction } from "./lead-delete-action";
 import { LeadAssignAction } from "./lead-assign-action";
 import { LeadViewSwitch } from "./lead-view-switch";
 import type { CalendarLead } from "./lead-calendar";
@@ -83,6 +84,7 @@ export default async function LeadPage() {
               <th className="px-6 py-2 font-medium">Ricevuto</th>
               <th className="px-6 py-2 font-medium">Stato</th>
               <th className="px-6 py-2 font-medium">Inoltra</th>
+              <th className="px-6 py-2 font-medium sr-only">Elimina</th>
             </tr>
           </thead>
           <tbody>
@@ -117,11 +119,14 @@ export default async function LeadPage() {
                     assignedAt={l.assigned_at}
                   />
                 </td>
+                <td className="px-3 py-3">
+                  <LeadDeleteAction id={l.id} nome={l.name} />
+                </td>
               </tr>
             ))}
             {leads.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   Nessun lead ricevuto finora.
                 </td>
               </tr>
