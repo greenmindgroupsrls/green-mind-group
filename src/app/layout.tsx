@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
         </ThemeProvider>
+        {/* Conteggio visite di Vercel: senza cookie e senza dati personali,
+            quindi non serve alcun banner di consenso. I dati finiscono nel
+            nostro stesso account, non in quello di terzi. */}
+        <Analytics />
       </body>
     </html>
   );
