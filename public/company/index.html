@@ -630,61 +630,57 @@
 
       <div class="booking-body">
       <form class="booking-form" id="booking-form">
-        <div class="bk-grid">
-          <label class="bk-field">
+        <div class="bk-form-grid">
+          <label class="bk-field" data-span="3">
             <span>Nome e cognome</span>
             <input type="text" id="bk-name" autocomplete="name" required>
             <em class="bk-hint" data-for="bk-name"></em>
           </label>
-          <label class="bk-field">
+          <label class="bk-field" data-span="3">
             <span>Telefono</span>
             <input type="tel" id="bk-phone" autocomplete="tel" inputmode="tel" placeholder="es. 348 1234567" required>
             <em class="bk-hint" data-for="bk-phone"></em>
           </label>
-        </div>
 
-        <label class="bk-field">
-          <span>Email</span>
-          <input type="email" id="bk-email" autocomplete="email" inputmode="email" required>
-          <em class="bk-hint" data-for="bk-email"></em>
-        </label>
+          <label class="bk-field" data-span="6">
+            <span>Email</span>
+            <input type="email" id="bk-email" autocomplete="email" inputmode="email" required>
+            <em class="bk-hint" data-for="bk-email"></em>
+          </label>
 
-        <div class="bk-grid bk-grid-3">
-          <label class="bk-field">
+          <label class="bk-field" data-span="2">
             <span>Regione</span>
             <select id="bk-regione" required><option value="">Seleziona…</option></select>
           </label>
-          <label class="bk-field">
+          <label class="bk-field" data-span="2">
             <span>Provincia</span>
             <select id="bk-provincia" required disabled><option value="">—</option></select>
           </label>
-          <label class="bk-field">
+          <label class="bk-field" data-span="2">
             <span>Comune</span>
             <select id="bk-comune" required disabled><option value="">—</option></select>
           </label>
-        </div>
 
-        <div class="bk-grid bk-grid-indirizzo">
-          <label class="bk-field">
+          <label class="bk-field" data-span="2">
             <span>CAP</span>
             <select id="bk-cap" required disabled><option value="">—</option></select>
           </label>
-          <label class="bk-field">
+          <label class="bk-field" data-span="3">
             <span>Via o piazza</span>
             <input type="text" id="bk-via" autocomplete="address-line1" placeholder="es. Via San Pietro" required>
             <em class="bk-hint" data-for="bk-via"></em>
           </label>
-          <label class="bk-field">
+          <label class="bk-field" data-span="1">
             <span>Civico</span>
             <input type="text" id="bk-civico" inputmode="numeric" placeholder="12" required>
             <em class="bk-hint" data-for="bk-civico"></em>
           </label>
-        </div>
 
-        <label class="bk-field">
-          <span>Note per il tecnico <em>(facoltativo)</em></span>
-          <textarea id="bk-notes" rows="1"></textarea>
-        </label>
+          <label class="bk-field" data-span="6">
+            <span>Note per il tecnico <em>(facoltativo)</em></span>
+            <textarea id="bk-notes" rows="1"></textarea>
+          </label>
+        </div>
 
         <label class="consent">
           <input type="checkbox" id="bk-consent" required>
