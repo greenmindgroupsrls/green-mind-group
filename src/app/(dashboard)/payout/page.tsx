@@ -73,7 +73,7 @@ export default async function PayoutOverviewPage() {
         </div>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm">
+      <div className="glass-card">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
           <h2 className="font-semibold text-gray-900 dark:text-white">Panoramica</h2>
         </div>
@@ -107,7 +107,7 @@ export default async function PayoutOverviewPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm">
+        <div className="glass-card">
           <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-2">
             <Wallet size={18} className="text-accent" />
             <h2 className="font-semibold text-gray-900 dark:text-white">Portafoglio commissioni</h2>
@@ -140,7 +140,7 @@ export default async function PayoutOverviewPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm">
+        <div className="glass-card">
           <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
             <h2 className="font-semibold text-gray-900 dark:text-white">Riepilogo per categoria</h2>
           </div>

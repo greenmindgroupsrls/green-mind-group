@@ -31,7 +31,7 @@ export function DonutChart({
       className={`relative h-44 w-44 rounded-full shrink-0 ${total <= 0 ? "bg-gray-200 dark:bg-white/10" : ""}`}
       style={total > 0 ? { background: `conic-gradient(${stops.join(", ")})` } : undefined}
     >
-      <div className="absolute inset-3 rounded-full bg-white dark:bg-[#151129] flex flex-col items-center justify-center text-center px-2">
+      <div className="absolute inset-3 rounded-full bg-[var(--background)] flex flex-col items-center justify-center text-center px-2">
         <span className="text-xs text-gray-500 dark:text-gray-400">{centerLabel}</span>
         <span className="text-sm font-semibold text-gray-900 dark:text-white mt-0.5">
           {centerValue}

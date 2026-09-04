@@ -10,7 +10,7 @@ export default function TerminiPage() {
           ← Torna al login
         </Link>
 
-        <div className="mt-6 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-8 shadow-sm">
+        <div className="mt-6 glass-card p-8">
           <p className="text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2 mb-6">
             Bozza operativa: prima di renderla vincolante per il pubblico, fai revisionare questo
             testo da un legale.

@@ -23,7 +23,7 @@ const contactInitialState: ContactState = { error: null, success: false };
 const appointmentInitialState: AppointmentState = { error: null, success: false };
 
 const inputClass =
-  "h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-10 glass-input px-3 text-sm";
 const labelClass = "text-xs font-medium text-gray-700 dark:text-gray-300";
 
 // "Appuntamento" non è mai una scelta manuale da questo select: è uno stato
@@ -140,7 +140,7 @@ export function ContactCard({
             {linkedMember && (
               <span className="shrink-0 flex items-center gap-1 text-[11px] text-accent">
                 <Link2 size={11} />
-                <span className="text-gray-400 dark:text-gray-500">
+                <span className="text-gray-500 dark:text-gray-400">
                   {formatActivityCode(linkedMember.activity_code)}
                 </span>{" "}
                 {linkedMember.username}
@@ -160,7 +160,7 @@ export function ContactCard({
         <select
           value={contact.status}
           onChange={(e) => updateContactStatus(contact.id, e.target.value as Contact["status"])}
-          className="h-9 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-2 text-xs focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shrink-0"
+          className="h-9 glass-input px-2 text-xs shrink-0"
         >
           {statusOptions.map((s) => (
             <option key={s} value={s}>

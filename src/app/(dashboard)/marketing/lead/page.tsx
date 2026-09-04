@@ -74,7 +74,7 @@ export default async function LeadPage() {
 
   const tabella = (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="glass-table w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               <th className="px-6 py-2 font-medium">Contatto</th>
@@ -87,13 +87,13 @@ export default async function LeadPage() {
           </thead>
           <tbody>
             {leads.map((l) => (
-              <tr key={l.id} className="border-t border-gray-100 dark:border-white/5 align-top">
+              <tr key={l.id} className="border-t border-[var(--glass-edge)] align-top">
                 <td className="px-6 py-3">
                   <p className="font-medium text-gray-900 dark:text-white">{l.name}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{l.phone}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{l.email}</p>
                   {l.address && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{l.address}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{l.address}</p>
                   )}
                 </td>
                 <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
@@ -121,7 +121,7 @@ export default async function LeadPage() {
             ))}
             {leads.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   Nessun lead ricevuto finora.
                 </td>
               </tr>
@@ -132,8 +132,8 @@ export default async function LeadPage() {
   );
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+    <div className="glass-card overflow-hidden">
+      <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">Lead</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400">
           Richieste di contatto arrivate dai siti collegati (es. Vortix)

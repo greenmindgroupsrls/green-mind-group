@@ -68,7 +68,7 @@ export function LeadRowActions({
           value={currentStatus}
           onChange={(e) => handleStatusChange(e.target.value)}
           disabled={pending}
-          className="text-xs rounded-md border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 px-1.5 py-1 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50"
+          className="text-xs glass-input rounded-md text-gray-700 dark:text-gray-300 px-1.5 py-1 disabled:opacity-50"
         >
           {Object.entries(STATUS_LABEL).map(([value, label]) => (
             <option key={value} value={value}>
@@ -82,7 +82,7 @@ export function LeadRowActions({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Note interne"
-          className="text-xs rounded-md border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-accent/40"
+          className="text-xs rounded-md border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 px-2 py-1 w-32"
         />
         <button
           type="button"

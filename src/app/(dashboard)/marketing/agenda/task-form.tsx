@@ -7,7 +7,7 @@ import { TASK_RECURRENCES, TASK_RECURRENCE_LABEL, type Contact } from "@/lib/crm
 const initialState: TaskState = { error: null, success: false };
 
 const inputClass =
-  "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 function defaultDueAt() {

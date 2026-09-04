@@ -23,7 +23,7 @@ const WorldMapCard = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm animate-pulse">
+      <div className="glass-card p-6 animate-pulse">
         <div className="h-5 w-40 rounded bg-gray-100 dark:bg-white/10 mb-4" />
         <div className="h-[340px] rounded-lg bg-gray-50 dark:bg-white/5" />
       </div>
@@ -127,7 +127,7 @@ export function DashboardView({
           della colonna di destra e lascia sotto una fascia bianca vuota. */}
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 mt-4 items-start">
         <div className="flex flex-col gap-4">
-          <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+          <div className="glass-card p-6">
             <h2 className="font-semibold text-gray-900 dark:text-white">Team</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nuovi iscritti per mese</p>
             <div className="mt-4">
@@ -142,7 +142,7 @@ export function DashboardView({
 
           <PassUpLinesCard members={members} ranks={ranks} rootCode={rootCode} />
 
-          <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+          <div className="glass-card p-6">
             <h2 className="font-semibold text-gray-900 dark:text-white">Distribuzione rank</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">Standard · VIP · Royal</p>
             <RankDistribution counts={data.rankCounts} />
@@ -155,12 +155,12 @@ export function DashboardView({
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4">
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+        <div className="glass-card overflow-hidden">
+          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">Ultimi iscritti</h2>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">Utente</th>
@@ -170,7 +170,7 @@ export function DashboardView({
               </thead>
               <tbody>
                 {data.recentReferrals.map((r) => (
-                  <tr key={r.code} className="border-t border-gray-100 dark:border-white/5">
+                  <tr key={r.code} className="border-t border-[var(--glass-edge)]">
                     <td className="px-6 py-3 text-gray-900 dark:text-white">
                       <div className="flex items-center gap-2">
                         <span className="inline-flex items-center rounded-md bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 text-xs font-medium px-2 py-0.5">
@@ -193,7 +193,7 @@ export function DashboardView({
                 ))}
                 {data.recentReferrals.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="px-6 py-6 text-center text-gray-400">
+                    <td colSpan={3} className="px-6 py-6 text-center text-gray-500 dark:text-gray-400">
                       Nessun iscritto ancora.
                     </td>
                   </tr>
@@ -203,15 +203,15 @@ export function DashboardView({
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+        <div className="glass-card overflow-hidden">
+          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">Team performance</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {isRoot ? "Diretti strutturali dell'azienda" : "I tuoi diretti strutturali"}
             </p>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">Utente</th>
@@ -221,7 +221,7 @@ export function DashboardView({
               </thead>
               <tbody>
                 {data.teamPerformance.map((t) => (
-                  <tr key={t.code} className="border-t border-gray-100 dark:border-white/5">
+                  <tr key={t.code} className="border-t border-[var(--glass-edge)]">
                     <td className="px-6 py-3 text-gray-900 dark:text-white">
                       <div className="flex items-center gap-2">
                         <span className="inline-flex items-center rounded-md bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 text-xs font-medium px-2 py-0.5">
@@ -238,7 +238,7 @@ export function DashboardView({
                 ))}
                 {data.teamPerformance.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="px-6 py-6 text-center text-gray-400">
+                    <td colSpan={3} className="px-6 py-6 text-center text-gray-500 dark:text-gray-400">
                       Nessun diretto ancora.
                     </td>
                   </tr>
@@ -249,15 +249,15 @@ export function DashboardView({
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+      <div className="mt-4 glass-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">Attività di rete</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             Ultime iscrizioni introdotte da te o dal tuo team, in tutta la struttura
           </p>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">Chi ha introdotto</th>
@@ -270,7 +270,7 @@ export function DashboardView({
             </thead>
             <tbody>
               {data.networkActivity.map((row) => (
-                <tr key={row.key} className="border-t border-gray-100 dark:border-white/5">
+                <tr key={row.key} className="border-t border-[var(--glass-edge)]">
                   <td className="px-6 py-3 text-gray-900 dark:text-white whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       {row.sponsorCode !== null && (
@@ -309,7 +309,7 @@ export function DashboardView({
               ))}
               {data.networkActivity.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     Nessuna attività ancora.
                   </td>
                 </tr>

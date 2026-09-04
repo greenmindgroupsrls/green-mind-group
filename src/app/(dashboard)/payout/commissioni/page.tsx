@@ -52,8 +52,8 @@ export default async function PayoutCommissioniPage() {
         <StatCard icon={TrendingUp} label="Guadagni totali" value={formatEuro(totalCommissions)} tone="emerald" />
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="glass-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-[var(--glass-edge)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold text-gray-900 dark:text-white">Movimenti commissioni</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -64,7 +64,7 @@ export default async function PayoutCommissioniPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">#</th>
@@ -76,7 +76,7 @@ export default async function PayoutCommissioniPage() {
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={r.id} className="border-t border-gray-100 dark:border-white/5">
+                <tr key={r.id} className="border-t border-[var(--glass-edge)]">
                   <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{i + 1}</td>
                   <td className="px-6 py-3">
                     <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ export default async function PayoutCommissioniPage() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     Nessuna commissione ricevuta finora.
                   </td>
                 </tr>

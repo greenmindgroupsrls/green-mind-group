@@ -46,8 +46,8 @@ export function NetworkAreaChart({ data }: { data: Point[] }) {
         {
           "--series-1": "#2a78d6",
           "--text-secondary": "currentColor",
-          "--muted": "#898781",
-          "--gridline": "var(--tree-line)",
+          "--muted": "color-mix(in srgb, var(--foreground) 45%, transparent)",
+          "--gridline": "color-mix(in srgb, var(--foreground) 10%, transparent)",
         } as React.CSSProperties
       }
     >
@@ -77,8 +77,32 @@ export function NetworkAreaChart({ data }: { data: Point[] }) {
           );
         })}
 
-        <path d={areaPath} fill="var(--series-1)" opacity={0.1} stroke="none" />
-        <path d={linePath} fill="none" stroke="var(--series-1)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+        <defs>
+          {/* Sfumatura verticale sotto la linea: densa in alto, che svanisce
+              verso il basso invece di finire con uno stacco netto. */}
+          <linearGradient id="area-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--series-1)" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="var(--series-1)" stopOpacity="0.01" />
+          </linearGradient>
+          <filter id="area-glow" x="-20%" y="-40%" width="140%" height="180%">
+            <feGaussianBlur stdDeviation="3" result="sfocato" />
+            <feMerge>
+              <feMergeNode in="sfocato" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <path d={areaPath} fill="url(#area-fill)" stroke="none" />
+        <path
+          d={linePath}
+          fill="none"
+          stroke="var(--series-1)"
+          strokeWidth={2}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          filter="url(#area-glow)"
+          opacity={0.9}
+        />
 
         {xy.map((p, i) => (
           <g key={i}>

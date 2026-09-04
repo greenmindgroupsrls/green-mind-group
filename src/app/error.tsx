@@ -31,7 +31,7 @@ export default function RootError({
         <button
           type="button"
           onClick={reset}
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
         >
           Riprova
         </button>

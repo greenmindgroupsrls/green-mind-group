@@ -41,7 +41,7 @@ export default async function ShopPage() {
         return (
           <div
             key={product.id}
-            className="group rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+            className="group glass-card overflow-hidden hover: transition-shadow"
           >
             <Link href={`/shop/${product.slug}`} className="block">
               <div className="relative aspect-[4/3] bg-gray-50 dark:bg-white/5">
@@ -74,7 +74,7 @@ export default async function ShopPage() {
         );
       })}
       {products.length === 0 && (
-        <p className="text-sm text-gray-400 dark:text-gray-500 col-span-2 text-center py-12">
+        <p className="text-sm text-gray-500 dark:text-gray-400 col-span-2 text-center py-12">
           Nessun prodotto disponibile al momento.
         </p>
       )}

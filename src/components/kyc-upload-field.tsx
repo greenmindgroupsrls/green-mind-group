@@ -77,7 +77,7 @@ export function KycUploadField({
     <div>
       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
       <div className="flex items-center gap-3 mt-1.5">
-        <label className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 transition-colors flex-1 flex items-center justify-between">
+        <label className="glass-input px-3.5 py-2.5 text-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 transition-colors flex-1 flex items-center justify-between">
           <span className="text-gray-600 dark:text-gray-300">
             {status === "uploading"
               ? "Caricamento..."
@@ -87,7 +87,7 @@ export function KycUploadField({
           <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={handleChange} />
         </label>
       </div>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
         {nota ? `${nota} ` : ""}Formati ammessi: PDF, JPG, PNG — max 8MB.
       </p>
       {error && <p className="text-xs text-red-600 dark:text-red-400 mt-1">{error}</p>}

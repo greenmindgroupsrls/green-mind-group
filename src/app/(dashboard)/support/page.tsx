@@ -92,7 +92,7 @@ export default async function SupportAcademyPage() {
   const doneCount = items.filter((i) => i.done).length;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
+    <div className="glass-card overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-3">
         <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent shrink-0">
           <GraduationCap size={20} />

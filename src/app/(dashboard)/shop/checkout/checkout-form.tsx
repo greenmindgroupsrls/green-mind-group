@@ -10,7 +10,7 @@ import { StreetAutocompleteInput, type AddressSuggestion } from "@/components/st
 const initialState: CheckoutState = { error: null, success: null };
 
 const inputClass =
-  "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 function formatEuro(value: number) {
@@ -45,7 +45,7 @@ export function CheckoutForm() {
 
   if (state.success) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-8 text-center max-w-md mx-auto">
+      <div className="glass-card p-8 text-center max-w-md mx-auto">
         <p className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
           Ordine confermato
         </p>
@@ -61,8 +61,8 @@ export function CheckoutForm() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-12 text-center">
-        <p className="text-gray-400 dark:text-gray-500 mb-4">Il tuo carrello è vuoto.</p>
+      <div className="glass-card p-12 text-center">
+        <p className="text-gray-500 dark:text-gray-400 mb-4">Il tuo carrello è vuoto.</p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
           Torna al catalogo
         </Link>
@@ -78,7 +78,7 @@ export function CheckoutForm() {
         value={JSON.stringify(items.map((i) => ({ product_id: i.id, quantity: i.quantity })))}
       />
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6 flex flex-col gap-4">
+      <div className="glass-card p-6 flex flex-col gap-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">Indirizzo di spedizione</h2>
 
         <label className="flex flex-col gap-1.5">
@@ -160,7 +160,7 @@ export function CheckoutForm() {
         )}
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6 h-fit flex flex-col gap-4">
+      <div className="glass-card p-6 h-fit flex flex-col gap-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">Riepilogo ordine</h2>
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {items.map((item) => (
@@ -181,7 +181,7 @@ export function CheckoutForm() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
         >
           {pending ? "Invio in corso..." : "Conferma ordine"}
         </button>

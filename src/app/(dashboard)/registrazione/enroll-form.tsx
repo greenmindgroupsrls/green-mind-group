@@ -19,7 +19,7 @@ const LEVEL_LABEL: Record<number, string> = {
 };
 
 const inputClass =
-  "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function EnrollForm({ products }: { products: Product[] }) {
@@ -195,7 +195,7 @@ export function EnrollForm({ products }: { products: Product[] }) {
           <button
             type="submit"
             disabled={pending}
-            className="flex-1 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="flex-1 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
           >
             {pending ? "Iscrizione in corso..." : "Iscrivi e registra vendita"}
           </button>
@@ -215,9 +215,9 @@ export function EnrollForm({ products }: { products: Product[] }) {
             {formatActivityCode(state.success.activity_code)}
           </div>
           {state.success.entries.length > 0 && (
-            <table className="w-full text-sm">
+            <table className="glass-table w-full text-sm">
               <thead>
-                <tr className="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-white/10">
+                <tr className="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-[var(--glass-edge)]">
                   <th className="px-4 py-2 font-medium">Livello</th>
                   <th className="px-4 py-2 font-medium text-right">Importo</th>
                 </tr>

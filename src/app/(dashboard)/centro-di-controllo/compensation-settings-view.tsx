@@ -5,7 +5,7 @@ import { updatePlan2Settings, type CompensationSettingsState } from "./actions";
 
 const labelClass = "text-xs font-medium text-gray-500 dark:text-gray-400";
 const inputClass =
-  "h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-10 glass-input px-3 text-sm";
 
 export type CompensationSettings = {
   attivoDa: string | null;
@@ -54,9 +54,9 @@ function Percentuale({
           onChange={(e) => onChange(Number(e.target.value))}
           className={`${inputClass} w-24`}
         />
-        <span className="text-sm text-gray-400 dark:text-gray-500">%</span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">%</span>
       </div>
-      <span className="text-xs text-gray-400 dark:text-gray-500">{spiegazione}</span>
+      <span className="text-xs text-gray-500 dark:text-gray-400">{spiegazione}</span>
     </label>
   );
 }
@@ -89,7 +89,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
   });
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6">
+    <div className="glass-card p-6">
       <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Piano compensi</h3>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
         Ogni voce è una percentuale sull&apos;imponibile del prodotto venduto. Chi vende riceve la
@@ -98,7 +98,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
         Royal; il primo Royal risalendo riceve la sua quota.
       </p>
       {settings.attivoDa && (
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
           In vigore dal {settings.attivoDa}.
         </p>
       )}
@@ -160,9 +160,9 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
                 onChange={(e) => setIva(Number(e.target.value))}
                 className={`${inputClass} w-24`}
               />
-              <span className="text-sm text-gray-400 dark:text-gray-500">%</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">%</span>
             </div>
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               serve a ricavare l&apos;imponibile dal prezzo
             </span>
           </label>
@@ -196,7 +196,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
               Quanto fa in euro, per ogni modello
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="glass-table w-full text-sm">
                 <thead>
                   <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                     <th className="px-4 py-2 font-medium">Prodotto</th>
@@ -209,7 +209,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
                 </thead>
                 <tbody>
                   {anteprima.map((r) => (
-                    <tr key={r.nome} className="border-t border-gray-100 dark:border-white/5">
+                    <tr key={r.nome} className="border-t border-[var(--glass-edge)]">
                       <td className="px-4 py-2 text-gray-900 dark:text-white">{r.nome}</td>
                       <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">
                         {euro(r.imponibile)}
@@ -235,7 +235,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
           <button
             type="submit"
             disabled={pending || troppo}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50 w-fit"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 w-fit"
           >
             {pending ? "Salvataggio..." : "Salva parametri"}
           </button>

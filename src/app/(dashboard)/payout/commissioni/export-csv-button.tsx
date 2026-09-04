@@ -39,7 +39,7 @@ export function ExportCsvButton({ rows }: { rows: CommissionRow[] }) {
       type="button"
       onClick={handleExport}
       disabled={rows.length === 0}
-      className="flex items-center gap-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-50"
+      className="flex items-center gap-2 glass-btn-soft rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-50"
     >
       <Download size={16} />
       Esporta CSV

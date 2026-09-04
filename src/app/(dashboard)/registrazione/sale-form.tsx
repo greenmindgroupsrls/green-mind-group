@@ -40,7 +40,7 @@ export function SaleForm({
               required
               type="number"
               min={0}
-              className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+              className="glass-input px-3.5 py-2.5 text-sm"
               placeholder="es. 31"
             />
           </label>
@@ -55,7 +55,7 @@ export function SaleForm({
 
         <ProductPicker
           products={products}
-          className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          className="glass-input px-3.5 py-2.5 text-sm"
           labelClassName="text-sm font-medium text-gray-700 dark:text-gray-300"
         />
 
@@ -68,7 +68,7 @@ export function SaleForm({
             required
             type="number"
             min={1}
-            className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+            className="glass-input px-3.5 py-2.5 text-sm"
             placeholder="es. 3"
           />
         </label>
@@ -76,7 +76,7 @@ export function SaleForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
         >
           {pending ? "Registrazione in corso..." : "Registra vendita"}
         </button>
@@ -94,9 +94,9 @@ export function SaleForm({
             Commissioni generate — vendita #{state.success.sale_id}
           </div>
           <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
-              <tr className="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-white/10">
+              <tr className="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-[var(--glass-edge)]">
                 <th className="px-4 py-2 font-medium">Livello</th>
                 <th className="px-4 py-2 font-medium">Beneficiario</th>
                 <th className="px-4 py-2 font-medium text-right">Importo</th>

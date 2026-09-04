@@ -60,7 +60,7 @@ export default async function CompletaRegistrazionePage() {
           </span>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+        <div className="glass-card p-6">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
             Completa la registrazione
           </h1>

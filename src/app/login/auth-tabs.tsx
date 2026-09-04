@@ -40,7 +40,7 @@ export function AuthTabs({ next, t }: { next: string; t: Dizionario["accesso"] }
 
       <div className="flex items-center gap-3 my-5">
         <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />
-        <span className="text-xs text-gray-400 dark:text-gray-500">{t.oppure}</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">{t.oppure}</span>
         <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />
       </div>
 

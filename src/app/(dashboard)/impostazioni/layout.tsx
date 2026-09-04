@@ -56,7 +56,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 mt-6">
         <div className="flex flex-col gap-4">
-          <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm flex flex-col items-center text-center">
+          <div className="glass-card p-6 flex flex-col items-center text-center">
             <AvatarUpload
               activityCode={member.activity_code}
               username={member.username}
@@ -69,7 +69,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
             </span>
           </div>
 
-          <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-3 shadow-sm">
+          <div className="glass-card p-3">
             <SettingsNav />
           </div>
         </div>

@@ -39,7 +39,7 @@ export function PassUpLinesCard({
   if (cedute.length === 0 && proprie.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+    <div className="glass-card p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white">Le tue linee</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">
         Chi hai ceduto per qualificarti e chi è rimasto tuo
@@ -60,7 +60,7 @@ export function PassUpLinesCard({
                   className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm"
                 >
                   <span className="text-gray-600 dark:text-gray-300 truncate">
-                    <span className="text-xs text-gray-400 dark:text-gray-500 mr-1.5 tabular-nums">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 mr-1.5 tabular-nums">
                       {formatActivityCode(m.activity_code)}
                     </span>
                     {m.username}
@@ -90,14 +90,14 @@ export function PassUpLinesCard({
                   className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm"
                 >
                   <span className="text-gray-600 dark:text-gray-300 truncate">
-                    <span className="text-xs text-gray-400 dark:text-gray-500 mr-1.5 tabular-nums">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 mr-1.5 tabular-nums">
                       {formatActivityCode(m.activity_code)}
                     </span>
                     {m.username}
                   </span>
                   <span className="flex items-center gap-2 shrink-0">
                     {ereditato && (
-                      <span className="text-xs text-gray-400 dark:text-gray-500">ereditato</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">ereditato</span>
                     )}
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                       {RANK_LABEL[ranks[m.activity_code] ?? "standard"]}

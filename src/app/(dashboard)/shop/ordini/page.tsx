@@ -52,8 +52,8 @@ export default async function ShopOrdersPage() {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+    <div className="glass-card overflow-hidden">
+      <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">
           {isRoot ? "Ordini ricevuti" : "I tuoi ordini"}
         </h2>
@@ -64,7 +64,7 @@ export default async function ShopOrdersPage() {
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="glass-table w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               {isRoot && <th className="px-6 py-2 font-medium">Utente</th>}
@@ -77,7 +77,7 @@ export default async function ShopOrdersPage() {
           </thead>
           <tbody>
             {orderRows.map((order) => (
-              <tr key={order.id} className="border-t border-gray-100 dark:border-white/5 align-top">
+              <tr key={order.id} className="border-t border-[var(--glass-edge)] align-top">
                 {isRoot && (
                   <td className="px-6 py-3">
                     <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default async function ShopOrdersPage() {
             ))}
             {orderRows.length === 0 && (
               <tr>
-                <td colSpan={isRoot ? 6 : 5} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                <td colSpan={isRoot ? 6 : 5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   {isRoot ? "Nessun ordine ricevuto finora." : "Non hai ancora effettuato ordini."}
                 </td>
               </tr>

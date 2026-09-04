@@ -14,7 +14,7 @@ export function ClientDashboard({ username }: { username: string }) {
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm flex flex-col items-start gap-3">
+      <div className="glass-card p-6 flex flex-col items-start gap-3">
         <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
           <ShoppingBag size={20} />
         </div>
@@ -26,7 +26,7 @@ export function ClientDashboard({ username }: { username: string }) {
         </div>
         <Link
           href="/shop"
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
         >
           Vai allo Shop
         </Link>
@@ -45,7 +45,7 @@ export function ClientDashboard({ username }: { username: string }) {
         </div>
         <Link
           href="/diventa-incaricato"
-          className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
         >
           Diventa distributore
         </Link>

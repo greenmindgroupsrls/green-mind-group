@@ -8,7 +8,7 @@ import { RANK_LABEL, type Rank } from "@/lib/rank";
 const RANK_STYLE: Record<Rank, { badge: string; icona: string; barra: string }> = {
   standard: {
     badge: "bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300",
-    icona: "text-gray-400 dark:text-gray-500",
+    icona: "text-gray-500 dark:text-gray-400",
     barra: "bg-gray-400",
   },
   vip: {
@@ -88,7 +88,7 @@ export function MyRankCard({
     : 100;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+    <div className="glass-card p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white">Il tuo rank</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">La tua posizione nel programma</p>
 
@@ -111,7 +111,7 @@ export function MyRankCard({
         <div className="mt-5 flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2 text-sm">
             <span className="flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
-              <TrendingUp size={14} className="text-gray-400 dark:text-gray-500" />
+              <TrendingUp size={14} className="text-gray-500 dark:text-gray-400" />
               Verso <strong className="text-gray-900 dark:text-white">{obiettivo.verso}</strong>
             </span>
             <span className="font-semibold text-gray-900 dark:text-white tabular-nums">

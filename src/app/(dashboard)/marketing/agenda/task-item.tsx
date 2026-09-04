@@ -17,7 +17,7 @@ import {
 const initialState: TaskState = { error: null, success: false };
 
 const inputClass =
-  "h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-10 glass-input px-3 text-sm";
 const labelClass = "text-xs font-medium text-gray-700 dark:text-gray-300";
 
 function toLocalInputValue(iso: string) {
@@ -148,7 +148,7 @@ export function TaskItem({
       )}
       <div className="flex-1 min-w-0">
         <p
-          className={`text-sm ${done ? "text-gray-400 dark:text-gray-500 line-through" : "text-gray-900 dark:text-white font-medium"}`}
+          className={`text-sm ${done ? "text-gray-500 dark:text-gray-400 line-through" : "text-gray-900 dark:text-white font-medium"}`}
         >
           {title}
         </p>
@@ -170,9 +170,9 @@ export function TaskItem({
         </div>
       )}
       {recurrence !== "none" && (
-        <Repeat size={13} className="text-gray-400 dark:text-gray-500 shrink-0" aria-label={TASK_RECURRENCE_LABEL[recurrence]} />
+        <Repeat size={13} className="text-gray-500 dark:text-gray-400 shrink-0" aria-label={TASK_RECURRENCE_LABEL[recurrence]} />
       )}
-      <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{time}</span>
+      <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">{time}</span>
       <button
         type="button"
         onClick={() => setEditing(true)}

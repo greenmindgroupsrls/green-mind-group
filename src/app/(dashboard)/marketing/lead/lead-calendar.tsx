@@ -145,7 +145,7 @@ function DettaglioLead({ lead }: { lead: CalendarLead }) {
             value={valore}
             onChange={(e) => setValore(e.target.value)}
             disabled={pending}
-            className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50"
+            className="glass-input px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50"
           />
           <button
             type="button"
@@ -272,7 +272,7 @@ export function LeadCalendar({ leads }: { leads: CalendarLead[] }) {
               onClick={() => items.length > 0 && setGiornoScelto(k)}
               disabled={items.length === 0}
               className={`min-h-[74px] p-1.5 text-left align-top transition-colors ${
-                delMese ? "bg-white dark:bg-[#151129]" : "bg-gray-50/60 dark:bg-white/[0.02]"
+                delMese ? "bg-white/60 dark:bg-white/[0.05]" : "bg-gray-50/40 dark:bg-white/[0.015]"
               } ${items.length > 0 ? "hover:bg-accent/5 cursor-pointer" : "cursor-default"} ${
                 giornoScelto === k ? "ring-2 ring-inset ring-accent" : ""
               }`}
@@ -309,7 +309,7 @@ export function LeadCalendar({ leads }: { leads: CalendarLead[] }) {
                   );
                 })}
                 {items.length > 2 && (
-                  <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400">
                     +{items.length - 2} altri
                   </span>
                 )}
@@ -346,7 +346,7 @@ export function LeadCalendar({ leads }: { leads: CalendarLead[] }) {
             <button
               type="button"
               onClick={() => setGiornoScelto(null)}
-              className="h-7 w-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              className="h-7 w-7 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
               aria-label="Chiudi"
             >
               <X size={15} />
@@ -373,7 +373,7 @@ export function LeadCalendar({ leads }: { leads: CalendarLead[] }) {
       )}
 
       {leads.length === 0 && (
-        <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-6">
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-6">
           Nessun lead ricevuto finora.
         </p>
       )}

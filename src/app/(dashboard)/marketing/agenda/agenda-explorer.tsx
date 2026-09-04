@@ -72,12 +72,12 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Tag size={15} className="text-gray-400 dark:text-gray-500 shrink-0" />
+        <Tag size={15} className="text-gray-500 dark:text-gray-400 shrink-0" />
         <span className="text-sm text-gray-500 dark:text-gray-400">Stato contatto:</span>
         <select
           value={labelFilter}
           onChange={(e) => setLabelFilter(e.target.value as LabelFilter)}
-          className="h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          className="h-10 glass-input px-3 text-sm"
         >
           <option value="tutte">Tutti gli stati</option>
           {CONTACT_STATUSES.map((s) => (
@@ -90,8 +90,8 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
       </div>
 
       {noResultsForFilter ? (
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-12 text-center">
-          <p className="text-gray-400 dark:text-gray-500">Nessuna attività con questo stato contatto.</p>
+        <div className="glass-card p-12 text-center">
+          <p className="text-gray-500 dark:text-gray-400">Nessuna attività con questo stato contatto.</p>
         </div>
       ) : (
         <>
@@ -100,18 +100,18 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
               (section.items.length > 0 || section.emptyLabel) && (
                 <div
                   key={section.title}
-                  className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden"
+                  className="glass-card overflow-hidden"
                 >
                   <div className="px-6 py-3 border-b border-gray-200 dark:border-white/10">
                     <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                       {section.title}
-                      <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">
+                      <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
                         {section.items.length}
                       </span>
                     </h2>
                   </div>
                   {section.items.length === 0 ? (
-                    <p className="px-6 py-4 text-sm text-gray-400 dark:text-gray-500">
+                    <p className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                       {section.emptyLabel}
                     </p>
                   ) : (
@@ -143,11 +143,11 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
           )}
 
           {doneTasks.length > 0 && (
-            <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
+            <div className="glass-card overflow-hidden">
               <div className="px-6 py-3 border-b border-gray-200 dark:border-white/10">
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                   Completate
-                  <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">
+                  <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
                     {doneTasks.length}
                   </span>
                 </h2>

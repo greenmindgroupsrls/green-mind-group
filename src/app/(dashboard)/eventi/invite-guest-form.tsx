@@ -9,7 +9,7 @@ import type { EventRow, InviteType } from "@/lib/events";
 const initialState: GuestState = { error: null, success: false };
 
 const inputClass =
-  "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase";
 
 const TYPE_OPTIONS: { value: InviteType; label: string; sub: string; icon: typeof Mic }[] = [
@@ -126,7 +126,7 @@ export function InviteGuestForm({
           <button
             type="submit"
             disabled={pending || (inviteType === "live" && events.length === 0)}
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
           >
             {pending ? "Invio..." : "Invita ospite"}
           </button>

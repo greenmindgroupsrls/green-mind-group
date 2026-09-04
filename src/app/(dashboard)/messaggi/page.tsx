@@ -60,13 +60,13 @@ export default async function MessaggiPage() {
       <p className="text-gray-500 dark:text-gray-400 mt-1">Contatta un altro membro della rete.</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 mt-6">
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm h-fit">
+        <div className="glass-card p-6 h-fit">
           <MessageForm />
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-3 shadow-sm">
+        <div className="glass-card p-3">
           {rows.length === 0 ? (
-            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-12">
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-12">
               Nessun messaggio.
             </p>
           ) : (
@@ -81,7 +81,7 @@ export default async function MessaggiPage() {
                           ? `A: ${m.recipient_username} (${formatActivityCode(m.recipient_code)})`
                           : `Da: ${m.sender_username} (${formatActivityCode(m.sender_code)})`}
                       </span>
-                      <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">
                         {new Date(m.created_at).toLocaleString("it-IT", {
                           day: "2-digit",
                           month: "2-digit",

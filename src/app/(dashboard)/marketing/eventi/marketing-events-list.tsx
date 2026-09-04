@@ -34,8 +34,8 @@ export function MarketingEventsList({
       </div>
 
       {events.length === 0 ? (
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-12 text-center">
-          <p className="text-gray-400 dark:text-gray-500">Nessun evento in programma al momento.</p>
+        <div className="glass-card p-12 text-center">
+          <p className="text-gray-500 dark:text-gray-400">Nessun evento in programma al momento.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -44,7 +44,7 @@ export function MarketingEventsList({
             return (
               <div
                 key={ev.id}
-                className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+                className="glass-card p-5 flex flex-col sm:flex-row sm:items-center gap-4"
               >
                 <div className="flex items-center gap-5 flex-1 min-w-0">
                   <div className="shrink-0 w-16 text-center rounded-lg bg-accent/10 py-2">
@@ -78,7 +78,7 @@ export function MarketingEventsList({
                 <button
                   type="button"
                   onClick={() => setInvitePanelEvent(ev)}
-                  className="flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity shrink-0"
+                  className="flex items-center justify-center gap-1.5 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white shrink-0"
                 >
                   <UserPlus size={15} /> Invita Ospite
                 </button>

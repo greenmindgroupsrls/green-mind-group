@@ -63,18 +63,18 @@ export function AuditLogView({ entries }: { entries: AuditLogRow[] }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="relative sm:w-80">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Cerca nel registro"
-          className="w-full pl-9 pr-3 h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          className="w-full pl-9 pr-3 h-11 glass-input text-sm"
         />
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
+      <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-3 font-medium">Data</th>
@@ -85,7 +85,7 @@ export function AuditLogView({ entries }: { entries: AuditLogRow[] }) {
             </thead>
             <tbody>
               {filtered.map((e) => (
-                <tr key={e.id} className="border-t border-gray-100 dark:border-white/5">
+                <tr key={e.id} className="border-t border-[var(--glass-edge)]">
                   <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatDate(e.createdAt)}
                   </td>
@@ -102,7 +102,7 @@ export function AuditLogView({ entries }: { entries: AuditLogRow[] }) {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                  <td colSpan={4} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     {entries.length === 0 ? "Nessuna azione registrata ancora." : "Nessun risultato."}
                   </td>
                 </tr>

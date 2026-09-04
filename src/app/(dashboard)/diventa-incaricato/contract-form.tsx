@@ -34,7 +34,7 @@ const TIPI_DOCUMENTO = [
 ];
 
 const inputClass =
-  "h-11 w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 w-full glass-input px-3.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 const checkboxClass =
   "h-4 w-4 mt-0.5 shrink-0 rounded border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40";
@@ -186,7 +186,7 @@ function Radio({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm flex flex-col gap-4">
+    <div className="glass-card p-6 flex flex-col gap-4">
       <h2 className="font-semibold text-gray-900 dark:text-white">{title}</h2>
       {children}
     </div>
@@ -455,7 +455,7 @@ export function ContractForm({
         <button
           type="submit"
           disabled={pending}
-          className="self-start rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
         >
           {pending
             ? "Firma in corso..."

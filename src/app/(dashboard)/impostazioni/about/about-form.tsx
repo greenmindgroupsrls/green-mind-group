@@ -6,7 +6,7 @@ import { updateAbout, type AboutState } from "./actions";
 const initialState: AboutState = { error: null, success: false };
 
 const inputClass =
-  "rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "glass-input px-3.5 py-2.5 text-sm";
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 function SocialField({
@@ -24,7 +24,7 @@ function SocialField({
     <label className="flex flex-col gap-1.5">
       <span className={labelClass}>{label}</span>
       <div className={`${inputClass} flex items-center gap-0 p-0 overflow-hidden`}>
-        <span className="pl-3.5 text-gray-400 text-sm shrink-0">{prefix}</span>
+        <span className="pl-3.5 text-gray-500 dark:text-gray-400 text-sm shrink-0">{prefix}</span>
         <input
           name={name}
           defaultValue={defaultValue}
@@ -69,7 +69,7 @@ export function AboutForm({
       <button
         type="submit"
         disabled={pending}
-        className="self-start rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
       >
         {pending ? "Salvataggio..." : "Salva"}
       </button>

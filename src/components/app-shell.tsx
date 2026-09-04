@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -65,6 +66,15 @@ const BOTTOM_NAV_ITEMS = [
   { href: "/impostazioni", chiave: "impostazioni" as const, icon: Settings },
 ];
 
+
+// Quale voce del menu illuminare. La dashboard risponde solo al percorso
+// esatto, altrimenti resterebbe accesa ovunque; le altre restano accese
+// anche nelle loro sottopagine.
+function voceAttiva(percorso: string, href: string): boolean {
+  if (href === "/") return percorso === "/";
+  return percorso === href || percorso.startsWith(href + "/");
+}
+
 export function AppShell({
   children,
   currentMember,
@@ -86,6 +96,8 @@ export function AppShell({
   lingua: Lingua;
 }) {
   const router = useRouter();
+  const percorso = usePathname();
+  const attiva = (href: string) => voceAttiva(percorso, href);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const closeMobile = () => setMobileOpen(false);
@@ -126,7 +138,7 @@ export function AppShell({
       )}
 
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-50 w-64 shrink-0 h-full overflow-y-auto border-r border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] flex flex-col transition-transform duration-200 ease-in-out md:translate-x-0 ${
+        className={`fixed md:static inset-y-0 left-0 z-50 w-64 shrink-0 h-full overflow-y-auto glass-card glass-panel rounded-none border-y-0 border-l-0 flex flex-col transition-transform duration-200 ease-in-out md:translate-x-0 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -142,7 +154,7 @@ export function AppShell({
           <button
             type="button"
             onClick={closeMobile}
-            className="md:hidden shrink-0 h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            className="md:hidden shrink-0 h-8 w-8 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
             aria-label="Chiudi menu"
           >
             <X size={20} />
@@ -154,11 +166,14 @@ export function AppShell({
               key={href}
               href={href}
               onClick={closeMobile}
-              className={
-                highlighted
-                  ? "flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
-                  : "flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors"
-              }
+              className={[
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200",
+                attiva(href)
+                  ? "glass-nav-active font-medium text-gray-900 dark:text-white"
+                  : highlighted
+                    ? "text-orange-600 dark:text-orange-400 hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-300"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-[var(--glass-bg)] hover:text-gray-900 dark:hover:text-white",
+              ].join(" ")}
             >
               <Icon size={18} />
               {testi.nav[chiave]}
@@ -171,7 +186,12 @@ export function AppShell({
               key={href}
               href={href}
               onClick={closeMobile}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className={[
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200",
+                attiva(href)
+                  ? "glass-nav-active font-medium text-gray-900 dark:text-white"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-[var(--glass-bg)] hover:text-gray-900 dark:hover:text-white",
+              ].join(" ")}
             >
               <Icon size={18} />
               {testi.nav[chiave]}
@@ -197,7 +217,7 @@ export function AppShell({
             <form action={signOut}>
               <button
                 type="submit"
-                className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
                 aria-label={testi.nav.esci}
                 title={testi.nav.esci}
               >
@@ -206,7 +226,7 @@ export function AppShell({
             </form>
           </div>
         )}
-        <div className="px-6 py-3 flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+        <div className="px-6 py-3 flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
           <Link href="/termini" className="hover:underline">
             Termini
           </Link>
@@ -217,7 +237,7 @@ export function AppShell({
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        <header className="h-16 shrink-0 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] flex items-center justify-between md:justify-end gap-2 px-4 md:px-6">
+        <header className="h-16 shrink-0 border-b border-[var(--glass-edge)] bg-[var(--glass-bg-strong)] flex items-center justify-between md:justify-end gap-2 px-4 md:px-6">
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
@@ -233,7 +253,7 @@ export function AppShell({
               <button
                 type="button"
                 onClick={toggleNotif}
-                className="relative h-9 w-9 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-200 transition-colors"
+                className="relative h-9 w-9 rounded-full flex items-center justify-center text-gray-500 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-200 transition-colors"
                 aria-label={testi.nav.notifiche}
                 title={testi.nav.notifiche}
               >
@@ -252,14 +272,14 @@ export function AppShell({
                     onClick={() => setNotifOpen(false)}
                     aria-hidden="true"
                   />
-                  <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-lg z-50 overflow-hidden">
+                  <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] glass-card z-50 overflow-hidden">
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-white/10">
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">
                         Notifiche
                       </p>
                     </div>
                     {notifications.length === 0 ? (
-                      <p className="px-4 py-8 text-sm text-gray-400 dark:text-gray-500 text-center">
+                      <p className="px-4 py-8 text-sm text-gray-500 dark:text-gray-400 text-center">
                         {testi.nav.nessunaNotifica}
                       </p>
                     ) : (
@@ -275,7 +295,7 @@ export function AppShell({
                                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                     {n.subject}
                                   </p>
-                                  <span className="text-[11px] text-gray-400 dark:text-gray-500 shrink-0">
+                                  <span className="text-[11px] text-gray-500 dark:text-gray-400 shrink-0">
                                     {timeAgo(n.created_at)}
                                   </span>
                                 </div>

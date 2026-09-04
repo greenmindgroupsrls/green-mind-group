@@ -14,8 +14,8 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-12 text-center">
-        <p className="text-gray-400 dark:text-gray-500 mb-4">Il tuo carrello è vuoto.</p>
+      <div className="glass-card p-12 text-center">
+        <p className="text-gray-500 dark:text-gray-400 mb-4">Il tuo carrello è vuoto.</p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
           Torna al catalogo
         </Link>
@@ -25,7 +25,7 @@ export default function CartPage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm divide-y divide-gray-100 dark:divide-white/5">
+      <div className="glass-card divide-y divide-gray-100 dark:divide-white/5">
         {items.map((item) => (
           <div key={item.id} className="flex items-center gap-4 p-4">
             <div className="relative h-16 w-16 shrink-0 rounded-lg overflow-hidden bg-gray-50 dark:bg-white/5">
@@ -62,7 +62,7 @@ export default function CartPage() {
             <button
               type="button"
               onClick={() => removeItem(item.id)}
-              className="text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+              className="text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
               aria-label="Rimuovi"
             >
               <Trash2 size={16} />
@@ -71,14 +71,14 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6 h-fit">
+      <div className="glass-card p-6 h-fit">
         <div className="flex items-center justify-between text-sm mb-4">
           <span className="text-gray-500 dark:text-gray-400">Subtotale</span>
           <span className="font-semibold text-gray-900 dark:text-white">{formatEuro(subtotal)}</span>
         </div>
         <Link
           href="/shop/checkout"
-          className="block text-center rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="block text-center glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
         >
           Procedi al checkout
         </Link>

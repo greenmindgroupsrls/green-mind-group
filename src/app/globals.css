@@ -2,18 +2,68 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================
+   LIQUID GLASS — sistema di superfici
+   ============================================================
+   Le superfici sono definite qui una volta sola e riusate ovunque:
+   prima lo stesso elenco di classi era ripetuto ottanta volte nelle
+   pagine, e cambiare l'aspetto voleva dire toccare ottanta file.
+
+   L'accento resta VERDE: e' il colore del marchio (Green Mind Group).
+   Blu, indaco e viola entrano come luce d'ambiente e come tinta del
+   vetro, non come colore dei comandi.
+   ============================================================ */
+
 :root {
-  --background: #f5f6fa;
-  --foreground: #171717;
-  --accent: #5f9a0e;
-  --tree-line: #d8dae5;
+  --background: #f7f9ff;
+  --foreground: #12141d;
+  --accent: #5a930d;
+  --tree-line: #ccd2e8;
+
+  /* Vetro chiaro: la superficie deve restare abbastanza densa da
+     tenere leggibile il testo scuro che ci sta sopra. */
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-bg-strong: rgba(255, 255, 255, 0.94);
+  --glass-bg-hover: rgba(255, 255, 255, 0.93);
+  --glass-edge: rgba(24, 30, 60, 0.09);
+  --glass-edge-strong: rgba(24, 30, 60, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.95);
+  --glass-shadow:
+    0 1px 2px rgba(20, 26, 55, 0.04),
+    0 10px 24px -10px rgba(20, 26, 55, 0.12),
+    0 28px 56px -28px rgba(20, 26, 55, 0.16);
+  --glass-shadow-raised:
+    0 2px 4px rgba(20, 26, 55, 0.05),
+    0 16px 32px -12px rgba(20, 26, 55, 0.16),
+    0 40px 72px -32px rgba(20, 26, 55, 0.20);
+
+  --ring-focus: rgba(90, 147, 13, 0.32);
+  --glow-primary: rgba(90, 147, 13, 0.28);
 }
 
 .dark {
-  --background: #0e0b21;
-  --foreground: #f1f0fb;
-  --accent: #79c110;
-  --tree-line: #35315e;
+  --background: #08081a;
+  --foreground: #e9eaf6;
+  --accent: #82cc12;
+  --tree-line: #2c2955;
+
+  --glass-bg: rgba(255, 255, 255, 0.055);
+  --glass-bg-strong: rgba(255, 255, 255, 0.085);
+  --glass-bg-hover: rgba(255, 255, 255, 0.085);
+  --glass-edge: rgba(255, 255, 255, 0.11);
+  --glass-edge-strong: rgba(255, 255, 255, 0.2);
+  --glass-highlight: rgba(255, 255, 255, 0.13);
+  --glass-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 12px 32px -12px rgba(0, 0, 0, 0.5),
+    0 32px 64px -32px rgba(0, 0, 0, 0.55);
+  --glass-shadow-raised:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 18px 40px -14px rgba(0, 0, 0, 0.6),
+    0 48px 88px -40px rgba(0, 0, 0, 0.65);
+
+  --ring-focus: rgba(130, 204, 18, 0.35);
+  --glow-primary: rgba(130, 204, 18, 0.22);
 }
 
 @theme inline {
@@ -28,6 +78,196 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  /* Le cifre dei numeri restano incolonnate quando cambiano. */
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Luce d'ambiente: sorgenti sfocate, ferme rispetto allo scorrimento e
+   dietro a tutto. Su un elemento a parte e non sul fondo del body, cosi'
+   non entra nel flusso e non puo' spostare niente. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58rem 38rem at 8% -12%, rgba(79, 106, 245, 0.13), transparent 62%),
+    radial-gradient(48rem 34rem at 96% 2%, rgba(139, 92, 246, 0.11), transparent 64%),
+    radial-gradient(52rem 40rem at 52% 112%, rgba(56, 130, 246, 0.09), transparent 62%);
+}
+
+.dark body::before {
+  background:
+    radial-gradient(58rem 38rem at 8% -12%, rgba(79, 106, 245, 0.20), transparent 62%),
+    radial-gradient(48rem 34rem at 96% 2%, rgba(139, 92, 246, 0.17), transparent 64%),
+    radial-gradient(52rem 40rem at 52% 112%, rgba(56, 130, 246, 0.13), transparent 62%);
+}
+
+/* ---------- Superficie base ---------- */
+/* Il riflesso in alto e' un'ombra interna e non uno pseudo-elemento:
+   uno strato in piu' sopra il contenuto avrebbe potuto coprire elementi
+   posizionati dentro le schede. */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  border-radius: 0.875rem;
+  -webkit-backdrop-filter: blur(20px) saturate(165%);
+  backdrop-filter: blur(20px) saturate(165%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--glass-shadow);
+  transition:
+    background-color 260ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 260ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 260ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Schede su cui si puo' cliccare: si sollevano appena. */
+.glass-card-interactive:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-edge-strong);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--glass-shadow-raised);
+  transform: translateY(-2px);
+}
+
+/* Superficie piu' densa: menu laterale, tendine, righe in evidenza. */
+.glass-panel {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--glass-shadow);
+}
+
+/* ---------- Campi ---------- */
+.glass-input {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge-strong);
+  border-radius: 0.625rem;
+  color: var(--foreground);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  transition:
+    border-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-input:hover:not(:disabled):not(:focus) {
+  border-color: color-mix(in srgb, var(--glass-edge-strong) 70%, var(--foreground));
+}
+
+.glass-input:focus {
+  outline: none;
+  background: var(--glass-bg-strong);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring-focus);
+}
+
+.glass-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Voce attiva del menu ---------- */
+/* Non un rettangolo pieno: una lastra di vetro illuminata da dietro. */
+.glass-nav-active {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 18%, transparent),
+      color-mix(in srgb, var(--accent) 8%, transparent)
+    ),
+    var(--glass-bg-strong);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 20px -8px var(--glow-primary);
+}
+
+/* ---------- Pulsanti ---------- */
+.glass-btn-primary {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 96%, white),
+    var(--accent)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 75%, black);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 6px 16px -6px var(--glow-primary);
+  transition:
+    filter 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 140ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 10px 24px -8px var(--glow-primary);
+  transform: translateY(-1px);
+}
+
+.glass-btn-primary:active:not(:disabled) {
+  transform: scale(0.985) translateY(0);
+}
+
+.glass-btn-soft {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge-strong);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  transition:
+    background-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 140ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-btn-soft:hover:not(:disabled) {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-edge-strong);
+  transform: translateY(-1px);
+}
+
+.glass-btn-soft:active:not(:disabled) {
+  transform: scale(0.985) translateY(0);
+}
+
+/* ---------- Tabelle ---------- */
+.glass-table thead tr {
+  background: color-mix(in srgb, var(--glass-bg-strong) 70%, transparent);
+}
+
+.glass-table tbody tr {
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-table tbody tr:hover {
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+/* Chi preferisce meno movimento non lo subisce. */
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .glass-input,
+  .glass-btn-primary,
+  .glass-btn-soft,
+  .glass-table tbody tr {
+    transition: none;
+  }
+  .glass-card-interactive:hover,
+  .glass-btn-primary:hover:not(:disabled),
+  .glass-btn-soft:hover:not(:disabled) {
+    transform: none;
+  }
 }
 
 /* Albero strutturale in stile org-chart, solo CSS (no SVG/JS layout) */

@@ -64,7 +64,7 @@ export function MarketingDocumentRow({
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] px-5 py-4 flex flex-col gap-2">
+    <div className="glass-card px-5 py-4 flex flex-col gap-2">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <div className="h-10 w-10 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">

@@ -190,7 +190,7 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+    <div className="glass-card p-6">
       <div className="flex items-center gap-2">
         <CheckCircle2 size={17} className="text-accent" />
         <h2 className="font-semibold text-gray-900 dark:text-white">Cosa fare adesso</h2>
@@ -214,7 +214,7 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
               <Icona
                 size={18}
                 className={`shrink-0 ${
-                  a.urgente ? "text-amber-600 dark:text-amber-400" : "text-gray-400 dark:text-gray-500"
+                  a.urgente ? "text-amber-600 dark:text-amber-400" : "text-gray-500 dark:text-gray-400"
                 }`}
               />
               <div className="flex-1 min-w-0">

@@ -48,7 +48,7 @@ function TreeNode({
           ringed={selectedCode === member.activity_code}
         />
         <span className="flex flex-col items-center text-xs font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#1c1836] border border-gray-200 dark:border-white/10 rounded-xl px-2.5 py-1 shadow-sm whitespace-nowrap">
-          <span className="text-[10px] leading-tight text-gray-400 dark:text-gray-500 font-normal">
+          <span className="text-[10px] leading-tight text-gray-500 dark:text-gray-400 font-normal">
             {formatActivityCode(member.activity_code)}
           </span>
           <span className="leading-tight">{member.username}</span>
@@ -190,20 +190,20 @@ export function NetworkExplorer({
         <div className="relative">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
           />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Cerca username"
-            className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent w-full sm:w-64"
+            className="pl-9 pr-3 py-2 text-sm glass-input w-full sm:w-64"
           />
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={handleSearch}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white"
           >
             Cerca
           </button>
@@ -221,7 +221,7 @@ export function NetworkExplorer({
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 mt-6">
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm">
+        <div className="glass-card">
           {!root ? (
             <p className="text-gray-500 dark:text-gray-400 p-8">Nessun dato.</p>
           ) : (
@@ -240,7 +240,7 @@ export function NetworkExplorer({
           )}
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm h-fit sticky top-6">
+        <div className="glass-card p-6 h-fit sticky top-6">
           {!selected ? (
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Seleziona un nodo dell&apos;albero per vederne il dettaglio.

@@ -22,12 +22,20 @@ export function StatCard({
   tone?: keyof typeof TONE_CLASS;
 }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-5 shadow-sm">
-      <div className={`h-11 w-11 rounded-lg flex items-center justify-center ${TONE_CLASS[tone]}`}>
-        <Icon size={22} />
+    <div className="glass-card glass-card-interactive p-5">
+      <div
+        className={`h-10 w-10 rounded-xl flex items-center justify-center ring-1 ring-inset ring-white/10 ${TONE_CLASS[tone]}`}
+      >
+        <Icon size={20} />
       </div>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{label}</p>
-      <p className="text-2xl font-semibold text-gray-900 dark:text-white mt-0.5">{value}</p>
+      {/* L'etichetta e' piccola e in maiuscoletto, il numero grande: la
+          gerarchia dice a colpo d'occhio cosa contare e cosa leggere. */}
+      <p className="text-[11px] font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 mt-4">
+        {label}
+      </p>
+      <p className="text-[1.75rem] leading-tight font-semibold tracking-tight text-gray-900 dark:text-white mt-1">
+        {value}
+      </p>
       {delta && (
         <p
           className={`text-xs mt-1 ${
@@ -36,7 +44,7 @@ export function StatCard({
               : "text-rose-600 dark:text-rose-400"
           }`}
         >
-          {delta.value} <span className="text-gray-400 dark:text-gray-500">questo mese</span>
+          {delta.value} <span className="text-gray-500 dark:text-gray-400">questo mese</span>
         </p>
       )}
     </div>

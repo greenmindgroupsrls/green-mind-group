@@ -101,7 +101,7 @@ export function StreetAutocompleteInput({
           ))}
         </ul>
       )}
-      <p className="text-[11px] text-gray-400 dark:text-gray-500">
+      <p className="text-[11px] text-gray-500 dark:text-gray-400">
         Suggerimenti indirizzo &copy; OpenStreetMap contributors
       </p>
     </label>

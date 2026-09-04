@@ -134,7 +134,7 @@ export function PanZoomViewport({ children }: { children: ReactNode }) {
         </button>
       </div>
 
-      <p className="absolute top-3 left-3 text-[11px] text-gray-400 dark:text-gray-500 bg-white/80 dark:bg-[#151129]/80 rounded px-2 py-1">
+      <p className="absolute top-3 left-3 text-[11px] text-gray-500 dark:text-gray-400 bg-white/70 dark:bg-white/10 backdrop-blur-md rounded px-2 py-1">
         Trascina per spostarti · rotellina per zoom
       </p>
     </div>

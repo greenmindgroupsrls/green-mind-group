@@ -49,7 +49,7 @@ export function LeadAssignAction({
         <p className="text-xs text-gray-600 dark:text-gray-300">
           Inoltrato a <span className="font-medium">{currentAssignee}</span>
           {assignedAt && !justAssigned && (
-            <span className="text-gray-400 dark:text-gray-500"> il {formatDate(assignedAt)}</span>
+            <span className="text-gray-500 dark:text-gray-400"> il {formatDate(assignedAt)}</span>
           )}
         </p>
       )}
@@ -58,7 +58,7 @@ export function LeadAssignAction({
           value={selected}
           onChange={(e) => setSelected(e.target.value)}
           disabled={pending}
-          className="text-xs rounded-md border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 px-1.5 py-1 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50 flex-1 min-w-0"
+          className="text-xs glass-input rounded-md text-gray-700 dark:text-gray-300 px-1.5 py-1 disabled:opacity-50 flex-1 min-w-0"
         >
           <option value="">{currentAssignee ? "Inoltra ad un altro…" : "Scegli membro…"}</option>
           {members.map((m) => (

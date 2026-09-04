@@ -16,7 +16,7 @@ import {
 const guestInitialState: GuestState = { error: null, success: false };
 
 const cellInputClass =
-  "h-9 w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-9 w-full glass-input px-2.5 text-sm";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
@@ -38,7 +38,7 @@ function GuestRow({
 
   if (editing) {
     return (
-      <tr className="border-t border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-white/5">
+      <tr className="border-t border-[var(--glass-edge)] bg-gray-50 dark:bg-white/5">
         <td colSpan={isRoot ? 7 : 6} className="px-4 py-3">
           <form
             action={async (formData) => {
@@ -88,7 +88,7 @@ function GuestRow({
   }
 
   return (
-    <tr className="border-t border-gray-100 dark:border-white/5">
+    <tr className="border-t border-[var(--glass-edge)]">
       <td className="px-4 py-3 text-gray-900 dark:text-white font-medium whitespace-nowrap">
         {guest.last_name}
       </td>
@@ -99,7 +99,7 @@ function GuestRow({
         <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${INVITE_TYPE_BADGE_CLASS[guest.invite_type]}`}>
           {INVITE_TYPE_LABEL[guest.invite_type]}
         </span>
-        {event && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 whitespace-nowrap">{event.city}</p>}
+        {event && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 whitespace-nowrap">{event.city}</p>}
       </td>
       {isRoot && (
         <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{inviterName}</td>
@@ -112,7 +112,7 @@ function GuestRow({
           <select
             value={guest.status}
             onChange={(e) => updateGuestStatus(guest.id, e.target.value as GuestStatus)}
-            className="h-8 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-2 text-xs focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+            className="h-8 glass-input px-2 text-xs"
           >
             <option value="invitato">{GUEST_STATUS_LABEL.invitato}</option>
             <option value="confermato">{GUEST_STATUS_LABEL.confermato}</option>
@@ -174,18 +174,18 @@ export function GuestArchive({
   return (
     <div className="flex flex-col gap-4">
       <div className="relative sm:w-80">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Cerca ospite"
-          className="w-full pl-9 pr-3 h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          className="w-full pl-9 pr-3 h-11 glass-input text-sm"
         />
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
+      <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-4 py-3 font-medium">Cognome</th>
@@ -211,7 +211,7 @@ export function GuestArchive({
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={isRoot ? 9 : 8} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                  <td colSpan={isRoot ? 9 : 8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     {guests.length === 0 ? "Nessun ospite invitato ancora." : "Nessun ospite trovato."}
                   </td>
                 </tr>

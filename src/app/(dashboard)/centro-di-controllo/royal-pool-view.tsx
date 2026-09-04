@@ -27,7 +27,7 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
   const puoChiudere = info.accantonato > 0 && info.spettanze.length > 0;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6 max-w-xl">
+    <div className="glass-card p-6 max-w-xl">
       <div className="flex items-center gap-2">
         <Crown size={18} className="text-amber-500" />
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Royal Pool</h3>
@@ -44,7 +44,7 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
           <p className="text-lg font-semibold text-gray-900 dark:text-white tabular-nums">
             {euro(info.accantonato)}
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             a {info.spettanze.length} {info.spettanze.length === 1 ? "Royal" : "Royal"}, su{" "}
             {info.vendite} vendite
           </p>
@@ -54,7 +54,7 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
           <p className="text-lg font-semibold text-gray-900 dark:text-white tabular-nums">
             {euro(info.trattenutoAzienda)}
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             vendite senza nessun Royal sopra
           </p>
         </div>

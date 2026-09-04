@@ -33,7 +33,7 @@ export default async function AgendaPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+      <div className="glass-card p-6">
         <TaskForm contacts={contactRows} />
       </div>
 

@@ -31,8 +31,8 @@ export function EventList({
 }) {
   if (events.length === 0) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-12 text-center">
-        <p className="text-gray-400 dark:text-gray-500">{emptyLabel}</p>
+      <div className="glass-card p-12 text-center">
+        <p className="text-gray-500 dark:text-gray-400">{emptyLabel}</p>
       </div>
     );
   }
@@ -45,7 +45,7 @@ export function EventList({
         return (
           <div
             key={ev.id}
-            className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-5 flex items-start gap-5"
+            className="glass-card p-5 flex items-start gap-5"
           >
             <div className="shrink-0 w-16 text-center rounded-lg bg-accent/10 py-2">
               <p className="text-[10px] font-semibold text-accent uppercase">{date.month}</p>
@@ -59,7 +59,7 @@ export function EventList({
                   <h3 className="font-semibold text-gray-900 dark:text-white uppercase">{ev.city}</h3>
                   {ev.venue && <p className="text-sm text-gray-600 dark:text-gray-300">{ev.venue}</p>}
                   {ev.address && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{ev.address}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{ev.address}</p>
                   )}
                 </div>
                 {isRoot && (
@@ -67,7 +67,7 @@ export function EventList({
                     <button
                       type="button"
                       onClick={() => onEdit(ev)}
-                      className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-accent hover:bg-accent/10 transition-colors"
+                      className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-accent hover:bg-accent/10 transition-colors"
                       aria-label="Modifica evento"
                     >
                       <Pencil size={15} />
@@ -77,7 +77,7 @@ export function EventList({
                       onClick={() => {
                         if (confirm(`Eliminare l'evento di ${ev.city}?`)) deleteEvent(ev.id);
                       }}
-                      className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                      className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                       aria-label="Elimina evento"
                     >
                       <Trash2 size={15} />

@@ -64,7 +64,7 @@ export function GoogleButton({
         type="button"
         onClick={handleClick}
         disabled={pending}
-        className="flex items-center justify-center gap-2.5 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+        className="flex items-center justify-center gap-2.5 rounded-lg glass-btn-soft px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 disabled:opacity-50"
       >
         <GoogleIcon />
         {pending ? "Reindirizzamento..." : label}

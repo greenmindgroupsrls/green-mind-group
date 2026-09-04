@@ -61,8 +61,8 @@ export default async function PayoutPrelevarePage() {
         </div>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+      <div className="glass-card">
+        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">Richiedi un prelievo</h2>
         </div>
         <div className="p-6">
@@ -85,12 +85,12 @@ export default async function PayoutPrelevarePage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+      <div className="glass-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">Le tue richieste</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">Importo</th>
@@ -101,7 +101,7 @@ export default async function PayoutPrelevarePage() {
             </thead>
             <tbody>
               {myRequests.map((w) => (
-                <tr key={w.id} className="border-t border-gray-100 dark:border-white/5">
+                <tr key={w.id} className="border-t border-[var(--glass-edge)]">
                   <td className="px-6 py-3 font-medium text-gray-900 dark:text-white">
                     {formatEuro(w.net_amount)}
                   </td>
@@ -120,7 +120,7 @@ export default async function PayoutPrelevarePage() {
               ))}
               {myRequests.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                  <td colSpan={4} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     Nessuna richiesta di prelievo ancora.
                   </td>
                 </tr>
@@ -131,15 +131,15 @@ export default async function PayoutPrelevarePage() {
       </div>
 
       {isRoot && (
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+        <div className="glass-card overflow-hidden">
+          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">Richieste da gestire</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Tutte le richieste di prelievo della rete
             </p>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">Utente</th>
@@ -154,7 +154,7 @@ export default async function PayoutPrelevarePage() {
                 {withdrawals.map((w) => {
                   const requester = memberByCode.get(w.activity_code);
                   return (
-                    <tr key={w.id} className="border-t border-gray-100 dark:border-white/5">
+                    <tr key={w.id} className="border-t border-[var(--glass-edge)]">
                       <td className="px-6 py-3">
                         <div className="flex items-center gap-2">
                           <span className="text-gray-900 dark:text-white">
@@ -185,7 +185,7 @@ export default async function PayoutPrelevarePage() {
                         {w.status === "pending" ? (
                           <WithdrawalStatusActions id={w.id} />
                         ) : (
-                          <span className="text-xs text-gray-400 dark:text-gray-500">—</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">—</span>
                         )}
                       </td>
                     </tr>
@@ -193,7 +193,7 @@ export default async function PayoutPrelevarePage() {
                 })}
                 {withdrawals.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-gray-400 dark:text-gray-500">
+                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                       Nessuna richiesta di prelievo ancora.
                     </td>
                   </tr>

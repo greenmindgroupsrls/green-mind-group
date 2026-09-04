@@ -34,7 +34,7 @@ export async function AnnouncementsFeed({
   if (announcements.length === 0 && !isRoot) return null;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm mb-6">
+    <div className="glass-card mb-6">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Megaphone size={18} className="text-accent" />
@@ -43,14 +43,14 @@ export async function AnnouncementsFeed({
         {isRoot && <AnnouncementComposer />}
       </div>
       {announcements.length === 0 ? (
-        <p className="px-6 py-6 text-sm text-gray-400 dark:text-gray-500">Nessun annuncio ancora.</p>
+        <p className="px-6 py-6 text-sm text-gray-500 dark:text-gray-400">Nessun annuncio ancora.</p>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {announcements.map((a) => (
             <div key={a.id} className="px-6 py-4">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">{a.title}</p>
-                <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
+                <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">
                   {formatDate(a.created_at)}
                 </span>
               </div>

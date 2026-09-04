@@ -26,7 +26,7 @@ export function ForgotPasswordForm() {
           type="email"
           required
           autoComplete="email"
-          className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+          className="glass-input px-3.5 py-2.5 text-sm"
           placeholder="tu@esempio.it"
         />
       </label>
@@ -34,7 +34,7 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
       >
         {pending ? "Invio in corso..." : "Invia link di reset"}
       </button>

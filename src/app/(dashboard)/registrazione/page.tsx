@@ -47,12 +47,12 @@ export default async function RegistrazionePage() {
       ) : (
         <>
           {slug && (
-            <div className="mt-6 max-w-2xl rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+            <div className="mt-6 max-w-2xl glass-card p-6">
               <PersonalLinkField slug={slug} />
             </div>
           )}
 
-          <div className="mt-6 max-w-2xl rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+          <div className="mt-6 max-w-2xl glass-card p-6">
             <EnrollForm products={prodotti} />
           </div>
         </>

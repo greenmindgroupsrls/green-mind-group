@@ -45,7 +45,7 @@ const RANK_BADGE_CLASS: Record<Rank, string> = {
 const ROLE_LABEL: Record<MemberRole, string> = { cliente: "Cliente", incaricato: "Incaricato" };
 
 const inputClass =
-  "h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-10 glass-input px-3 text-sm";
 const labelClass = "text-xs font-medium text-gray-700 dark:text-gray-300";
 
 function displayName(m: { first_name: string | null; last_name: string | null; username: string }) {
@@ -117,7 +117,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
       <div className="flex items-start gap-3 flex-wrap">
         <div>
           <p className="font-semibold text-gray-900 dark:text-white leading-none">
-            <span className="text-gray-400 dark:text-gray-500 font-normal">
+            <span className="text-gray-500 dark:text-gray-400 font-normal">
               {formatActivityCode(member.activity_code)}
             </span>{" "}
             {displayName(member)}
@@ -140,17 +140,17 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
 
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Users size={14} className="text-gray-400 dark:text-gray-500" />
+          <Users size={14} className="text-gray-500 dark:text-gray-400" />
           <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.teamSize}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">Team totale</p>
         </div>
         <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Package size={14} className="text-gray-400 dark:text-gray-500" />
+          <Package size={14} className="text-gray-500 dark:text-gray-400" />
           <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.piecesSold}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">Pezzi venduti</p>
         </div>
         <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Euro size={14} className="text-gray-400 dark:text-gray-500" />
+          <Euro size={14} className="text-gray-500 dark:text-gray-400" />
           <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
             {formatEuro(member.totalEarnings)}
           </p>
@@ -162,7 +162,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
         Sponsor:{" "}
         {member.sponsorCode !== null ? (
           <span className="text-gray-700 dark:text-gray-300">
-            <span className="text-gray-400 dark:text-gray-500">
+            <span className="text-gray-500 dark:text-gray-400">
               {formatActivityCode(member.sponsorCode)}
             </span>{" "}
             {member.sponsorName}
@@ -320,7 +320,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
           <button
             type="submit"
             disabled={editPending}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50 w-fit"
+            className="glass-btn-primary rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 w-fit"
           >
             {editPending ? "Salvataggio..." : "Salva anagrafica"}
           </button>
@@ -353,18 +353,18 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-6">
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm overflow-hidden flex flex-col">
+      <div className="glass-card overflow-hidden flex flex-col">
         <div className="p-4 border-b border-gray-200 dark:border-white/10">
           <div className="relative">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
             />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Cerca codice o nome"
-              className="w-full pl-9 pr-3 h-10 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+              className="w-full pl-9 pr-3 h-10 glass-input text-sm"
             />
           </div>
         </div>
@@ -380,7 +380,7 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
             >
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  <span className="text-gray-400 dark:text-gray-500 font-normal">
+                  <span className="text-gray-500 dark:text-gray-400 font-normal">
                     {formatActivityCode(m.activity_code)}
                   </span>{" "}
                   {displayName(m)}
@@ -399,14 +399,14 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
             </button>
           ))}
           {filtered.length === 0 && (
-            <p className="px-4 py-6 text-sm text-gray-400 dark:text-gray-500 text-center">
+            <p className="px-4 py-6 text-sm text-gray-500 dark:text-gray-400 text-center">
               Nessun membro trovato.
             </p>
           )}
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6">
+      <div className="glass-card p-6">
         {selected ? (
           <MemberDetail key={selected.activity_code} member={selected} />
         ) : (

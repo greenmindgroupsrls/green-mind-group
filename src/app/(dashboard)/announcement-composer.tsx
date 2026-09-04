@@ -6,7 +6,7 @@ import { postAnnouncement, type AnnouncementState } from "./announcement-actions
 const initialState: AnnouncementState = { error: null, success: false };
 
 const inputClass =
-  "rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "glass-input px-3.5 py-2 text-sm";
 
 export function AnnouncementComposer() {
   const [state, formAction, pending] = useActionState(postAnnouncement, initialState);

@@ -8,7 +8,7 @@ import type { EventRow } from "@/lib/events";
 const initialState: EventState = { error: null, success: false };
 
 const inputClass =
-  "h-11 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase";
 
 export function EventForm({
@@ -32,7 +32,7 @@ export function EventForm({
   }, [state.success]);
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6">
+    <div className="glass-card p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white mb-5">
         {event ? "Modifica evento" : "Nuovo evento"}
       </h2>
@@ -137,7 +137,7 @@ export function EventForm({
           <button
             type="submit"
             disabled={pending}
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
           >
             {pending ? "Salvataggio..." : "Salva evento"}
           </button>

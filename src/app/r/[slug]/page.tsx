@@ -36,7 +36,7 @@ export default async function ReferralLinkPage({
           </span>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+        <div className="glass-card p-6">
           {!configured ? (
             <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2">
               Supabase non ancora collegato: la registrazione non è disponibile in modalità demo.
@@ -64,7 +64,7 @@ export default async function ReferralLinkPage({
 
               <div className="flex items-center gap-3 my-5">
                 <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />
-                <span className="text-xs text-gray-400 dark:text-gray-500">oppure</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">oppure</span>
                 <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />
               </div>
 

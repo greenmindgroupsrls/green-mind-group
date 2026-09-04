@@ -10,7 +10,7 @@ export function OrderStatusSelect({ id, status }: { id: number; status: ShopOrde
     <select
       defaultValue={status}
       onChange={(e) => setOrderStatus(id, e.target.value as ShopOrderStatus)}
-      className="h-9 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+      className="h-9 glass-input px-2.5 text-xs"
     >
       {OPTIONS.map((opt) => (
         <option key={opt} value={opt}>

@@ -16,14 +16,14 @@ export function ShopHeader({ isRoot = false }: { isRoot?: boolean }) {
       <div className="flex items-center gap-3">
         <Link
           href="/shop/ordini"
-          className="flex items-center gap-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
+          className="flex items-center gap-2 glass-btn-soft rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
         >
           <ClipboardList size={18} />
           {isRoot ? "Ordini" : "I tuoi ordini"}
         </Link>
         <Link
           href="/shop/cart"
-          className="relative flex items-center gap-2 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
+          className="relative flex items-center gap-2 glass-btn-soft rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
         >
           <ShoppingCart size={18} />
           Carrello

@@ -8,7 +8,7 @@ import { setCallScript, addCallScript } from "./actions";
 type CallScript = { id: number; label: string; body: string };
 
 const inputClass =
-  "rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent";
+  "glass-input px-3.5 py-2 text-sm";
 
 export function MarketingContent({
   slug,
@@ -123,7 +123,7 @@ export function MarketingContent({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+      <div className="glass-card p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Il tuo link personale</h2>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
@@ -134,7 +134,7 @@ export function MarketingContent({
               <button
                 type="button"
                 onClick={copyLink}
-                className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
               >
                 {linkCopied ? <Check size={16} /> : <Copy size={16} />}
                 {linkCopied ? "Copiato" : "Copia link"}
@@ -160,7 +160,7 @@ export function MarketingContent({
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+      <div className="glass-card p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-1">Testi pronti da condividere</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
           Copia, incolla, personalizza se vuoi — il link è già dentro.

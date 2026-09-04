@@ -49,7 +49,7 @@ export function WorldMapCard({ countries }: { countries: Record<number, string> 
   const visibleLegend = showAll ? legend : legend.slice(0, 4);
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm">
+    <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">Affiliate Joinings</h2>
         {legend.length > 4 && (
@@ -136,7 +136,7 @@ export function WorldMapCard({ countries }: { countries: Record<number, string> 
 
         <div className="flex flex-col gap-3.5">
           {visibleLegend.length === 0 ? (
-            <p className="text-sm text-gray-400 dark:text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Nessun paese registrato ancora nel tuo team.
             </p>
           ) : (

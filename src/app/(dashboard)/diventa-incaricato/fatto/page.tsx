@@ -48,7 +48,7 @@ export default async function ContrattoFirmatoPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] p-6 shadow-sm flex flex-col gap-4">
+      <div className="glass-card p-6 flex flex-col gap-4">
         <div>
           <h2 className="font-semibold text-gray-900 dark:text-white">La tua copia</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -60,7 +60,7 @@ export default async function ContrattoFirmatoPage() {
           href="/api/contratto-incaricato"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 self-start rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium text-white"
         >
           <Download size={15} />
           Scarica il contratto firmato
