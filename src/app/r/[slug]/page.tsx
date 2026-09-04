@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { supabaseConfigured } from "@/lib/current-member";
 import { SignupForm } from "@/app/login/signup-form";
 import { GoogleButton } from "@/components/google-button";
+import { getDizionario } from "@/i18n/dizionario";
 
 // Sempre la vera schermata di registrazione, anche per chi la apre già
 // loggato (es. root che vuole controllare/condividere il proprio link) —
@@ -59,7 +60,7 @@ export default async function ReferralLinkPage({
                 registrazione per entrare nella rete.
               </p>
 
-              <SignupForm lockedRef={{ code: sponsor.activity_code, username: sponsor.username }} />
+              <SignupForm t={(await getDizionario()).accesso} lockedRef={{ code: sponsor.activity_code, username: sponsor.username }} />
 
               <div className="flex items-center gap-3 my-5">
                 <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />

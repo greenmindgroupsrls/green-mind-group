@@ -4,10 +4,11 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { signIn, type LoginState } from "./actions";
 import { PasswordInput } from "@/components/password-input";
+import type { Dizionario } from "@/i18n/dizionario";
 
 const initialState: LoginState = { error: null };
 
-export function LoginForm({ next }: { next: string }) {
+export function LoginForm({ next, t }: { next: string; t: Dizionario["accesso"] }) {
   const [state, formAction, pending] = useActionState(signIn, initialState);
 
   return (
@@ -15,22 +16,22 @@ export function LoginForm({ next }: { next: string }) {
       <input type="hidden" name="next" value={next} />
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t.email}</span>
         <input
           name="email"
           type="email"
           required
           autoComplete="email"
           className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
-          placeholder="tu@esempio.it"
+          placeholder={t.emailSegnaposto}
         />
       </label>
 
       <label className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Password</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t.password}</span>
           <Link href="/password-dimenticata" className="text-sm text-accent hover:underline">
-            Password dimenticata?
+            {t.passwordDimenticata}
           </Link>
         </div>
         <PasswordInput
@@ -38,7 +39,7 @@ export function LoginForm({ next }: { next: string }) {
           required
           autoComplete="current-password"
           className="rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
-          placeholder="••••••••"
+          placeholder={t.passwordSegnaposto}
         />
       </label>
 
@@ -47,7 +48,7 @@ export function LoginForm({ next }: { next: string }) {
         disabled={pending}
         className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
       >
-        {pending ? "Accesso in corso..." : "Accedi"}
+        {pending ? t.accessoInCorso : t.accedi}
       </button>
 
       {state.error && (

@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
+import type { Dizionario } from "@/i18n/dizionario";
 import { signUp, type SignUpState } from "./actions";
 import { LockedRefField } from "@/components/locked-ref-field";
 import { PasswordInput } from "@/components/password-input";
@@ -19,8 +20,10 @@ const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function SignupForm({
   lockedRef,
+  t,
 }: {
   lockedRef?: { code: number; username: string } | null;
+  t: Dizionario["accesso"];
 }) {
   const [state, formAction, pending] = useActionState(signUp, initialState);
   const [autoAssign, setAutoAssign] = useState(false);
@@ -32,8 +35,7 @@ export function SignupForm({
   if (state.checkEmail) {
     return (
       <p className="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-500/10 rounded-lg px-3 py-2">
-        Controlla la tua email per confermare l&apos;account: appena confermi ed effettui il
-        primo accesso, la registrazione si completa da sola.
+        {t.controllaEmail}
       </p>
     );
   }
@@ -52,36 +54,36 @@ export function SignupForm({
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Nome</span>
-          <input name="first_name" required className={inputClass} placeholder="Mario" />
+          <span className={labelClass}>{t.nome}</span>
+          <input name="first_name" required className={inputClass} placeholder={t.nomeSegnaposto} />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Cognome</span>
-          <input name="last_name" required className={inputClass} placeholder="Rossi" />
+          <span className={labelClass}>{t.cognome}</span>
+          <input name="last_name" required className={inputClass} placeholder={t.cognomeSegnaposto} />
         </label>
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Email</span>
+        <span className={labelClass}>{t.email}</span>
         <input
           name="email"
           type="email"
           required
           autoComplete="email"
           className={inputClass}
-          placeholder="tu@esempio.it"
+          placeholder={t.emailSegnaposto}
         />
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Password</span>
+        <span className={labelClass}>{t.password}</span>
         <PasswordInput
           name="password"
           required
           minLength={8}
           autoComplete="new-password"
           className={inputClass}
-          placeholder="almeno 8 caratteri"
+          placeholder={t.passwordMinima}
         />
       </label>
 
@@ -90,14 +92,14 @@ export function SignupForm({
       ) : (
         <>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Codice di chi ti ha invitato</span>
+            <span className={labelClass}>{t.codiceInvito}</span>
             <input
               name="ref_code"
               type="text"
               disabled={autoAssign}
               required={!autoAssign}
               className={`${inputClass} disabled:opacity-50`}
-              placeholder="es. V00008"
+              placeholder={t.codiceInvitoSegnaposto}
             />
           </label>
 
@@ -109,7 +111,7 @@ export function SignupForm({
               onChange={(e) => setAutoAssign(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
             />
-            Non ho un codice ref, aiutatemi a trovare uno sponsor
+            {t.nessunCodice}
           </label>
         </>
       )}
@@ -135,13 +137,13 @@ export function SignupForm({
           className="h-4 w-4 mt-0.5 rounded border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
         />
         <span>
-          Accetto i{" "}
+          {t.accettoI}{" "}
           <Link href="/termini" target="_blank" className="text-accent hover:underline">
-            Termini e Condizioni
+            {t.terminiCondizioni}
           </Link>{" "}
-          e la{" "}
+          {t.eLa}{" "}
           <Link href="/privacy" target="_blank" className="text-accent hover:underline">
-            Privacy Policy
+            {t.privacyPolicy}
           </Link>
         </span>
       </label>
@@ -151,7 +153,7 @@ export function SignupForm({
         disabled={pending}
         className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
       >
-        {pending ? "Registrazione in corso..." : "Registrati"}
+        {pending ? t.registrazioneInCorso : t.registrati}
       </button>
 
       {state.error && (
