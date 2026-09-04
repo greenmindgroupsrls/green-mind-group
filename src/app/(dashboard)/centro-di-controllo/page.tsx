@@ -208,7 +208,7 @@ export default async function ControlCenterPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Centro di controllo</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">
+      <p className="text-gray-600 dark:text-gray-300 mt-1">
         Vista e gestione completa di tutti i membri della rete — visibile solo all&apos;account aziendale.
       </p>
       <div className="mt-6">

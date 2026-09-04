@@ -117,7 +117,7 @@ export default async function DiventaIncaricatoPage() {
             ? "Completa il tuo contratto da incaricato"
             : "Diventa incaricato alle vendite"}
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-gray-600 dark:text-gray-300 mt-1">
           {alreadyIncaricato
             ? "Sei già operativo come incaricato, ma il tuo contratto non risulta ancora firmato. Compilalo, generalo e firmalo per mettere in regola la tua posizione."
             : "Compila il contratto, generalo e firmalo per sbloccare Team, Marketing, Payout e Registrazione."}

@@ -52,7 +52,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
   return (
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Impostazioni</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">Il tuo profilo, documenti e sicurezza</p>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">Il tuo profilo, documenti e sicurezza</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 mt-6">
         <div className="flex flex-col gap-4">

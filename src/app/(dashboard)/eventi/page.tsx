@@ -38,7 +38,7 @@ export default async function EventiPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Ospiti — Eventi</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">Gestisci eventi e invita i tuoi ospiti</p>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">Gestisci eventi e invita i tuoi ospiti</p>
       <div className="mt-6">
         <EventiExplorer
           events={events}

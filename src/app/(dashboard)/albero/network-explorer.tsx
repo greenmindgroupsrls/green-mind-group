@@ -182,7 +182,7 @@ export function NetworkExplorer({
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
         Team: albero strutturale
       </h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">
+      <p className="text-gray-600 dark:text-gray-300 mt-1">
         Posizione usata per le commissioni. Clicca un nodo per vederne il dettaglio.
       </p>
 

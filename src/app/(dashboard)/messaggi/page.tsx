@@ -57,7 +57,7 @@ export default async function MessaggiPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Messaggi</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">Contatta un altro membro della rete.</p>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">Contatta un altro membro della rete.</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 mt-6">
         <div className="glass-card p-6 h-fit">

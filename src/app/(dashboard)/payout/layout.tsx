@@ -9,7 +9,7 @@ export default async function PayoutLayout({ children }: LayoutProps<"/payout">)
   return (
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Payout</h1>
-      <p className="text-gray-500 dark:text-gray-400 mt-1">
+      <p className="text-gray-600 dark:text-gray-300 mt-1">
         Richieste e storico dei pagamenti delle tue commissioni.
       </p>
 

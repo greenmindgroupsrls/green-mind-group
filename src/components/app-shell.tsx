@@ -128,7 +128,7 @@ export function AppShell({
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden">
       {mobileOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 md:hidden"
@@ -322,7 +322,7 @@ export function AppShell({
             <ThemeToggle />
           </div>
         </header>
-        <main className="flex-1 min-h-0 overflow-y-auto bg-background">{children}</main>
+        <main className="flex-1 min-h-0 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

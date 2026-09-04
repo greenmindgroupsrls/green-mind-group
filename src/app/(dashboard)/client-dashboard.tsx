@@ -9,7 +9,7 @@ export function ClientDashboard({ username }: { username: string }) {
     <div className="p-8 max-w-2xl mx-auto flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Ciao, {username}</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-gray-600 dark:text-gray-300 mt-1">
           Il tuo account cliente Green Mind Group.
         </p>
       </div>
