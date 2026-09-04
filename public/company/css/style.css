@@ -86,30 +86,6 @@ svg{ display:block; }
 
 .wrap{ max-width: var(--wrap); margin: 0 auto; padding: 0 32px; }
 
-/* ============================================================
-   Custom cursor (fine-pointer devices only)
-   ============================================================ */
-.cursor-dot, .cursor-ring{
-  position:fixed; top:0; left:0; z-index:10001; pointer-events:none;
-  border-radius:50%; transform: translate(-50%,-50%);
-  opacity:0; will-change: transform;
-}
-.cursor-dot{ width:6px; height:6px; background: var(--lime); transition: opacity .3s, background .3s; }
-.cursor-ring{
-  width:38px; height:38px; border:1.5px solid var(--hairline-strong);
-  transition: opacity .3s, width .25s var(--ease), height .25s var(--ease), border-color .25s;
-}
-html.has-fine-cursor.cursor-active .cursor-dot,
-html.has-fine-cursor.cursor-active .cursor-ring{ opacity:1; }
-html.has-fine-cursor.cursor-active{ cursor:none; }
-html.has-fine-cursor.cursor-active a,
-html.has-fine-cursor.cursor-active button,
-html.has-fine-cursor.cursor-active summary{ cursor:none; }
-html.has-fine-cursor.cursor-hover .cursor-ring{
-  width:64px; height:64px; border-color: var(--lime);
-}
-html.has-fine-cursor.cursor-hover .cursor-dot{ opacity:0; }
-
 h1{ font-size: clamp(3.4rem, 8vw, 6.6rem); font-weight:600; letter-spacing:-0.03em; line-height:0.98; }
 h2{ font-size: clamp(2.1rem, 4.2vw, 3.4rem); font-weight:600; letter-spacing:-0.025em; line-height:1.08; }
 h3.big{ font-size: clamp(1.6rem, 2.6vw, 2.1rem); font-weight:600; letter-spacing:-0.02em; line-height:1.15; }

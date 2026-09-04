@@ -215,45 +215,16 @@
     }
   }
 
-  /* ---------- Custom cursor + magnetic buttons (fine pointer only) ---------- */
+  /* ---------- Bagliore che segue il mouse sulle schede ----------
+     Qui c'era anche un cursore disegnato (puntino + anello) che sostituiva
+     quello di sistema, piu' i pulsanti magnetici: tolti su richiesta, si e'
+     tornati al cursore normale del computer. Resta solo il tracciamento
+     della posizione, che serve al bagliore delle schede (vedi la regola
+     'Card spotlight glow' nel foglio di stile). */
   if(window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    root.classList.add('has-fine-cursor');
-    var cursorDot = document.querySelector('.cursor-dot');
-    var cursorRing = document.querySelector('.cursor-ring');
-    var ringX = 0, ringY = 0, mouseX = 0, mouseY = 0;
-
     window.addEventListener('mousemove', function(e){
-      mouseX = e.clientX; mouseY = e.clientY;
-      root.classList.add('cursor-active');
-      cursorDot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
-      root.style.setProperty('--glow-x', mouseX);
-      root.style.setProperty('--glow-y', mouseY);
-    });
-    window.addEventListener('mouseleave', function(){ root.classList.remove('cursor-active'); });
-
-    function ringLoop(){
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      cursorRing.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)';
-      requestAnimationFrame(ringLoop);
-    }
-    requestAnimationFrame(ringLoop);
-
-    var hoverables = document.querySelectorAll('a, button, summary, .audience-card, .benefit-card');
-    hoverables.forEach(function(el){
-      el.addEventListener('mouseenter', function(){ root.classList.add('cursor-hover'); });
-      el.addEventListener('mouseleave', function(){ root.classList.remove('cursor-hover'); });
-    });
-
-    var magnets = document.querySelectorAll('.btn-primary');
-    magnets.forEach(function(el){
-      el.addEventListener('mousemove', function(e){
-        var r = el.getBoundingClientRect();
-        var mx = (e.clientX - r.left - r.width / 2) * 0.35;
-        var my = (e.clientY - r.top - r.height / 2) * 0.5;
-        el.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
-      });
-      el.addEventListener('mouseleave', function(){ el.style.transform = ''; });
+      root.style.setProperty('--glow-x', e.clientX);
+      root.style.setProperty('--glow-y', e.clientY);
     });
   }
 
