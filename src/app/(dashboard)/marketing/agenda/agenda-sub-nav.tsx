@@ -15,7 +15,7 @@ export function AgendaSubNav() {
   const pathname = usePathname();
 
   return (
-    <div className="inline-flex rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 p-1 self-start">
+    <div className="glass-card inline-flex rounded-lg p-1 self-start">
       {ITEMS.map(({ href, label }) => {
         const active = pathname === href;
         return (
@@ -25,7 +25,7 @@ export function AgendaSubNav() {
             className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
               active
                 ? "bg-accent text-[var(--accent-fg)] shadow-sm"
-                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             }`}
           >
             {label}

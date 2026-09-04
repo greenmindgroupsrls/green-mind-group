@@ -17,7 +17,10 @@ export function MarketingNav({ isRoot }: { isRoot: boolean }) {
   const items = isRoot ? [...ITEMS, ...ROOT_ITEMS] : ITEMS;
 
   return (
-    <nav className="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-white/10">
+    // La barra sta su vetro e non direttamente sullo sfondo colorato: il
+    // verde del testo li' sopra sembrava grigio, e per essere leggibile su
+    // quel fondo avrebbe dovuto essere ancora piu' scuro.
+    <nav className="glass-card rounded-xl rounded-b-none border-b-0 flex gap-1 overflow-x-auto px-1 pt-1">
       {items.map(({ href, label }) => {
         // "Agenda" resta evidenziata anche su /marketing/agenda/contatti,
         // che e' una sua sotto-pagina (vedi AgendaSubNav), non una voce a
@@ -31,7 +34,10 @@ export function MarketingNav({ isRoot }: { isRoot: boolean }) {
             href={href}
             className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
               active
-                ? "border-accent text-accent"
+                ? // Il sottolineato e' un elemento grafico, non testo:
+                  // puo' portare il verde vivo del marchio. L'etichetta usa
+                  // il verde piu' scuro, che sulla scheda chiara si legge.
+                  "border-[var(--accent)] text-accent"
                 : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
             }`}
           >

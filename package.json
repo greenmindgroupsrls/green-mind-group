@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "backup": "node --experimental-strip-types scripts/backup.mts"
+    "backup": "node --experimental-strip-types scripts/backup.mts",
+    "dev:vetrina": "NEXT_PUBLIC_SUPABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= next dev -p 3011"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.71.0",
