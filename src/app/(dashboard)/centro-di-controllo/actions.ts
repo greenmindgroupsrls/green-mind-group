@@ -112,27 +112,44 @@ export async function updatePlan2Settings(
     return { error: "Non autorizzato", success: false };
   }
 
-  const diretta = Number(formData.get("plan2_direct_rate"));
-  const passUp = Number(formData.get("plan2_passup_rate"));
-  const pool = Number(formData.get("plan2_pool_rate"));
-  const quota = Number(formData.get("plan2_passup_quota"));
-  const royalDiretti = Number(formData.get("plan2_royal_directs"));
+  const num = (k: string) => Number(String(formData.get(k) ?? "").replace(",", "."));
 
-  if ([diretta, passUp, pool].some((v) => Number.isNaN(v) || v < 0)) {
-    return { error: "Tariffe non valide", success: false };
+  const diretta = num("plan2_direct_pct");
+  const passUp = num("plan2_passup_pct");
+  const royal = num("plan2_royal_pct");
+  const upline = num("plan2_upline_pct");
+  const iva = num("vat_rate");
+  const quota = num("plan2_passup_quota");
+  const royalDiretti = num("plan2_royal_directs");
+
+  const percentuali = [diretta, passUp, royal, upline];
+  if (percentuali.some((v) => Number.isNaN(v) || v < 0)) {
+    return { error: "Percentuali non valide", success: false };
+  }
+  const somma = percentuali.reduce((a, b) => a + b, 0);
+  if (somma > 100) {
+    return {
+      error: `Le percentuali sommano al ${somma}%: non si può distribuire più del fatturato`,
+      success: false,
+    };
+  }
+  if (Number.isNaN(iva) || iva < 0 || iva > 100) {
+    return { error: "Aliquota IVA non valida", success: false };
   }
   if (!Number.isInteger(quota) || quota < 0) {
     return { error: "Il numero di vendite da cedere non è valido", success: false };
   }
   if (!Number.isInteger(royalDiretti) || royalDiretti < 1) {
-    return { error: "Servono almeno 1 VIP diretto per la qualifica Royal", success: false };
+    return { error: "Serve almeno 1 VIP per la qualifica Royal", success: false };
   }
 
   const supabase = await createClient();
   const { error } = await supabase.rpc("admin_update_plan2_settings", {
-    p_direct_rate: diretta,
-    p_passup_rate: passUp,
-    p_pool_rate: pool,
+    p_direct_pct: diretta,
+    p_passup_pct: passUp,
+    p_royal_pct: royal,
+    p_upline_pct: upline,
+    p_vat_rate: iva,
     p_passup_quota: quota,
     p_royal_directs: royalDiretti,
   });

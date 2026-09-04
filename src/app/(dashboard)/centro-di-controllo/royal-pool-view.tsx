@@ -6,7 +6,11 @@ import { settleRoyalPool, type RoyalPoolState } from "./actions";
 
 export type RoyalPoolInfo = {
   accantonato: number;
+  // Quota maturata dove sopra non c'era nessun Royal: resta margine
+  // aziendale e non entra nella liquidazione.
+  trattenutoAzienda: number;
   vendite: number;
+  spettanze: { codice: number; username: string; importo: number }[];
   royalQualificati: number;
   ultimaChiusura: { data: string; totale: number; quantiRoyal: number; quota: number } | null;
 };
@@ -20,12 +24,7 @@ function euro(v: number) {
 export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
   const [state, action, pending] = useActionState(settleRoyalPool, initialState);
 
-  const quotaPrevista =
-    info.royalQualificati > 0
-      ? Math.floor((info.accantonato / info.royalQualificati) * 100) / 100
-      : 0;
-
-  const puoChiudere = info.accantonato > 0 && info.royalQualificati > 0;
+  const puoChiudere = info.accantonato > 0 && info.spettanze.length > 0;
 
   return (
     <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#151129] shadow-sm p-6 max-w-xl">
@@ -34,28 +33,48 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Royal Pool</h3>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-        Quota accantonata a ogni pezzo venduto, divisa in parti uguali fra chi ha la qualifica
-        Royal. Si chiude quando decidi tu: non parte da sola.
+        A ogni vendita la quota va al primo Royal che si incontra risalendo la struttura: ognuno
+        matura sul fatturato del proprio gruppo, non su un fondo comune. Si chiude quando decidi
+        tu: non parte da sola.
       </p>
 
       <div className="grid grid-cols-2 gap-3 mt-5">
         <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-3">
-          <p className="text-xs text-gray-500 dark:text-gray-400">Accantonato</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Da distribuire</p>
           <p className="text-lg font-semibold text-gray-900 dark:text-white tabular-nums">
             {euro(info.accantonato)}
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500">su {info.vendite} vendite</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            a {info.spettanze.length} {info.spettanze.length === 1 ? "Royal" : "Royal"}, su{" "}
+            {info.vendite} vendite
+          </p>
         </div>
         <div className="rounded-lg bg-gray-50 dark:bg-white/5 p-3">
-          <p className="text-xs text-gray-500 dark:text-gray-400">Royal qualificati</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Resta all&apos;azienda</p>
           <p className="text-lg font-semibold text-gray-900 dark:text-white tabular-nums">
-            {info.royalQualificati}
+            {euro(info.trattenutoAzienda)}
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500">
-            {puoChiudere ? `${euro(quotaPrevista)} a testa` : "nessun beneficiario"}
+            vendite senza nessun Royal sopra
           </p>
         </div>
       </div>
+
+      {info.spettanze.length > 0 && (
+        <ul className="mt-4 flex flex-col gap-1.5">
+          {info.spettanze.map((s) => (
+            <li
+              key={s.codice}
+              className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 dark:bg-white/5 px-3 py-2 text-sm"
+            >
+              <span className="text-gray-600 dark:text-gray-300 truncate">{s.username}</span>
+              <span className="font-medium text-gray-900 dark:text-white tabular-nums shrink-0">
+                {euro(s.importo)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {info.ultimaChiusura && (
         <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
@@ -77,8 +96,8 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
         {!puoChiudere && (
           <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             {info.accantonato <= 0
-              ? "Non c'è ancora nulla da distribuire."
-              : "Nessuno ha ancora la qualifica Royal: le somme restano accantonate."}
+              ? "Non c'è ancora nulla da distribuire ai Royal."
+              : "Nessun Royal ha maturato una quota: le somme restano accantonate."}
           </p>
         )}
 
@@ -86,8 +105,7 @@ export function RoyalPoolView({ info }: { info: RoyalPoolInfo }) {
             meglio dirlo che far tornare i conti a metà. */}
         {puoChiudere && (
           <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-            L&apos;operazione accredita le quote e non si può annullare. Gli eventuali centesimi
-            di resto restano nel pool per la chiusura successiva.
+            L&apos;operazione accredita a ciascuno la propria quota e non si può annullare.
           </p>
         )}
       </form>

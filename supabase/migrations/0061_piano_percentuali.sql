@@ -61,3 +61,14 @@ alter table royal_pool_entries
 
 create index if not exists royal_pool_entries_beneficiario_idx
   on royal_pool_entries (beneficiary_code) where settlement_id is null;
+
+-- Il Centro di controllo governa le percentuali e l'aliquota IVA, non piu'
+-- degli importi in euro. Il controllo sulla somma serve a fermare l'errore
+-- di battitura che distribuirebbe piu' del fatturato.
+-- (Il corpo di admin_update_plan2_settings() e' stato applicato al database
+-- con la migration corrispondente.)
+
+alter table compensation_settings
+  drop column if exists plan2_direct_rate,
+  drop column if exists plan2_passup_rate,
+  drop column if exists plan2_pool_rate;

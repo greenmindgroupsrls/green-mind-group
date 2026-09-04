@@ -59,6 +59,7 @@ export default async function ControlCenterPage() {
     { data: auditRows },
     { data: compensationRow },
     { data: poolRows },
+    { data: prodottiRows },
     { data: ultimaChiusuraRow },
   ] = await Promise.all([
     supabase.from("members").select("*").order("activity_code", { ascending: true }),
@@ -77,11 +78,12 @@ export default async function ControlCenterPage() {
     supabase
       .from("compensation_settings")
       .select(
-        "plan2_active_from, plan2_direct_rate, plan2_passup_rate, plan2_pool_rate, plan2_passup_quota, plan2_royal_directs",
+        "plan2_active_from, plan2_direct_pct, plan2_passup_pct, plan2_royal_pct, plan2_upline_pct, vat_rate, plan2_passup_quota, plan2_royal_directs",
       )
       .eq("id", 1)
       .single(),
-    supabase.from("royal_pool_entries").select("amount, settlement_id"),
+    supabase.from("royal_pool_entries").select("amount, settlement_id, beneficiary_code"),
+    supabase.from("products").select("name, price").eq("active", true).order("id"),
     supabase
       .from("royal_pool_settlements")
       .select("settled_at, total_amount, royal_count, share")
@@ -157,18 +159,39 @@ export default async function ControlCenterPage() {
           year: "numeric",
         })
       : null,
-    direttaRate: compensationRow?.plan2_direct_rate ?? 170,
-    passUpRate: compensationRow?.plan2_passup_rate ?? 80,
-    poolRate: compensationRow?.plan2_pool_rate ?? 31.72,
+    direttaPct: Number(compensationRow?.plan2_direct_pct ?? 16),
+    passUpPct: Number(compensationRow?.plan2_passup_pct ?? 7),
+    royalPct: Number(compensationRow?.plan2_royal_pct ?? 3),
+    uplinePct: Number(compensationRow?.plan2_upline_pct ?? 2),
+    ivaPct: Number(compensationRow?.vat_rate ?? 22),
     passUpQuota: compensationRow?.plan2_passup_quota ?? 2,
     royalDiretti: compensationRow?.plan2_royal_directs ?? 10,
+    prodotti: (prodottiRows ?? []).map((p) => ({ nome: p.name, prezzo: Number(p.price) })),
   };
 
   // Stato del Royal Pool: quanto c'e' da distribuire e a quanti.
   const poolDaLiquidare = (poolRows ?? []).filter((r) => r.settlement_id === null);
+  // Ogni quota nasce gia' intestata: si raggruppa per beneficiario invece di
+  // dividere un totale in parti uguali, che non e' piu' come funziona.
+  const perRoyal = new Map<number, number>();
+  for (const r of poolDaLiquidare) {
+    if (r.beneficiary_code === null || r.beneficiary_code === 0) continue;
+    perRoyal.set(r.beneficiary_code, (perRoyal.get(r.beneficiary_code) ?? 0) + Number(r.amount));
+  }
+
   const royalPool: RoyalPoolInfo = {
-    accantonato: poolDaLiquidare.reduce((somma, r) => somma + Number(r.amount), 0),
+    accantonato: [...perRoyal.values()].reduce((s, v) => s + v, 0),
+    trattenutoAzienda: poolDaLiquidare
+      .filter((r) => r.beneficiary_code === null || r.beneficiary_code === 0)
+      .reduce((s, r) => s + Number(r.amount), 0),
     vendite: poolDaLiquidare.length,
+    spettanze: [...perRoyal.entries()]
+      .map(([codice, importo]) => ({
+        codice,
+        username: byCode.get(codice)?.username ?? String(codice),
+        importo,
+      }))
+      .sort((a, b) => b.importo - a.importo),
     royalQualificati: members.filter(
       (m) => m.activity_code !== 0 && ranks[m.activity_code] === "royal",
     ).length,
