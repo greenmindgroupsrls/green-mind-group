@@ -24,7 +24,7 @@ export function AgendaSubNav() {
             href={href}
             className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
               active
-                ? "bg-accent text-[var(--accent-fg)] shadow-sm"
+                ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-sm"
                 : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             }`}
           >

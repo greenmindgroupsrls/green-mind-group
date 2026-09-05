@@ -38,7 +38,7 @@ export function AnnouncementComposer() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-accent px-3.5 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="glass-btn-primary rounded-lg px-3.5 py-2 text-xs font-medium disabled:opacity-50"
         >
           {pending ? "Pubblicazione..." : "Pubblica"}
         </button>

@@ -17,10 +17,10 @@ export function MarketingNav({ isRoot }: { isRoot: boolean }) {
   const items = isRoot ? [...ITEMS, ...ROOT_ITEMS] : ITEMS;
 
   return (
-    // La barra sta su vetro e non direttamente sullo sfondo colorato: il
-    // verde del testo li' sopra sembrava grigio, e per essere leggibile su
-    // quel fondo avrebbe dovuto essere ancora piu' scuro.
-    <nav className="glass-card rounded-xl rounded-b-none border-b-0 flex gap-1 overflow-x-auto px-1 pt-1">
+    // Barra su vetro, voci a pillola. Il verde fluo non puo' fare ne'
+    // testo ne' bordo su fondo chiaro (1,3:1): si usa come riempimento, con
+    // sopra un testo scuro, che invece si legge benissimo.
+    <nav className="glass-card inline-flex gap-1 overflow-x-auto p-1.5 self-start max-w-full">
       {items.map(({ href, label }) => {
         // "Agenda" resta evidenziata anche su /marketing/agenda/contatti,
         // che e' una sua sotto-pagina (vedi AgendaSubNav), non una voce a
@@ -32,13 +32,10 @@ export function MarketingNav({ isRoot }: { isRoot: boolean }) {
           <Link
             key={href}
             href={href}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
               active
-                ? // Il sottolineato e' un elemento grafico, non testo:
-                  // puo' portare il verde vivo del marchio. L'etichetta usa
-                  // il verde piu' scuro, che sulla scheda chiara si legge.
-                  "border-[var(--accent)] text-accent"
-                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-[0_4px_14px_-4px_var(--glow-primary)]"
+                : "text-gray-600 dark:text-gray-300 hover:bg-[var(--glass-bg)] hover:text-gray-900 dark:hover:text-white"
             }`}
           >
             {label}

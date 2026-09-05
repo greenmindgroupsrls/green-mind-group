@@ -17,9 +17,9 @@
 :root {
   --background: #dfe4f5;
   --foreground: #12141d;
-  --accent: #4d7f0c;
-  --accent-ink: #3d660a;
-  --accent-fg: #ffffff;
+  --accent: #a3e635;        /* verde fluo: riempimenti e stati attivi */
+  --accent-ink: #3d660a;    /* verde profondo: testo e collegamenti */
+  --accent-fg: #16240a;     /* quasi nero: il testo SOPRA il fluo */
   --tree-line: #ccd2e8;
 
   /* Vetro chiaro: la superficie deve restare abbastanza densa da
@@ -39,16 +39,16 @@
     0 20px 40px -10px rgba(20, 26, 55, 0.26),
     0 48px 88px -28px rgba(20, 26, 55, 0.30);
 
-  --ring-focus: rgba(90, 147, 13, 0.32);
-  --glow-primary: rgba(90, 147, 13, 0.28);
+  --ring-focus: rgba(120, 180, 30, 0.4);
+  --glow-primary: rgba(163, 230, 53, 0.45);
 }
 
 .dark {
   --background: #08081a;
   --foreground: #e9eaf6;
-  --accent: #82cc12;
+  --accent: #a3e635;
   --accent-ink: #9ade2a;
-  --accent-fg: #0b1503;
+  --accent-fg: #16240a;
   --tree-line: #2c2955;
 
   --glass-bg: rgba(255, 255, 255, 0.055);
@@ -67,7 +67,7 @@
     0 48px 88px -40px rgba(0, 0, 0, 0.65);
 
   --ring-focus: rgba(130, 204, 18, 0.35);
-  --glow-primary: rgba(130, 204, 18, 0.22);
+  --glow-primary: rgba(163, 230, 53, 0.35);
 }
 
 @theme inline {

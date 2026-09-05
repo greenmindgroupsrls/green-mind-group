@@ -28,7 +28,7 @@ export function ShopHeader({ isRoot = false }: { isRoot?: boolean }) {
           <ShoppingCart size={18} />
           Carrello
           {count > 0 && (
-            <span className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-accent text-[var(--accent-fg)] text-[11px] font-semibold flex items-center justify-center">
+            <span className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] text-[11px] font-semibold flex items-center justify-center">
               {count}
             </span>
           )}

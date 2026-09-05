@@ -280,7 +280,7 @@ export function LeadCalendar({ leads }: { leads: CalendarLead[] }) {
               <span
                 className={`inline-flex items-center justify-center h-5 min-w-5 px-1 rounded-full text-[11px] font-medium ${
                   isOggi
-                    ? "bg-accent text-[var(--accent-fg)]"
+                    ? "bg-[var(--accent)] text-[var(--accent-fg)]"
                     : delMese
                       ? "text-gray-700 dark:text-gray-300"
                       : "text-gray-400 dark:text-gray-600"

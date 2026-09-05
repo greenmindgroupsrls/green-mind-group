@@ -114,7 +114,7 @@ export function AvatarUpload({
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-accent text-[var(--accent-fg)] flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50"
         aria-label="Cambia immagine profilo"
         title="Cambia immagine profilo"
       >

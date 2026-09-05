@@ -144,7 +144,7 @@ export function AppShell({
       >
         <div className="h-16 flex items-center justify-between gap-2 px-6 border-b border-gray-200 dark:border-white/10">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="h-8 w-8 shrink-0 rounded-lg bg-accent flex items-center justify-center text-white font-bold">
+            <div className="h-8 w-8 shrink-0 rounded-lg bg-[var(--accent)] flex items-center justify-center text-[var(--accent-fg)] font-bold">
               G
             </div>
             <span className="font-semibold text-gray-900 dark:text-white truncate">
@@ -259,7 +259,7 @@ export function AppShell({
               >
                 <Bell size={18} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 h-4 min-w-4 px-1 rounded-full bg-accent text-[var(--accent-fg)] text-[10px] font-semibold flex items-center justify-center">
+                  <span className="absolute top-1 right-1 h-4 min-w-4 px-1 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] text-[10px] font-semibold flex items-center justify-center">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
