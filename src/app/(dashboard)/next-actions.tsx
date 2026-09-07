@@ -71,11 +71,15 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
       .eq("activity_code", activityCode)
       .neq("status", "rejected"),
     supabase.rpc("is_profile_complete", { p_activity_code: activityCode }),
+    // I contatti da richiamare, non i lead: la tabella leads la puo' leggere
+    // solo l'azienda, quindi questo conteggio per un incaricato restava
+    // sempre a zero e l'avviso non compariva mai. Il lead assegnato adesso
+    // diventa un contatto suo, che invece vede.
     supabase
-      .from("leads")
+      .from("crm_contacts")
       .select("id")
-      .eq("assigned_to", activityCode)
-      .is("appointment_at", null),
+      .eq("owner_code", activityCode)
+      .eq("status", "da_chiamare"),
     supabase
       .from("messages")
       .select("id")
@@ -136,8 +140,8 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
     }
   }
 
-  // 3. Lead assegnati senza appuntamento: sono persone che hanno chiesto di
-  //    essere contattate e stanno aspettando.
+  // 3. Contatti ancora da chiamare: le persone che hanno chiesto di essere
+  //    contattate e stanno aspettando una telefonata.
   const lead = leadDaChiamare?.length ?? 0;
   if (lead > 0) {
     azioni.push({
@@ -145,7 +149,7 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
       icona: PhoneCall,
       testo: lead === 1 ? T.leadUno : riempi(T.leadMolti, { n: lead }),
       dettaglio: T.leadDettaglio,
-      href: "/marketing/lead",
+      href: "/marketing/agenda/contatti",
       etichettaLink: T.leadLink,
       urgente: true,
     });

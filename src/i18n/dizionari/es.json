@@ -116,7 +116,7 @@
     "prelievoLink": "Solicitar la retirada",
     "leadUno": "Tienes 1 contacto por llamar",
     "leadMolti": "Tienes {n} contactos por llamar",
-    "leadDettaglio": "Han pedido que los contacten y aún no tienen cita.",
+    "leadDettaglio": "Han pedido que los contacten: los encuentras en Marketing > Agenda > Contactos.",
     "leadLink": "Ir a los contactos",
     "messaggiUno": "Tienes 1 mensaje sin leer",
     "messaggiMolti": "Tienes {n} mensajes sin leer",

@@ -116,7 +116,7 @@
     "prelievoLink": "Demander un retrait",
     "leadUno": "Vous avez 1 contact à rappeler",
     "leadMolti": "Vous avez {n} contacts à rappeler",
-    "leadDettaglio": "Ils ont demandé à être contactés et n'ont pas encore de rendez-vous.",
+    "leadDettaglio": "Ils ont demandé à être contactés : vous les trouverez dans Marketing > Agenda > Contacts.",
     "leadLink": "Voir les contacts",
     "messaggiUno": "Vous avez 1 message non lu",
     "messaggiMolti": "Vous avez {n} messages non lus",
