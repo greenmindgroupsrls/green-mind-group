@@ -6,6 +6,7 @@ import { formatActivityCode } from "@/lib/activity-code";
 import { StatCard } from "@/components/stat-card";
 import { ExportCsvButton } from "./export-csv-button";
 import { etichettaProvvigione, coloreProvvigione } from "@/lib/piano-compensi";
+import { getDizionario } from "@/i18n/dizionario";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -22,6 +23,8 @@ function formatDate(iso: string) {
 }
 
 export default async function PayoutCommissioniPage() {
+  const T = (await getDizionario()).payout;
+  const TP = (await getDizionario()).provvigioni;
   const [currentMember, network] = await Promise.all([getCurrentMember(), loadNetworkData()]);
   const code = network.usingMockData ? 0 : (currentMember?.activity_code ?? 0);
 
@@ -46,16 +49,16 @@ export default async function PayoutCommissioniPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <StatCard icon={Wallet} label="Saldo disponibile" value={formatEuro(totalCommissions)} tone="accent" />
-        <StatCard icon={Clock} label="Commissioni in sospeso" value={formatEuro(0)} tone="amber" />
-        <StatCard icon={Banknote} label="Prelievi totali" value={formatEuro(0)} tone="rose" />
-        <StatCard icon={TrendingUp} label="Guadagni totali" value={formatEuro(totalCommissions)} tone="emerald" />
+        <StatCard icon={Wallet} label={T.saldoDisponibile} value={formatEuro(totalCommissions)} tone="accent" />
+        <StatCard icon={Clock} label={T.commissioniInSospeso} value={formatEuro(0)} tone="amber" />
+        <StatCard icon={Banknote} label={T.prelieviTotali} value={formatEuro(0)} tone="rose" />
+        <StatCard icon={TrendingUp} label={T.guadagniTotali} value={formatEuro(totalCommissions)} tone="emerald" />
       </div>
 
       <div className="glass-card overflow-hidden">
         <div className="px-6 py-4 border-b border-[var(--glass-edge)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-gray-900 dark:text-white">Movimenti commissioni</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.movimentiCommissioni}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Chi ha generato la vendita, sotto quale forma di commissione e quanto hai ricevuto
             </p>
@@ -68,10 +71,10 @@ export default async function PayoutCommissioniPage() {
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">#</th>
-                <th className="px-6 py-2 font-medium">Utente</th>
-                <th className="px-6 py-2 font-medium">Categoria</th>
-                <th className="px-6 py-2 font-medium text-right">Importo</th>
-                <th className="px-6 py-2 font-medium">Data</th>
+                <th className="px-6 py-2 font-medium">{T.colUtente}</th>
+                <th className="px-6 py-2 font-medium">{T.colCategoria}</th>
+                <th className="px-6 py-2 font-medium text-right">{T.colImporto}</th>
+                <th className="px-6 py-2 font-medium">{T.colData}</th>
               </tr>
             </thead>
             <tbody>
@@ -92,7 +95,7 @@ export default async function PayoutCommissioniPage() {
                     <span
                       className={`text-xs font-medium rounded-full px-2.5 py-1 ${coloreProvvigione(r.kind, r.level)}`}
                     >
-                      {etichettaProvvigione(r.kind, r.level)}
+                      {etichettaProvvigione(r.kind, r.level, TP)}
                     </span>
                   </td>
                   <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">

@@ -4,20 +4,23 @@ import { Download } from "lucide-react";
 import { formatActivityCode } from "@/lib/activity-code";
 import type { CommissionRow } from "@/lib/payout-data";
 import { etichettaProvvigione } from "@/lib/piano-compensi";
+import { useTesti } from "@/i18n/testi-client";
 
 function csvEscape(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
 }
 
 export function ExportCsvButton({ rows }: { rows: CommissionRow[] }) {
+  const T = useTesti().payout;
+  const TP = useTesti().provvigioni;
   function handleExport() {
-    const header = ["Data", "Utente", "Codice", "Categoria", "Importo (EUR)"];
+    const header = [T.colData, T.colUtente, T.colCodice, T.colCategoria, T.importoEur];
     const lines = rows.map((r) =>
       [
         new Date(r.createdAt).toLocaleDateString("it-IT"),
         r.sellerUsername,
         formatActivityCode(r.sellerCode),
-        etichettaProvvigione(r.kind, r.level),
+        etichettaProvvigione(r.kind, r.level, TP),
         r.amount.toFixed(2).replace(".", ","),
       ]
         .map(csvEscape)

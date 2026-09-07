@@ -6,18 +6,30 @@ import type { CommissionKind } from "./commissions";
 // il piano precedente non ce l'hanno e si leggono dal livello: 0 era la
 // vendita propria, 1-3 le commissioni dai livelli superiori. Le due forme
 // convivono perche' lo storico non si riscrive.
-export function etichettaProvvigione(kind: CommissionKind | null, level: number): string {
+export type TestiProvvigione = {
+  diretta: string;
+  passUp: string;
+  upline: string;
+  poolRoyal: string;
+  livello: string;
+};
+
+export function etichettaProvvigione(
+  kind: CommissionKind | null,
+  level: number,
+  T: TestiProvvigione,
+): string {
   switch (kind) {
     case "diretta":
-      return "Vendita diretta";
+      return T.diretta;
     case "pass_up":
-      return "Pass-up VIP";
+      return T.passUp;
     case "upline":
-      return "Indennizzo linea ceduta";
+      return T.upline;
     case "pool_royal":
-      return "Quota Royal Pool";
+      return T.poolRoyal;
     default:
-      return level === 0 ? "Vendita diretta" : `Commissione Livello ${level}`;
+      return level === 0 ? T.diretta : T.livello.replaceAll("{n}", String(level));
   }
 }
 

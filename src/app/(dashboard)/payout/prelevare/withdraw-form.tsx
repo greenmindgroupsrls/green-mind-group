@@ -9,6 +9,7 @@ import {
 import { useActionState, useEffect, useRef, useState } from "react";
 import { requestWithdrawal, type WithdrawalState } from "./actions";
 import { MIN_WITHDRAWAL_AMOUNT, WITHDRAWAL_CHARGE } from "@/lib/withdrawals";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: WithdrawalState = { error: null, success: false };
 
@@ -21,6 +22,7 @@ function formatEuro(value: number) {
 }
 
 export function WithdrawForm({ availableBalance }: { availableBalance: number }) {
+  const T = useTesti().payout;
   const [state, formAction, pending] = useActionState(requestWithdrawal, initialState);
   const banca = useBankValidation();
   const formRef = useRef<HTMLFormElement>(null);
@@ -44,13 +46,13 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
     <form ref={formRef} action={formAction} className="flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Portafoglio</span>
+          <span className={labelClass}>{T.portafoglio}</span>
           <p className="h-11 flex items-center rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-gray-400 px-3.5 text-sm">
             Portafoglio commissioni
           </p>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Metodo di pagamento</span>
+          <span className={labelClass}>{T.metodoPagamento}</span>
           <p className="h-11 flex items-center rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-gray-400 px-3.5 text-sm">
             Bonifico bancario
           </p>
@@ -58,7 +60,7 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Importo *</span>
+        <span className={labelClass}>{T.importoObbl}</span>
         <input
           name="amount"
           type="number"
@@ -75,11 +77,11 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5 sm:col-span-2">
-          <span className={labelClass}>Nome banca e indirizzo *</span>
+          <span className={labelClass}>{T.nomeBanca}</span>
           <input name="bank_name" required className={inputClass} placeholder="es. N26" />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>IBAN *</span>
+          <span className={labelClass}>{T.iban}</span>
           <input
             name="iban"
             required
@@ -94,14 +96,14 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
           {banca.ibanOk && <MessaggioOk testo="IBAN valido" />}
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Tipo di conto</span>
+          <span className={labelClass}>{T.tipoConto}</span>
           <select name="account_type" defaultValue="Corrente" className={inputClass}>
-            <option value="Corrente">Corrente</option>
-            <option value="Risparmio">Risparmio</option>
+            <option value="Corrente">{T.corrente}</option>
+            <option value="Risparmio">{T.risparmio}</option>
           </select>
         </label>
         <label className="flex flex-col gap-1.5 sm:col-span-2">
-          <span className={labelClass}>Codice SWIFT/BIC</span>
+          <span className={labelClass}>{T.swift}</span>
           <input
             name="swift_code"
             value={banca.swift}
@@ -120,25 +122,25 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
 
       <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5 rounded-lg border border-gray-200 dark:border-white/10 px-4">
         <div className="flex items-center justify-between py-2.5 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">Saldo disponibile</span>
+          <span className="text-gray-500 dark:text-gray-400">{T.saldoDisponibile}</span>
           <span className="font-medium text-emerald-600 dark:text-emerald-400">
             {formatEuro(availableBalance)}
           </span>
         </div>
         <div className="flex items-center justify-between py-2.5 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">Importo minimo prelevabile</span>
+          <span className="text-gray-500 dark:text-gray-400">{T.importoMinimo}</span>
           <span className="font-medium text-gray-900 dark:text-white">
             {formatEuro(MIN_WITHDRAWAL_AMOUNT)}
           </span>
         </div>
         <div className="flex items-center justify-between py-2.5 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">Commissioni</span>
+          <span className="text-gray-500 dark:text-gray-400">{T.commissioni}</span>
           <span className="font-medium text-gray-900 dark:text-white">
             {formatEuro(WITHDRAWAL_CHARGE)}
           </span>
         </div>
         <div className="flex items-center justify-between py-2.5 text-sm">
-          <span className="text-gray-600 dark:text-gray-300 font-medium">Netto da ricevere</span>
+          <span className="text-gray-600 dark:text-gray-300 font-medium">{T.nettoDaRicevere}</span>
           <span className="font-medium text-gray-900 dark:text-white">
             {netAmount !== null ? formatEuro(netAmount) : "—"}
           </span>
@@ -150,7 +152,7 @@ export function WithdrawForm({ availableBalance }: { availableBalance: number })
         disabled={pending || availableBalance < MIN_WITHDRAWAL_AMOUNT}
         className="self-start glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-50"
       >
-        {pending ? "Invio in corso..." : "Richiedi prelievo"}
+        {pending ? T.invioInCorso : T.richiediPrelievoBtn}
       </button>
 
       {availableBalance < MIN_WITHDRAWAL_AMOUNT && (

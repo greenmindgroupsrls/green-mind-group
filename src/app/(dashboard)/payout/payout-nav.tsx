@@ -2,19 +2,23 @@
 
 import { usePathname } from "next/navigation";
 import { TabBar, TabLink } from "@/components/tab-bar";
-
-const ITEMS = [
-  { href: "/payout", label: "Panoramica" },
-  { href: "/payout/commissioni", label: "Commissioni" },
-  { href: "/payout/prelevare", label: "Prelevare" },
-];
+import { useTesti } from "@/i18n/testi-client";
 
 export function PayoutNav() {
   const pathname = usePathname();
+  const T = useTesti().payout;
+
+  // Le etichette dipendono dalla lingua, quindi l'elenco vive dentro il
+  // componente: fuori, T non esiste ancora.
+  const items = [
+    { href: "/payout", label: T.panoramica },
+    { href: "/payout/commissioni", label: T.commissioni },
+    { href: "/payout/prelevare", label: T.prelevare },
+  ];
 
   return (
     <TabBar>
-      {ITEMS.map(({ href, label }) => (
+      {items.map(({ href, label }) => (
         <TabLink key={href} href={href} attiva={pathname === href}>
           {label}
         </TabLink>

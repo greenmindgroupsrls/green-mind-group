@@ -12,6 +12,7 @@ import {
 import { MOCK_WITHDRAWALS } from "@/lib/mock-withdrawals";
 import { WithdrawForm } from "./withdraw-form";
 import { WithdrawalStatusActions } from "./withdrawal-status-actions";
+import { getDizionario } from "@/i18n/dizionario";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -26,6 +27,7 @@ function formatDate(iso: string) {
 }
 
 export default async function PayoutPrelevarePage() {
+  const T = (await getDizionario()).payout;
   const [currentMember, network] = await Promise.all([getCurrentMember(), loadNetworkData()]);
   const code = network.usingMockData ? 0 : (currentMember?.activity_code ?? 0);
   const isRoot = code === 0;
@@ -63,7 +65,7 @@ export default async function PayoutPrelevarePage() {
 
       <div className="glass-card">
         <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-          <h2 className="font-semibold text-gray-900 dark:text-white">Richiedi un prelievo</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-white">{T.richiediPrelievo}</h2>
         </div>
         <div className="p-6">
           {network.loadFailed ? (
@@ -87,16 +89,16 @@ export default async function PayoutPrelevarePage() {
 
       <div className="glass-card overflow-hidden">
         <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-          <h2 className="font-semibold text-gray-900 dark:text-white">Le tue richieste</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-white">{T.leTueRichieste}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                <th className="px-6 py-2 font-medium">Importo</th>
-                <th className="px-6 py-2 font-medium">IBAN</th>
-                <th className="px-6 py-2 font-medium">Stato</th>
-                <th className="px-6 py-2 font-medium">Data</th>
+                <th className="px-6 py-2 font-medium">{T.colImporto}</th>
+                <th className="px-6 py-2 font-medium">{T.iban.replace(" *","")}</th>
+                <th className="px-6 py-2 font-medium">{T.colStato}</th>
+                <th className="px-6 py-2 font-medium">{T.colData}</th>
               </tr>
             </thead>
             <tbody>
@@ -133,7 +135,7 @@ export default async function PayoutPrelevarePage() {
       {isRoot && (
         <div className="glass-card overflow-hidden">
           <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Richieste da gestire</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.richiesteDaGestire}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Tutte le richieste di prelievo della rete
             </p>
@@ -142,12 +144,12 @@ export default async function PayoutPrelevarePage() {
             <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                  <th className="px-6 py-2 font-medium">Utente</th>
-                  <th className="px-6 py-2 font-medium">Importo</th>
-                  <th className="px-6 py-2 font-medium">Banca / IBAN</th>
-                  <th className="px-6 py-2 font-medium">Stato</th>
-                  <th className="px-6 py-2 font-medium">Data</th>
-                  <th className="px-6 py-2 font-medium">Azioni</th>
+                  <th className="px-6 py-2 font-medium">{T.colUtente}</th>
+                  <th className="px-6 py-2 font-medium">{T.colImporto}</th>
+                  <th className="px-6 py-2 font-medium">{T.colBancaIban}</th>
+                  <th className="px-6 py-2 font-medium">{T.colStato}</th>
+                  <th className="px-6 py-2 font-medium">{T.colData}</th>
+                  <th className="px-6 py-2 font-medium">{T.colAzioni}</th>
                 </tr>
               </thead>
               <tbody>
