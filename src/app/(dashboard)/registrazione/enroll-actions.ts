@@ -4,6 +4,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentMember } from "@/lib/current-member";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type CommissionEntryResult = {
   beneficiary_code: number;
@@ -97,7 +99,7 @@ export async function enrollMemberWithSale(
 
     enrollError = error;
     const isDuplicateUsername =
-      error?.code === "23505" || (error?.message ?? "").toLowerCase().includes("duplicate");
+      error?.code === "23505" || (messaggioErrore(error, await getDizionario())).toLowerCase().includes("duplicate");
     if (!isDuplicateUsername) break;
   }
 

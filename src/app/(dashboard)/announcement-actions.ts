@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type AnnouncementState = {
   error: string | null;
@@ -21,7 +23,7 @@ export async function postAnnouncement(
   const supabase = await createClient();
   const { error } = await supabase.rpc("create_announcement", { p_title: title, p_body: body });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/");
   return { error: null, success: true };

@@ -5,6 +5,8 @@ import { revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { runCompleteRegistration, notifySponsorOfNewReferral } from "@/lib/complete-registration";
 import { parseActivityCode } from "@/lib/activity-code";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type CompleteRegistrationState = {
   error: string | null;
@@ -53,7 +55,7 @@ export async function completeRegistration(
   });
 
   if (error) {
-    return { error: error.message };
+    return { error: messaggioErrore(error, await getDizionario()) };
   }
 
   if (newMember) await notifySponsorOfNewReferral(newMember);

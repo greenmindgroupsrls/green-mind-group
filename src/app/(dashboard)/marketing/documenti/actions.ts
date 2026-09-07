@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export async function setMarketingDocument(docType: string, fileUrl: string, fileName: string) {
   const member = await getCurrentMember();
@@ -17,7 +19,7 @@ export async function setMarketingDocument(docType: string, fileUrl: string, fil
     p_file_name: fileName,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   revalidatePath("/marketing/documenti");
 }
@@ -35,7 +37,7 @@ export async function setBusinessCardTemplate(side: "front" | "back", fileUrl: s
     p_file_name: fileName,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   revalidatePath("/marketing/documenti");
 }

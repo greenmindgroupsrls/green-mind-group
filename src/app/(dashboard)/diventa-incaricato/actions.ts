@@ -7,6 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import { CONTRACT_VERSION } from "@/lib/contract-version";
 import { validaIban, validaBic, validaCoerenza } from "@/lib/bank-validation";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type BecomeIncaricatoState = {
   error: string | null;
@@ -143,7 +145,7 @@ export async function signIncaricatoContract(
     p_signed_user_agent: userAgent,
   });
 
-  if (error) return { error: error.message };
+  if (error) return { error: messaggioErrore(error, await getDizionario()) };
 
   revalidateTag("network-data", { expire: 0 });
   redirect("/diventa-incaricato/fatto");

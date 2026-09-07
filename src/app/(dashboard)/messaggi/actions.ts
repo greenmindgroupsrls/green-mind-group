@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { parseActivityCode } from "@/lib/activity-code";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type SendMessageState = {
   error: string | null;
@@ -34,7 +36,7 @@ export async function sendMessage(
   });
 
   if (error) {
-    return { error: error.message, success: false };
+    return { error: messaggioErrore(error, await getDizionario()), success: false };
   }
 
   revalidatePath("/messaggi");

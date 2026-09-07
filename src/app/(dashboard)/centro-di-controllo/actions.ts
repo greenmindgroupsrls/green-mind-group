@@ -4,6 +4,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import type { Rank } from "@/lib/rank";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 async function requireRoot() {
   const member = await getCurrentMember();
@@ -50,7 +52,7 @@ export async function updateMemberProfile(
     p_username: username || null,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/centro-di-controllo");
   return { error: null, success: true };
@@ -67,7 +69,7 @@ export async function setMemberRankOverride(targetCode: number, rank: Rank | nul
     p_rank: rank,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   revalidatePath("/centro-di-controllo");
   revalidatePath("/");
@@ -85,7 +87,7 @@ export async function setMemberPurchaseOverride(targetCode: number, bought: bool
     p_bought: bought,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   // Cambia una soglia di qualifica: i rank vanno ricalcolati ovunque si
   // vedano, esattamente come per il rank forzato.
@@ -104,7 +106,7 @@ export async function suspendMember(targetCode: number, reason: string | null) {
     p_reason: reason,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   revalidatePath("/centro-di-controllo");
 }
@@ -117,7 +119,7 @@ export async function unsuspendMember(targetCode: number) {
     p_target_code: targetCode,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   revalidatePath("/centro-di-controllo");
 }
@@ -174,7 +176,7 @@ export async function updatePlan2Settings(
     p_royal_directs: royalDiretti,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/centro-di-controllo");
   return { error: null, success: true };
@@ -201,7 +203,7 @@ export async function settleRoyalPool(
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("liquida_royal_pool").single();
 
-  if (error) return { error: error.message, esito: null };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), esito: null };
 
   const chiusura = data as { total_amount: number; royal_count: number; share: number };
   revalidatePath("/centro-di-controllo");
@@ -247,7 +249,7 @@ export async function updateProductPrices(
 
   const supabase = await createClient();
   const { error } = await supabase.rpc("admin_update_product_prices", { p_prezzi: prezzi });
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/centro-di-controllo");
   revalidatePath("/shop");

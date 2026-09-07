@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import { formatActivityCode } from "@/lib/activity-code";
 import { sendNewShopOrderNotification } from "@/lib/email";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type CheckoutItem = { product_id: number; quantity: number };
 
@@ -76,7 +78,7 @@ export async function placeOrder(
     .single();
 
   if (error || !order) {
-    return { error: error?.message ?? "Errore nella creazione dell'ordine", success: null };
+    return { error: messaggioErrore(error, await getDizionario()), success: null };
   }
 
   const orderRow = order as { id: number; total_amount: number };

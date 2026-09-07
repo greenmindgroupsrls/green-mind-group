@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import type { InviteType, GuestStatus } from "@/lib/events";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 async function requireRoot() {
   const member = await getCurrentMember();
@@ -42,7 +44,7 @@ export async function createEvent(_prevState: EventState, formData: FormData): P
   const supabase = await createClient();
   const { error } = await supabase.rpc("create_event", fields);
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/eventi");
   return { error: null, success: true };
@@ -65,7 +67,7 @@ export async function updateEvent(_prevState: EventState, formData: FormData): P
   const supabase = await createClient();
   const { error } = await supabase.rpc("update_event", { p_id: id, ...fields });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/eventi");
   return { error: null, success: true };
@@ -75,7 +77,7 @@ export async function deleteEvent(id: number) {
   await requireRoot();
   const supabase = await createClient();
   const { error } = await supabase.rpc("delete_event", { p_id: id });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/eventi");
 }
 
@@ -117,7 +119,7 @@ export async function inviteGuest(_prevState: GuestState, formData: FormData): P
     consented_at: new Date().toISOString(),
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/eventi");
   revalidatePath("/marketing/eventi");
@@ -142,7 +144,7 @@ export async function updateGuest(_prevState: GuestState, formData: FormData): P
     .update({ first_name: firstName, last_name: lastName, phone, email })
     .eq("id", id);
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/eventi");
   return { error: null, success: true };
@@ -151,13 +153,13 @@ export async function updateGuest(_prevState: GuestState, formData: FormData): P
 export async function updateGuestStatus(id: number, status: GuestStatus) {
   const supabase = await createClient();
   const { error } = await supabase.from("event_guests").update({ status }).eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/eventi");
 }
 
 export async function deleteGuest(id: number) {
   const supabase = await createClient();
   const { error } = await supabase.from("event_guests").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/eventi");
 }

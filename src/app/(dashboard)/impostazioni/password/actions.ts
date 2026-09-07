@@ -1,6 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type PasswordState = {
   error: string | null;
@@ -24,7 +26,7 @@ export async function changePassword(
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   return { error: null, success: true };
 }

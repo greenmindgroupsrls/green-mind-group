@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export async function setCallScript(id: number, label: string, body: string) {
   const supabase = await createClient();
@@ -10,7 +12,7 @@ export async function setCallScript(id: number, label: string, body: string) {
     p_label: label,
     p_body: body,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing");
 }
 
@@ -20,7 +22,7 @@ export async function addCallScript(label: string, body: string) {
     p_label: label,
     p_body: body,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing");
   return data as { id: number; label: string; body: string };
 }

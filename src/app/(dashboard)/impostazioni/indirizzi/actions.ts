@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type AddressState = {
   error: string | null;
@@ -36,7 +38,7 @@ export async function addAddress(
     p_type: type,
   });
 
-  if (error) return { error: error.message };
+  if (error) return { error: messaggioErrore(error, await getDizionario()) };
 
   revalidatePath("/impostazioni/indirizzi");
   return { error: null };

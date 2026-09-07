@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import type { ContactStatus, TaskKind, TaskRecurrence } from "@/lib/crm";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 function nextDueAt(dueAt: string, recurrence: TaskRecurrence): string | null {
   const d = new Date(dueAt);
@@ -39,7 +41,7 @@ export async function createTask(_prevState: TaskState, formData: FormData): Pro
     recurrence,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/agenda");
   return { error: null, success: true };
@@ -69,7 +71,7 @@ export async function updateTask(_prevState: TaskState, formData: FormData): Pro
     })
     .eq("id", id);
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/agenda");
   return { error: null, success: true };
@@ -143,7 +145,7 @@ export async function createAppointment(
     notes: notes || null,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   // Lo stato "Appuntamento" del contatto non si scrive più qui: è derivato
   // al volo dall'esistenza di questa attività ancora aperta (vedi
@@ -180,7 +182,7 @@ export async function createContact(
     notes: notes || null,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/agenda/contatti");
   return { error: null, success: true };
@@ -210,7 +212,7 @@ export async function updateContact(_prevState: ContactState, formData: FormData
     })
     .eq("id", id);
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   revalidatePath("/agenda/contatti");
   revalidatePath("/agenda");

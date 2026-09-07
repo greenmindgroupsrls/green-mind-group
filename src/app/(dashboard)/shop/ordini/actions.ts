@@ -4,6 +4,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { sendOrderStatusEmail } from "@/lib/email";
 import type { ShopOrder, ShopOrderStatus } from "@/lib/shop-orders";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export async function setOrderStatus(id: number, status: ShopOrderStatus) {
   const supabase = await createClient();
@@ -37,7 +39,7 @@ export async function setOrderStatus(id: number, status: ShopOrderStatus) {
 export async function confirmOrderPayment(id: number) {
   const supabase = await createClient();
   const { error } = await supabase.rpc("conferma_pagamento_ordine", { p_order_id: id });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
 
   // Le provvigioni appena create cambiano i dati di rete.
   revalidateTag("network-data", { expire: 0 });

@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/server";
 import { runCompleteRegistration, notifySponsorOfNewReferral } from "@/lib/complete-registration";
 import { parseActivityCode } from "@/lib/activity-code";
 import { SITE_URL } from "@/lib/email";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type LoginState = {
   error: string | null;
@@ -96,7 +98,7 @@ export async function signUp(
   });
 
   if (error) {
-    return { error: error.message, checkEmail: false };
+    return { error: messaggioErrore(error, await getDizionario()), checkEmail: false };
   }
 
   if (!data.session) {
@@ -185,7 +187,7 @@ export async function updatePassword(
 
   const { error } = await supabase.auth.updateUser({ password });
   if (error) {
-    return { error: error.message };
+    return { error: messaggioErrore(error, await getDizionario()) };
   }
 
   redirect("/");

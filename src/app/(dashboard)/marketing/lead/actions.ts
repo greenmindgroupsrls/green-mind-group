@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export async function updateLeadStatus(id: number, status: string) {
   const supabase = await createClient();
@@ -9,7 +11,7 @@ export async function updateLeadStatus(id: number, status: string) {
     p_id: id,
     p_status: status,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing/lead");
 }
 
@@ -19,7 +21,7 @@ export async function assignLead(id: number, memberCode: number) {
     p_id: id,
     p_member_code: memberCode,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing/lead");
 }
 
@@ -40,7 +42,7 @@ export async function setLeadAppointment(id: number, appointmentAt: string | nul
     p_id: id,
     p_appointment_at: iso,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing/lead");
 }
 
@@ -50,6 +52,6 @@ export async function setLeadAppointment(id: number, appointmentAt: string | nul
 export async function deleteLead(id: number) {
   const supabase = await createClient();
   const { error } = await supabase.rpc("admin_delete_lead", { p_lead_id: id });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(messaggioErrore(error, await getDizionario()));
   revalidatePath("/marketing/lead");
 }

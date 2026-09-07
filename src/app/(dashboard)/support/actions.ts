@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember } from "@/lib/current-member";
 import { formatActivityCode } from "@/lib/activity-code";
 import { sendTicketConfirmationEmail, sendNewSupportTicketNotification } from "@/lib/email";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type SupportTicketState = {
   error: string | null;
@@ -29,7 +31,7 @@ export async function createSupportTicket(
     .single();
 
   if (error || !ticket) {
-    return { error: error?.message ?? "Errore nell'apertura del ticket", success: null };
+    return { error: messaggioErrore(error, await getDizionario()), success: null };
   }
 
   const ticketRow = ticket as { id: number; topic: string };

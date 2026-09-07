@@ -7,6 +7,8 @@ import { formatActivityCode } from "@/lib/activity-code";
 import { sendWithdrawalStatusEmail, sendNewWithdrawalRequestNotification } from "@/lib/email";
 import type { WithdrawalRequest, WithdrawalStatus } from "@/lib/withdrawals";
 import { validaIban, validaBic, validaCoerenza } from "@/lib/bank-validation";
+import { messaggioErrore } from "@/i18n/errori";
+import { getDizionario } from "@/i18n/dizionario";
 
 export type WithdrawalState = {
   error: string | null;
@@ -49,7 +51,7 @@ export async function requestWithdrawal(
     p_swift_code: swiftCode || null,
   });
 
-  if (error) return { error: error.message, success: false };
+  if (error) return { error: messaggioErrore(error, await getDizionario()), success: false };
 
   if (member && member.activity_code !== 0) {
     const { data: root } = await supabase.from("members").select("email").eq("activity_code", 0).single();
