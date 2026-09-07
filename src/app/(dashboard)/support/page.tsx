@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CheckCircle2, Circle, GraduationCap } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
+import { getDizionario } from "@/i18n/dizionario";
 
 type ChecklistItem = {
   label: string;
@@ -11,6 +12,7 @@ type ChecklistItem = {
 };
 
 export default async function SupportAcademyPage() {
+  const T = (await getDizionario()).supporto;
   if (!supabaseConfigured()) {
     return (
       <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">
@@ -64,28 +66,28 @@ export default async function SupportAcademyPage() {
 
   const items: ChecklistItem[] = [
     {
-      label: "Completa il tuo profilo (telefono e paese)",
+      label: T.completaProfilo,
       done: !!profile?.phone_number && !!country?.country,
       href: "/impostazioni",
-      cta: "Vai al profilo",
+      cta: T.vaiAlProfilo,
     },
     {
-      label: "Carica un documento KYC",
+      label: T.caricaKyc,
       done: !!kyc,
       href: "/impostazioni/documenti",
-      cta: "Carica documento",
+      cta: T.caricaDocumento,
     },
     {
-      label: "Registra la tua prima vendita",
+      label: T.primaVendita,
       done: !!ownSale,
       href: "/registrazione",
-      cta: "Vai a Registrazione",
+      cta: T.vaiRegistrazione,
     },
     {
-      label: "Invita il tuo primo iscritto",
+      label: T.primoIscritto,
       done: !!referral,
       href: "/marketing",
-      cta: "Vai a Marketing",
+      cta: T.vaiMarketing,
     },
   ];
 
@@ -98,7 +100,7 @@ export default async function SupportAcademyPage() {
           <GraduationCap size={20} />
         </div>
         <div>
-          <h2 className="font-semibold text-gray-900 dark:text-white">Il tuo percorso di avvio</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-white">{T.percorsoAvvio}</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             {doneCount}/{items.length} completati
           </p>

@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { updateProfile, type ProfileState } from "./actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { PersonalLinkField } from "@/components/personal-link-field";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: ProfileState = { error: null, success: false };
 
@@ -43,6 +44,7 @@ type ProfileValues = {
 };
 
 export function ProfileForm({ initial }: { initial: ProfileValues }) {
+  const T = useTesti().impostazioni;
   const [state, formAction, pending] = useActionState(updateProfile, initialState);
   const [accountType, setAccountType] = useState(initial.accountType || "individual");
 
@@ -76,38 +78,38 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Username</span>
+          <span className={labelClass}>{T.username}</span>
           <p className={readOnlyClass}>{initial.username}</p>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Email</span>
+          <span className={labelClass}>{T.email}</span>
           <p className={readOnlyClass}>{initial.email}</p>
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Nome</span>
+          <span className={labelClass}>{T.nome}</span>
           <input name="first_name" required defaultValue={initial.firstName} className={inputClass} />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Cognome</span>
+          <span className={labelClass}>{T.cognome}</span>
           <input name="last_name" required defaultValue={initial.lastName} className={inputClass} />
         </label>
 
         {accountType === "company" && (
           <label className="flex flex-col gap-1.5 col-span-2">
-            <span className={labelClass}>Ragione sociale</span>
+            <span className={labelClass}>{T.ragioneSociale}</span>
             <input
               name="company_name"
               required
               defaultValue={initial.companyName}
               className={inputClass}
-              placeholder="Nome dell'azienda"
+              placeholder={T.nomeAzienda}
             />
           </label>
         )}
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Paese</span>
+          <span className={labelClass}>{T.paese}</span>
           <select
             name="country"
             defaultValue={initial.country || "Italia"}
@@ -121,7 +123,7 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
           </select>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Data di nascita</span>
+          <span className={labelClass}>{T.dataNascita}</span>
           <input
             name="date_of_birth"
             type="date"
@@ -131,7 +133,7 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Telefono</span>
+          <span className={labelClass}>{T.telefono}</span>
           <div className="flex gap-2">
             <select
               name="phone_country_code"
@@ -154,23 +156,23 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
         <PersonalLinkField slug={initial.personalDomain} />
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>{accountType === "company" ? "Partita IVA" : "Codice fiscale"}</span>
+          <span className={labelClass}>{accountType === "company" ? T.partitaIva : T.codiceFiscale}</span>
           <input name="tax_id" defaultValue={initial.taxId} className={inputClass} />
         </label>
         {accountType === "company" && (
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Codice Univoco</span>
+            <span className={labelClass}>{T.codiceUnivoco}</span>
             <input
               name="sdi_code"
               defaultValue={initial.sdiCode}
               className={inputClass}
-              placeholder="Codice destinatario SDI"
+              placeholder={T.codiceSdi}
             />
           </label>
         )}
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Fuso orario</span>
+          <span className={labelClass}>{T.fusoOrario}</span>
           <select
             name="timezone"
             defaultValue={initial.timezone || "Europe/Rome"}
@@ -184,7 +186,7 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
           </select>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Valuta</span>
+          <span className={labelClass}>{T.valuta}</span>
           <select name="currency" defaultValue={initial.currency || "EUR"} className={inputClass}>
             {CURRENCIES.map((c) => (
               <option key={c} value={c}>
@@ -200,7 +202,7 @@ export function ProfileForm({ initial }: { initial: ProfileValues }) {
         disabled={pending}
         className="self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
       >
-        {pending ? "Salvataggio..." : "Salva profilo"}
+        {pending ? T.salvataggio : T.salvaProfilo}
       </button>
 
       {state.error && (

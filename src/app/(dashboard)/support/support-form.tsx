@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import { createSupportTicket, type SupportTicketState } from "./actions";
 import { SUPPORT_TOPICS, supportTopicLabel } from "@/lib/support-topics";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: SupportTicketState = { error: null, success: null };
 
@@ -11,6 +12,7 @@ const inputClass =
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function SupportForm() {
+  const T = useTesti().supporto;
   const [state, formAction, pending] = useActionState(createSupportTicket, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -22,7 +24,7 @@ export function SupportForm() {
     <div className="flex flex-col gap-6">
       <form ref={formRef} action={formAction} className="flex flex-col gap-5">
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Argomento *</span>
+          <span className={labelClass}>{T.argomento}</span>
           <select name="topic" required defaultValue="" className={inputClass}>
             <option value="" disabled>
               Seleziona un argomento
@@ -36,13 +38,13 @@ export function SupportForm() {
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Messaggio *</span>
+          <span className={labelClass}>{T.messaggio}</span>
           <textarea
             name="message"
             required
             rows={6}
             className={`${inputClass} resize-none`}
-            placeholder="Descrivi il problema o la tua richiesta..."
+            placeholder={T.descrivi}
           />
         </label>
 
@@ -51,7 +53,7 @@ export function SupportForm() {
           disabled={pending}
           className="self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
         >
-          {pending ? "Invio in corso..." : "Invia"}
+          {pending ? T.invioInCorso : T.invia}
         </button>
 
         {state.error && (

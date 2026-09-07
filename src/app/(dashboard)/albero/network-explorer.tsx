@@ -7,6 +7,7 @@ import { MemberAvatar } from "@/components/member-avatar";
 import { PanZoomViewport } from "@/components/pan-zoom-viewport";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
 import { formatActivityCode } from "@/lib/activity-code";
+import { useTesti } from "@/i18n/testi-client";
 
 const RANK_BADGE_CLASS: Record<Rank, string> = {
   standard: "bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300",
@@ -116,6 +117,7 @@ export function NetworkExplorer({
   rootCode: number;
   avatars: Record<number, string>;
 }) {
+  const T = useTesti().albero;
   const [selectedCode, setSelectedCode] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [notFound, setNotFound] = useState(false);
@@ -196,7 +198,7 @@ export function NetworkExplorer({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="Cerca username"
+            placeholder={T.cercaUsername}
             className="pl-9 pr-3 py-2 text-sm glass-input w-full sm:w-64"
           />
         </div>
@@ -215,7 +217,7 @@ export function NetworkExplorer({
             Reset
           </button>
           {notFound && (
-            <span className="text-sm text-red-600 dark:text-red-400">Nessun risultato</span>
+            <span className="text-sm text-red-600 dark:text-red-400">{T.nessunRisultato}</span>
           )}
         </div>
       </div>
@@ -223,7 +225,7 @@ export function NetworkExplorer({
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 mt-6">
         <div className="glass-card">
           {!root ? (
-            <p className="text-gray-500 dark:text-gray-400 p-8">Nessun dato.</p>
+            <p className="text-gray-500 dark:text-gray-400 p-8">{T.nessunDato}</p>
           ) : (
             <PanZoomViewport>
               <ul className="org-tree">
@@ -264,10 +266,10 @@ export function NetworkExplorer({
                 </div>
               </div>
 
-              <DetailRow icon={AtSign} label="Username" value={selected.username} />
+              <DetailRow icon={AtSign} label={T.username} value={selected.username} />
               <DetailRow
                 icon={Award}
-                label="Rank"
+                label={T.rank}
                 value={
                   <span
                     className={`inline-block text-xs font-medium rounded-full px-2 py-0.5 ${RANK_BADGE_CLASS[selectedRank]}`}
@@ -278,7 +280,7 @@ export function NetworkExplorer({
               />
               <DetailRow
                 icon={User}
-                label="Iscritto da (ref)"
+                label={T.iscrittoDa}
                 value={
                   refSponsor
                     ? `${formatActivityCode(refSponsor.activity_code)} ${refSponsor.username}`
@@ -287,11 +289,11 @@ export function NetworkExplorer({
               />
               <DetailRow
                 icon={GitBranch}
-                label="Posizione strutturale (sotto)"
+                label={T.posizioneStrutturale}
                 value={
                   structuralParent
                     ? `${formatActivityCode(structuralParent.activity_code)} ${structuralParent.username}`
-                    : "Company"
+                    : T.azienda
                 }
               />
               {refSponsor && structuralParent && refSponsor.activity_code !== structuralParent.activity_code && (
@@ -300,14 +302,14 @@ export function NetworkExplorer({
                     <ArrowUpRight size={16} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Pass-up</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{T.passUp}</p>
                     <p className="text-sm font-medium text-amber-700 dark:text-amber-400">
                       Spostato dalla posizione iniziale (ref) a quella attuale
                     </p>
                   </div>
                 </div>
               )}
-              <DetailRow icon={Users} label="Diretti strutturali" value={directsCount} />
+              <DetailRow icon={Users} label={T.direttiStrutturali} value={directsCount} />
             </div>
           )}
         </div>

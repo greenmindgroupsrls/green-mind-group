@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { sendMessage, type SendMessageState } from "./actions";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: SendMessageState = { error: null, success: false };
 
@@ -10,6 +11,7 @@ const inputClass =
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function MessageForm() {
+  const T = useTesti().messaggi;
   const [state, formAction, pending] = useActionState(sendMessage, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -30,12 +32,12 @@ export function MessageForm() {
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Oggetto *</span>
+        <span className={labelClass}>{T.oggetto}</span>
         <input name="subject" required className={inputClass} />
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Messaggio *</span>
+        <span className={labelClass}>{T.messaggio}</span>
         <textarea name="body" required rows={5} className={`${inputClass} resize-none`} />
       </label>
 
@@ -44,7 +46,7 @@ export function MessageForm() {
         disabled={pending}
         className="self-start glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
       >
-        {pending ? "Invio in corso..." : "Invia"}
+        {pending ? T.invioInCorso : T.invia}
       </button>
 
       {state.error && (

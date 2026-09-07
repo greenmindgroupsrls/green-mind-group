@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Camera } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { MemberAvatar } from "@/components/member-avatar";
+import { useTesti } from "@/i18n/testi-client";
 
 const AVATAR_SIZE = 256;
 
@@ -24,12 +25,13 @@ async function resizeToSquareJpeg(file: File, size = AVATAR_SIZE, quality = 0.85
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Impossibile elaborare l'immagine");
+  // Errori interni: il chiamante li cattura e mostra un testo tradotto.
+  if (!ctx) throw new Error("canvas 2d context non disponibile");
   ctx.drawImage(bitmap, sx, sy, cropSize, cropSize, 0, 0, size, size);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error("Impossibile comprimere l'immagine"))),
+      (blob) => (blob ? resolve(blob) : reject(new Error("toBlob ha restituito null"))),
       "image/jpeg",
       quality,
     );
@@ -45,6 +47,7 @@ export function AvatarUpload({
   username: string;
   avatarUrl: string | null;
 }) {
+  const T = useTesti().impostazioni;
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(avatarUrl);
@@ -56,7 +59,7 @@ export function AvatarUpload({
     if (!file) return;
 
     if (file.size > 20 * 1024 * 1024) {
-      setError("Immagine troppo grande (max 20MB)");
+      setError(T.immagineTroppoGrande);
       return;
     }
 
@@ -68,7 +71,7 @@ export function AvatarUpload({
       resized = await resizeToSquareJpeg(file);
     } catch {
       setUploading(false);
-      setError("Impossibile elaborare questa immagine, riprova con un altro file");
+      setError(T.immagineRiprova);
       return;
     }
 
@@ -115,8 +118,8 @@ export function AvatarUpload({
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
         className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50"
-        aria-label="Cambia immagine profilo"
-        title="Cambia immagine profilo"
+        aria-label={T.cambiaImmagine}
+        title={T.cambiaImmagine}
       >
         <Camera size={13} />
       </button>

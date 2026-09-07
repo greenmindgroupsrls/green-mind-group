@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { supabaseConfigured } from "@/lib/current-member";
 import { formatActivityCode } from "@/lib/activity-code";
 import { MessageForm } from "./message-form";
+import { getDizionario } from "@/i18n/dizionario";
 
 type MessageRow = {
   id: number;
@@ -16,10 +17,11 @@ type MessageRow = {
 };
 
 export default async function MessaggiPage() {
+  const T = (await getDizionario()).messaggi;
   if (!supabaseConfigured()) {
     return (
       <div className="p-8">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Messaggi</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
         <p className="text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2 mt-4 max-w-lg">
           Supabase non ancora collegato: i messaggi non sono disponibili in modalità demo.
         </p>
@@ -56,8 +58,8 @@ export default async function MessaggiPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Messaggi</h1>
-      <p className="text-gray-600 dark:text-gray-300 mt-1">Contatta un altro membro della rete.</p>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 mt-6">
         <div className="glass-card p-6 h-fit">

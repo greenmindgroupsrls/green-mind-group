@@ -6,6 +6,7 @@ import { enrollMemberWithSale, type EnrollState } from "./enroll-actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { formatActivityCode } from "@/lib/activity-code";
 import { PasswordInput } from "@/components/password-input";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: EnrollState = { error: null, success: null };
 
@@ -14,6 +15,7 @@ const inputClass =
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function EnrollForm() {
+  const T = useTesti().iscrizione;
   const [state, formAction, pending] = useActionState(enrollMemberWithSale, initialState);
   const [accountType, setAccountType] = useState<"individual" | "company">("individual");
   const [role, setRole] = useState<"cliente" | "incaricato">("cliente");
@@ -24,7 +26,7 @@ export function EnrollForm() {
       <form ref={formRef} action={formAction} className="flex flex-col gap-5">
         <div className="flex flex-wrap gap-4">
           <div className="flex flex-col gap-1.5">
-            <span className={labelClass}>Tipo di iscrizione</span>
+            <span className={labelClass}>{T.tipoIscrizione}</span>
             <div className="inline-flex rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-white/5 p-1 self-start">
               <button
                 type="button"
@@ -35,7 +37,7 @@ export function EnrollForm() {
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
-                Cliente
+                {T.cliente}
               </button>
               <button
                 type="button"
@@ -46,13 +48,13 @@ export function EnrollForm() {
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
-                Incaricato
+                {T.incaricato}
               </button>
             </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className={labelClass}>Tipo di account</span>
+            <span className={labelClass}>{T.tipoAccount}</span>
             <div className="inline-flex rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-white/5 p-1 self-start">
               <button
                 type="button"
@@ -63,7 +65,7 @@ export function EnrollForm() {
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
-                Privato
+                {T.privato}
               </button>
               <button
                 type="button"
@@ -74,7 +76,7 @@ export function EnrollForm() {
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
-                Azienda
+                {T.aziendaTipo}
               </button>
             </div>
           </div>
@@ -85,16 +87,16 @@ export function EnrollForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Nome *</span>
+            <span className={labelClass}>{T.nome}</span>
             <input name="first_name" required className={inputClass} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Cognome *</span>
+            <span className={labelClass}>{T.cognome}</span>
             <input name="last_name" required className={inputClass} />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Email *</span>
+            <span className={labelClass}>{T.email}</span>
             <input
               name="email"
               type="email"
@@ -104,7 +106,7 @@ export function EnrollForm() {
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Paese *</span>
+            <span className={labelClass}>{T.paese}</span>
             <select name="country" required defaultValue="Italia" className={inputClass}>
               {EUROPEAN_COUNTRIES.map((c) => (
                 <option key={c.iso2} value={c.name}>
@@ -115,7 +117,7 @@ export function EnrollForm() {
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Password *</span>
+            <span className={labelClass}>{T.password}</span>
             <PasswordInput
               name="password"
               required
@@ -127,17 +129,17 @@ export function EnrollForm() {
           {accountType === "company" ? (
             <>
               <label className="flex flex-col gap-1.5">
-                <span className={labelClass}>Ragione sociale *</span>
+                <span className={labelClass}>{T.ragioneSociale}</span>
                 <input name="company_name" required className={inputClass} />
               </label>
               <label className="flex flex-col gap-1.5">
-                <span className={labelClass}>Partita IVA</span>
+                <span className={labelClass}>{T.partitaIva}</span>
                 <input name="tax_id" className={inputClass} />
               </label>
             </>
           ) : (
             <label className="flex flex-col gap-1.5">
-              <span className={labelClass}>Codice Fiscale *</span>
+              <span className={labelClass}>{T.codiceFiscale}</span>
               <input name="tax_id" required className={inputClass} />
             </label>
           )}
@@ -187,7 +189,7 @@ export function EnrollForm() {
             disabled={pending}
             className="flex-1 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
           >
-            {pending ? "Iscrizione in corso..." : "Iscrivi"}
+            {pending ? T.iscrizioneInCorso : T.iscrivi}
           </button>
         </div>
 

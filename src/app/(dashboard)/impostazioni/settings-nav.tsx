@@ -3,17 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { User, MapPin, Info, FileText, KeyRound, CreditCard } from "lucide-react";
+import { useTesti } from "@/i18n/testi-client";
 
-const ITEMS = [
-  { href: "/impostazioni", label: "My Profile", icon: User },
-  { href: "/impostazioni/indirizzi", label: "Saved Addresses", icon: MapPin },
-  { href: "/impostazioni/about", label: "About Me", icon: Info },
-  { href: "/impostazioni/documenti", label: "KYC Documents", icon: FileText },
-  { href: "/impostazioni/password", label: "Change Password", icon: KeyRound },
-  { href: "/impostazioni/carte", label: "Saved Cards", icon: CreditCard },
-];
 
 export function SettingsNav() {
+  const T = useTesti().impostazioni;
+  // Le etichette dipendono dalla lingua: l'elenco vive dentro il componente.
+  const ITEMS = [
+    { href: "/impostazioni", label: T.profilo, icon: User },
+    { href: "/impostazioni/indirizzi", label: T.indirizzi, icon: MapPin },
+    { href: "/impostazioni/about", label: T.suDiMe, icon: Info },
+    { href: "/impostazioni/documenti", label: T.documentiKyc, icon: FileText },
+    { href: "/impostazioni/password", label: T.cambiaPassword, icon: KeyRound },
+    { href: "/impostazioni/carte", label: T.carteSalvate, icon: CreditCard },
+  ];
   const pathname = usePathname();
 
   return (

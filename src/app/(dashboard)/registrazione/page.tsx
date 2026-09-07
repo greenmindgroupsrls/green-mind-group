@@ -3,8 +3,10 @@ import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import { PersonalLinkField } from "@/components/personal-link-field";
 import { IncaricatoOnlyNotice } from "@/components/incaricato-only-notice";
 import { EnrollForm } from "./enroll-form";
+import { getDizionario } from "@/i18n/dizionario";
 
 export default async function RegistrazionePage() {
+  const T = (await getDizionario()).iscrizione;
   let slug: string | null = null;
   let isCliente = false;
 
@@ -24,7 +26,7 @@ export default async function RegistrazionePage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Registrazione</h1>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
         Registra un nuovo cliente o incaricato nella rete.
       </p>

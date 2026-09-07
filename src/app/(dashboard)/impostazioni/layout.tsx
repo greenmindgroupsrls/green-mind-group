@@ -4,12 +4,14 @@ import { supabaseConfigured } from "@/lib/current-member";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
 import { AvatarUpload } from "./avatar-upload";
 import { SettingsNav } from "./settings-nav";
+import { getDizionario } from "@/i18n/dizionario";
 
 export default async function ImpostazioniLayout({ children }: LayoutProps<"/impostazioni">) {
+  const T = (await getDizionario()).impostazioni;
   if (!supabaseConfigured()) {
     return (
       <div className="p-8">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Impostazioni</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
         <p className="text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2 mt-4 max-w-lg">
           Supabase non ancora collegato: le impostazioni non sono disponibili in modalità demo.
         </p>
@@ -51,8 +53,8 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Impostazioni</h1>
-      <p className="text-gray-600 dark:text-gray-300 mt-1">Il tuo profilo, documenti e sicurezza</p>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 mt-6">
         <div className="flex flex-col gap-4">
