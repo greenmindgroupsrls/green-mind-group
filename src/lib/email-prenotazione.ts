@@ -22,7 +22,8 @@ const DESTINATARIO_INTERNO = "greenmindgroupsrls@gmail.com";
 // Il sito prodotto sta sotto /company/: greenmindgroup.pro da solo e' il
 // back office, e un cliente che ci clicca finisce sulla pagina di accesso.
 // #prenota apre direttamente la finestra dell'appuntamento (vedi main.js).
-const PRENOTAZIONE_URL = "https://greenmindgroup.pro/company/#prenota";
+const SITO_PRODOTTO = "https://greenmindgroup.pro/company/";
+const PRENOTAZIONE_URL = `${SITO_PRODOTTO}#prenota`;
 
 // Palette VORTIX (tema chiaro, da public/company/css/style.css)
 const INK = "#0b2529";
@@ -193,7 +194,7 @@ function confermaCliente(p: Prenotazione, quando: string) {
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
         <tr><td style="padding:18px 32px;text-align:center;font-size:12px;line-height:1.7;color:${INK_FAINT};">
           Green Mind Group S.r.l.s.<br/>
-          <a href="https://greenmindgroup.pro" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
+          <a href="${SITO_PRODOTTO}" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
         </td></tr>
       </table>
 
@@ -218,7 +219,7 @@ function confermaCliente(p: Prenotazione, quando: string) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l.s. — greenmindgroup.pro",
+    "Green Mind Group S.r.l.s. — greenmindgroup.pro/company",
   ]
     .filter((r) => r !== "")
     .join("\n");
@@ -341,7 +342,7 @@ function emailBuono(b: BuonoSondaggio) {
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
         <tr><td style="padding:18px 32px;text-align:center;font-size:12px;line-height:1.7;color:${INK_FAINT};">
           Green Mind Group S.r.l.s.<br/>
-          <a href="https://greenmindgroup.pro" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
+          <a href="${SITO_PRODOTTO}" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
         </td></tr>
       </table>
 
@@ -368,7 +369,7 @@ function emailBuono(b: BuonoSondaggio) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l.s. — greenmindgroup.pro",
+    "Green Mind Group S.r.l.s. — greenmindgroup.pro/company",
   ].join("\n");
 
   return { html, text };
