@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import type { Product } from "@/lib/products";
+import { useTesti } from "@/i18n/testi-client";
 
 export function AddToCart({ product }: { product: Product }) {
+  const T = useTesti().shop;
   const { addItem } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -35,7 +37,7 @@ export function AddToCart({ product }: { product: Product }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Quantità</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{T.quantita}</span>
         <div className="flex items-center rounded-lg border border-gray-300 dark:border-white/10">
           <button
             type="button"
@@ -63,7 +65,7 @@ export function AddToCart({ product }: { product: Product }) {
           onClick={handleAdd}
           className="rounded-lg border border-accent text-accent px-5 py-2.5 text-sm font-medium hover:bg-accent/5 transition-colors"
         >
-          {added ? "Aggiunto ✓" : "Aggiungi al carrello"}
+          {added ? T.aggiunto : T.aggiungiAlCarrello}
         </button>
         <button
           type="button"

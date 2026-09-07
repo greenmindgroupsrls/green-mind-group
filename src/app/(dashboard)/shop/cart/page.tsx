@@ -4,20 +4,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
+import { useTesti } from "@/i18n/testi-client";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
 }
 
 export default function CartPage() {
+  const T = useTesti().shop;
   const { items, updateQuantity, removeItem, subtotal } = useCart();
 
   if (items.length === 0) {
     return (
       <div className="glass-card p-12 text-center">
-        <p className="text-gray-500 dark:text-gray-400 mb-4">Il tuo carrello è vuoto.</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-4">{T.carrelloVuoto}</p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
-          Torna al catalogo
+          {T.tornaAlCatalogo}
         </Link>
       </div>
     );
@@ -63,7 +65,7 @@ export default function CartPage() {
               type="button"
               onClick={() => removeItem(item.id)}
               className="text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
-              aria-label="Rimuovi"
+              aria-label={T.rimuovi}
             >
               <Trash2 size={16} />
             </button>
@@ -73,14 +75,14 @@ export default function CartPage() {
 
       <div className="glass-card p-6 h-fit">
         <div className="flex items-center justify-between text-sm mb-4">
-          <span className="text-gray-500 dark:text-gray-400">Subtotale</span>
+          <span className="text-gray-500 dark:text-gray-400">{T.subtotale}</span>
           <span className="font-semibold text-gray-900 dark:text-white">{formatEuro(subtotal)}</span>
         </div>
         <Link
           href="/shop/checkout"
           className="block text-center glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
         >
-          Procedi al checkout
+          {T.procediAlCheckout}
         </Link>
       </div>
     </div>

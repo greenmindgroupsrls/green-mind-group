@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import type { Product } from "@/lib/products";
+import { useTesti } from "@/i18n/testi-client";
 
 export function AddToCartButton({ product }: { product: Product }) {
+  const T = useTesti().shop;
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -26,7 +28,7 @@ export function AddToCartButton({ product }: { product: Product }) {
       onClick={handleClick}
       className="mt-4 w-full glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
     >
-      {added ? "Aggiunto ✓" : "Aggiungi al carrello"}
+      {added ? T.aggiunto : T.aggiungiAlCarrello}
     </button>
   );
 }

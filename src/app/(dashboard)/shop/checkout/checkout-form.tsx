@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import { placeOrder, verificaCoupon, type CheckoutState } from "./actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { StreetAutocompleteInput, type AddressSuggestion } from "@/components/street-autocomplete-input";
+import { useTesti, riempiTesto } from "@/i18n/testi-client";
 
 const initialState: CheckoutState = { error: null, success: null };
 
@@ -20,6 +21,7 @@ function formatEuro(value: number) {
 const emptyAddress = { street: "", city: "", region: "", postalCode: "", country: "Italia" };
 
 export function CheckoutForm() {
+  const T = useTesti().shop;
   const { items, subtotal, clear } = useCart();
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
   const [prevSuccess, setPrevSuccess] = useState(state.success);
@@ -41,7 +43,7 @@ export function CheckoutForm() {
         setScontoApplicato({ codice: coupon.trim().toUpperCase(), importo: esito.importo });
       } else {
         setScontoApplicato(null);
-        setCouponErrore(esito.motivo ?? "Codice non valido");
+        setCouponErrore(esito.motivo ?? T.codiceNonValido);
       }
     });
   }
@@ -74,13 +76,13 @@ export function CheckoutForm() {
     return (
       <div className="glass-card p-8 text-center max-w-md mx-auto">
         <p className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-          Ordine confermato
+          {T.ordineConfermato}
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-          Ordine #{state.success.orderId} ricevuto. Il nostro team lo evaderà a breve.
+          {riempiTesto(T.ordineRicevuto, { id: state.success.orderId })}
         </p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
-          Torna al catalogo
+          {T.tornaAlCatalogo}
         </Link>
       </div>
     );
@@ -89,9 +91,9 @@ export function CheckoutForm() {
   if (items.length === 0) {
     return (
       <div className="glass-card p-12 text-center">
-        <p className="text-gray-500 dark:text-gray-400 mb-4">Il tuo carrello è vuoto.</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-4">{T.carrelloVuoto}</p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
-          Torna al catalogo
+          {T.tornaAlCatalogo}
         </Link>
       </div>
     );
@@ -106,16 +108,16 @@ export function CheckoutForm() {
       />
 
       <div className="glass-card p-6 flex flex-col gap-4">
-        <h2 className="font-semibold text-gray-900 dark:text-white">Indirizzo di spedizione</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white">{T.indirizzoSpedizione}</h2>
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Nome destinatario *</span>
+          <span className={labelClass}>{T.nomeDestinatario}</span>
           <input name="recipient_name" required className={inputClass} />
         </label>
 
         <StreetAutocompleteInput
           name="street"
-          label="Indirizzo *"
+          label={T.indirizzo}
           value={address.street}
           onChange={(v) => setAddress((prev) => ({ ...prev, street: v }))}
           onSelect={handleSelectSuggestion}
@@ -126,7 +128,7 @@ export function CheckoutForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Città *</span>
+            <span className={labelClass}>{T.citta}</span>
             <input
               name="city"
               required
@@ -136,7 +138,7 @@ export function CheckoutForm() {
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>CAP *</span>
+            <span className={labelClass}>{T.cap}</span>
             <input
               name="postal_code"
               required
@@ -149,7 +151,7 @@ export function CheckoutForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Provincia</span>
+            <span className={labelClass}>{T.provincia}</span>
             <input
               name="region"
               value={address.region}
@@ -158,7 +160,7 @@ export function CheckoutForm() {
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Paese *</span>
+            <span className={labelClass}>{T.paese}</span>
             <select
               name="country"
               required
@@ -176,7 +178,7 @@ export function CheckoutForm() {
         </div>
 
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Telefono</span>
+          <span className={labelClass}>{T.telefono}</span>
           <input name="phone" className={inputClass} placeholder="opzionale" />
         </label>
 
@@ -188,7 +190,7 @@ export function CheckoutForm() {
       </div>
 
       <div className="glass-card p-6 h-fit flex flex-col gap-4">
-        <h2 className="font-semibold text-gray-900 dark:text-white">Riepilogo ordine</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white">{T.riepilogoOrdine}</h2>
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {items.map((item) => (
             <div key={item.id} className="flex items-center justify-between py-2 text-sm">
@@ -203,7 +205,7 @@ export function CheckoutForm() {
         </div>
         <div className="flex flex-col gap-2 pt-2 border-t border-gray-200 dark:border-white/10">
           <label className={labelClass} htmlFor="coupon">
-            Buono sconto
+            {T.buonoSconto}
           </label>
           {scontoApplicato ? (
             <div className="flex items-center justify-between gap-2 rounded-lg bg-[var(--accent)]/15 px-3 py-2">
@@ -215,7 +217,7 @@ export function CheckoutForm() {
                 onClick={rimuoviCoupon}
                 className="text-xs text-gray-600 dark:text-gray-300 hover:underline shrink-0"
               >
-                Rimuovi
+                {T.rimuovi}
               </button>
             </div>
           ) : (
@@ -237,7 +239,7 @@ export function CheckoutForm() {
                 disabled={couponPending || !coupon.trim()}
                 className="glass-btn-soft rounded-lg px-3 h-11 text-sm font-medium shrink-0 disabled:opacity-40"
               >
-                {couponPending ? "..." : "Applica"}
+                {couponPending ? "..." : T.applica}
               </button>
             </div>
           )}
@@ -249,12 +251,12 @@ export function CheckoutForm() {
 
         {sconto > 0 && (
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-300">Sconto</span>
+            <span className="text-gray-600 dark:text-gray-300">{T.sconto}</span>
             <span className="font-medium text-gray-900 dark:text-white">−{formatEuro(sconto)}</span>
           </div>
         )}
         <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-white/10 text-sm font-semibold">
-          <span className="text-gray-900 dark:text-white">Totale</span>
+          <span className="text-gray-900 dark:text-white">{T.totale}</span>
           <span className="text-gray-900 dark:text-white">{formatEuro(totale)}</span>
         </div>
         <button
@@ -262,7 +264,7 @@ export function CheckoutForm() {
           disabled={pending}
           className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
         >
-          {pending ? "Invio in corso..." : "Conferma ordine"}
+          {pending ? T.invioInCorso : T.confermaOrdine}
         </button>
       </div>
     </form>

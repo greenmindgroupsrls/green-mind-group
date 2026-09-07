@@ -9,6 +9,7 @@ import {
 } from "@/lib/shop-orders";
 import { OrderStatusSelect } from "./order-status-select";
 import { ConfirmPaymentButton } from "./confirm-payment-button";
+import { getDizionario } from "@/i18n/dizionario";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -19,6 +20,7 @@ function formatDate(iso: string) {
 }
 
 export default async function ShopOrdersPage() {
+  const T = (await getDizionario()).shop;
   if (!supabaseConfigured()) {
     return (
       <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">
@@ -56,24 +58,24 @@ export default async function ShopOrdersPage() {
     <div className="glass-card overflow-hidden">
       <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">
-          {isRoot ? "Ordini ricevuti" : "I tuoi ordini"}
+          {isRoot ? T.ordiniRicevuti : T.iTuoiOrdini}
         </h2>
         <p className="text-xs text-gray-500 dark:text-gray-400">
           {isRoot
-            ? "Tutte le richieste di acquisto dello shop, da evadere manualmente"
-            : "Storico e stato dei tuoi acquisti sullo shop"}
+            ? T.ordiniSottotitoloRoot
+            : T.ordiniSottotitolo}
         </p>
       </div>
       <div className="overflow-x-auto">
         <table className="glass-table w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-              {isRoot && <th className="px-6 py-2 font-medium">Utente</th>}
-              <th className="px-6 py-2 font-medium">Prodotti</th>
-              <th className="px-6 py-2 font-medium">Spedizione</th>
-              <th className="px-6 py-2 font-medium text-right">Totale</th>
-              <th className="px-6 py-2 font-medium">Data</th>
-              <th className="px-6 py-2 font-medium">Stato</th>
+              {isRoot && <th className="px-6 py-2 font-medium">{T.colUtente}</th>}
+              <th className="px-6 py-2 font-medium">{T.colProdotti}</th>
+              <th className="px-6 py-2 font-medium">{T.colSpedizione}</th>
+              <th className="px-6 py-2 font-medium text-right">{T.totale}</th>
+              <th className="px-6 py-2 font-medium">{T.colData}</th>
+              <th className="px-6 py-2 font-medium">{T.colStato}</th>
             </tr>
           </thead>
           <tbody>
@@ -146,7 +148,7 @@ export default async function ShopOrdersPage() {
             {orderRows.length === 0 && (
               <tr>
                 <td colSpan={isRoot ? 6 : 5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                  {isRoot ? "Nessun ordine ricevuto finora." : "Non hai ancora effettuato ordini."}
+                  {isRoot ? T.nessunOrdineRicevuto : T.nessunOrdine}
                 </td>
               </tr>
             )}

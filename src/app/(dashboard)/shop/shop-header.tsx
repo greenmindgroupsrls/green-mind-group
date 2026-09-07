@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { ShoppingCart, ClipboardList } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
+import { useTesti } from "@/i18n/testi-client";
 
 export function ShopHeader({ isRoot = false }: { isRoot?: boolean }) {
+  const T = useTesti().shop;
   const { count } = useCart();
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Shop</h1>
-        <p className="text-gray-600 dark:text-gray-300 mt-1">I prodotti Green Mind Group.</p>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
+        <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
       </div>
       <div className="flex items-center gap-3">
         <Link
@@ -19,7 +21,7 @@ export function ShopHeader({ isRoot = false }: { isRoot?: boolean }) {
           className="flex items-center gap-2 glass-btn-soft rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
         >
           <ClipboardList size={18} />
-          {isRoot ? "Ordini" : "I tuoi ordini"}
+          {isRoot ? T.ordini : T.iTuoiOrdini}
         </Link>
         <Link
           href="/shop/cart"
