@@ -66,6 +66,10 @@ export async function proxy(request: NextRequest) {
   // next.config.ts): pagina pubblica, non fa parte del back office, deve
   // restare raggiungibile da chiunque senza login.
   const isCompanyRoute = pathname.startsWith("/company");
+  // Il marchio serve alla pagina di accesso, cioe' a chi non ha ancora
+  // fatto l'accesso: mandarlo al login e' un giro a vuoto che finisce con
+  // un'immagine rotta proprio sulla prima schermata che si vede.
+  const isMarchioRoute = pathname.startsWith("/marchio/");
 
   // Lo slash finale e' necessario: la pagina Vortix usa path relativi tipo
   // "css/style.css", che senza "/company/" risolverebbero contro la radice
@@ -84,7 +88,8 @@ export async function proxy(request: NextRequest) {
     !isLegalRoute &&
     !isWebhookRoute &&
     !isPrenotazioneRoute &&
-    !isCompanyRoute
+    !isCompanyRoute &&
+    !isMarchioRoute
   ) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set("next", pathname);

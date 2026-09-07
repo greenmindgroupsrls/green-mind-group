@@ -1,5 +1,6 @@
 import { getDizionario } from "@/i18n/dizionario";
 import { AuthTabs } from "./auth-tabs";
+import { MarchioCompleto } from "@/components/marchio";
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
@@ -14,13 +15,8 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-md">
-        <div className="flex items-center gap-2 justify-center mb-8">
-          <div className="h-9 w-9 rounded-lg bg-[var(--accent)] flex items-center justify-center text-[var(--accent-fg)] font-bold">
-            G
-          </div>
-          <span className="font-semibold text-lg text-gray-900 dark:text-white">
-            Green Mind Group
-          </span>
+        <div className="flex justify-center mb-8">
+          <MarchioCompleto className="h-auto w-[190px]" priority />
         </div>
 
         <div className="glass-card p-6">

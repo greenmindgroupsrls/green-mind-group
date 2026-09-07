@@ -30,6 +30,7 @@ import { MemberAvatar } from "./member-avatar";
 import { formatActivityCode } from "@/lib/activity-code";
 import { createClient } from "@/lib/supabase/client";
 import type { RecentNotification } from "@/lib/notifications";
+import { MarchioSimbolo } from "./marchio";
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -144,9 +145,9 @@ export function AppShell({
       >
         <div className="h-16 flex items-center justify-between gap-2 px-6 border-b border-gray-200 dark:border-white/10">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="h-8 w-8 shrink-0 rounded-lg bg-[var(--accent)] flex items-center justify-center text-[var(--accent-fg)] font-bold">
-              G
-            </div>
+            {/* 40px e non 32: sotto quella misura il tratto del simbolo si
+                impasta e resta una macchia (provato alle misure vere). */}
+            <MarchioSimbolo className="h-10 w-auto shrink-0" priority />
             <span className="font-semibold text-gray-900 dark:text-white truncate">
               Green Mind Group
             </span>

@@ -16,7 +16,7 @@ function escapeHtml(value: string) {
 
 // Shell HTML condiviso da tutte le email — layout a tabelle (compatibilità
 // email client, niente flexbox/grid) coerente con il brand del back office:
-// header scuro con monogramma verde, corpo con tipografia leggibile,
+// header scuro col marchio in bianco, corpo con tipografia leggibile,
 // bottone d'azione opzionale, footer discreto. `bodyHtml` è già HTML
 // (i valori dinamici vanno passati già scappati con escapeHtml).
 function renderEmailHtml(params: {
@@ -37,8 +37,9 @@ function renderEmailHtml(params: {
               <td style="background-color:#0e0b21;padding:24px 32px;">
                 <table role="presentation" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td style="background-color:#5f9a0e;width:36px;height:36px;border-radius:9px;text-align:center;vertical-align:middle;">
-                      <span style="display:inline-block;color:#ffffff;font-size:18px;font-weight:700;line-height:36px;">G</span>
+                    <td style="width:44px;vertical-align:middle;">
+                      <img src="${SITE_URL}/marchio/simbolo-bianco.png" width="40" height="45" alt=""
+                           style="display:block;border:0;" />
                     </td>
                     <td style="padding-left:12px;color:#ffffff;font-size:16px;font-weight:600;">
                       Green Mind Group
