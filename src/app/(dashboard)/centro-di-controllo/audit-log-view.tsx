@@ -16,6 +16,8 @@ export type AuditLogRow = {
 const ACTION_LABELS: Record<string, string> = {
   rank_override_set: "Rank forzato",
   rank_override_cleared: "Rank forzato rimosso",
+  purchase_override_set: "Acquisto forzato",
+  purchase_override_cleared: "Acquisto forzato rimosso",
   member_profile_updated: "Anagrafica modificata",
   withdrawal_status_updated: "Stato prelievo aggiornato",
   shop_order_status_updated: "Stato ordine aggiornato",

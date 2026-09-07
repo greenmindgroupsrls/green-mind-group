@@ -54,6 +54,7 @@ export default async function ControlCenterPage() {
     { data: profileRows },
     { data: rankRows },
     { data: overrideRows },
+    { data: purchaseOverrideRows },
     { data: salesRows },
     { data: entryRows },
     { data: auditRows },
@@ -68,6 +69,7 @@ export default async function ControlCenterPage() {
       .select("activity_code, account_type, phone_country_code, phone_number, tax_id, company_name"),
     supabase.from("member_ranks").select("activity_code, rank"),
     supabase.from("member_rank_overrides").select("activity_code, rank"),
+    supabase.from("member_purchase_overrides").select("activity_code, bought"),
     supabase.from("sales").select("*"),
     supabase.from("commission_entries").select("*"),
     supabase
@@ -103,6 +105,9 @@ export default async function ControlCenterPage() {
   const overrides: Record<number, Rank> = {};
   for (const row of overrideRows ?? []) overrides[row.activity_code] = row.rank as Rank;
 
+  const acquistoForzato: Record<number, boolean> = {};
+  for (const row of purchaseOverrideRows ?? []) acquistoForzato[row.activity_code] = row.bought;
+
   const profileByCode = new Map(profiles.map((p) => [p.activity_code, p]));
   const byCode = new Map(members.map((m) => [m.activity_code, m]));
 
@@ -110,6 +115,8 @@ export default async function ControlCenterPage() {
   for (const e of entries) {
     earningsByCode.set(e.beneficiary_code, (earningsByCode.get(e.beneficiary_code) ?? 0) + e.amount);
   }
+  const haAcquistato = new Set<number>(sales.map((s) => s.seller_code));
+
   const piecesByCode = new Map<number, number>();
   for (const s of sales) {
     piecesByCode.set(s.seller_code, (piecesByCode.get(s.seller_code) ?? 0) + s.quantity);
@@ -129,6 +136,8 @@ export default async function ControlCenterPage() {
       sponsorName: sponsor?.username ?? null,
       rank: ranks[m.activity_code] ?? "standard",
       rankOverride: overrides[m.activity_code] ?? null,
+      purchaseOverride: acquistoForzato[m.activity_code] ?? null,
+      haAcquistatoDavvero: haAcquistato.has(m.activity_code),
       teamSize: subtreeSize(members, m.activity_code),
       totalEarnings: earningsByCode.get(m.activity_code) ?? 0,
       piecesSold: piecesByCode.get(m.activity_code) ?? 0,

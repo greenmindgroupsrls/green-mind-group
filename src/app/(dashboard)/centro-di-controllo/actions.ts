@@ -75,6 +75,26 @@ export async function setMemberRankOverride(targetCode: number, rank: Rank | nul
   revalidateTag("network-data", { expire: 0 });
 }
 
+// null = torna al calcolo automatico (le vendite registrate).
+export async function setMemberPurchaseOverride(targetCode: number, bought: boolean | null) {
+  await requireRoot();
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_set_purchase_override", {
+    p_target_code: targetCode,
+    p_bought: bought,
+  });
+
+  if (error) throw new Error(error.message);
+
+  // Cambia una soglia di qualifica: i rank vanno ricalcolati ovunque si
+  // vedano, esattamente come per il rank forzato.
+  revalidatePath("/centro-di-controllo");
+  revalidatePath("/");
+  revalidatePath("/albero");
+  revalidateTag("network-data", { expire: 0 });
+}
+
 export async function suspendMember(targetCode: number, reason: string | null) {
   await requireRoot();
 

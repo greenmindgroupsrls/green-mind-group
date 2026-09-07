@@ -1,13 +1,14 @@
 "use client";
 
 import { useActionState, useMemo, useState, useTransition } from "react";
-import { Search, ShieldAlert, Users, Package, Euro, Wand2, Ban, ShieldCheck } from "lucide-react";
+import { Search, ShieldAlert, Users, Package, Euro, Wand2, Ban, ShieldCheck, ShoppingCart } from "lucide-react";
 import { formatActivityCode } from "@/lib/activity-code";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
 import type { MemberRole } from "@/lib/current-member";
 import {
   updateMemberProfile,
   setMemberRankOverride,
+  setMemberPurchaseOverride,
   suspendMember,
   unsuspendMember,
   type ProfileState,
@@ -24,6 +25,8 @@ export type ControlCenterMember = {
   sponsorName: string | null;
   rank: Rank;
   rankOverride: Rank | null;
+  purchaseOverride: boolean | null;
+  haAcquistatoDavvero: boolean;
   teamSize: number;
   totalEarnings: number;
   piecesSold: number;
@@ -61,6 +64,13 @@ function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
 }
 
+type AcquistoScelta = "auto" | "si" | "no";
+
+function scelta(forzato: boolean | null): AcquistoScelta {
+  if (forzato === null) return "auto";
+  return forzato ? "si" : "no";
+}
+
 const profileInitialState: ProfileState = { error: null, success: false };
 
 function MemberDetail({ member }: { member: ControlCenterMember }) {
@@ -72,8 +82,29 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
   const [suspendPending, startSuspendTransition] = useTransition();
   const [suspendError, setSuspendError] = useState<string | null>(null);
   const [suspendReason, setSuspendReason] = useState("");
+  const [acquistoPending, startAcquistoTransition] = useTransition();
+  const [acquistoError, setAcquistoError] = useState<string | null>(null);
+  const [acquistoSaved, setAcquistoSaved] = useState(false);
+  const [pendingAcquisto, setPendingAcquisto] = useState<AcquistoScelta>(
+    scelta(member.purchaseOverride),
+  );
   const isAzienda = member.activity_code === 0;
   const rankDirty = pendingRank !== (member.rankOverride ?? "auto");
+  const acquistoDirty = pendingAcquisto !== scelta(member.purchaseOverride);
+
+  function handleSaveAcquisto() {
+    setAcquistoError(null);
+    setAcquistoSaved(false);
+    const valore = pendingAcquisto === "auto" ? null : pendingAcquisto === "si";
+    startAcquistoTransition(async () => {
+      try {
+        await setMemberPurchaseOverride(member.activity_code, valore);
+        setAcquistoSaved(true);
+      } catch (e) {
+        setAcquistoError(e instanceof Error ? e.message : "Errore imprevisto");
+      }
+    });
+  }
 
   function handleSaveRank() {
     setRankError(null);
@@ -216,6 +247,56 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
               )}
             </div>
             {rankError && <p className="text-xs text-red-600 dark:text-red-400">{rankError}</p>}
+          </>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-sky-200 dark:border-sky-500/25 bg-sky-50 dark:bg-sky-950/70 p-4 flex flex-col gap-2.5">
+        <div className="flex items-center gap-2 text-sky-800 dark:text-sky-400">
+          <ShoppingCart size={15} />
+          <span className="text-sm font-semibold">Acquisto forzato</span>
+        </div>
+        <p className="text-xs text-sky-700 dark:text-sky-300">
+          Chi ha comprato almeno una volta diventa VIP con 2 diretti che hanno comprato, chi non ha mai
+          comprato ne deve fare 10. Qui si dice al sistema come stanno le cose quando il pagamento non è
+          passato dal negozio (bonifico gestito a mano, iscritti di prima dello shop). Vale anche per lo
+          sponsor: il forzato conta come un acquisto vero.
+        </p>
+        {isAzienda ? (
+          <p className="text-xs text-sky-700 dark:text-sky-300">
+            L&apos;account aziendale è sempre Royal: forzarne l&apos;acquisto non cambia nulla.
+          </p>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 flex-wrap">
+              <select
+                value={pendingAcquisto}
+                onChange={(e) => {
+                  setPendingAcquisto(e.target.value as AcquistoScelta);
+                  setAcquistoSaved(false);
+                }}
+                disabled={acquistoPending}
+                className={`${inputClass} w-fit disabled:opacity-50`}
+              >
+                <option value="auto">
+                  Automatico ({member.haAcquistatoDavvero ? "ha comprato" : "non ha comprato"})
+                </option>
+                <option value="si">Forza: ha comprato</option>
+                <option value="no">Forza: non ha comprato</option>
+              </select>
+              <button
+                type="button"
+                onClick={handleSaveAcquisto}
+                disabled={acquistoPending || !acquistoDirty}
+                className="rounded-lg bg-sky-700 px-3 h-10 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+              >
+                {acquistoPending ? "Salvataggio..." : "Salva"}
+              </button>
+              {acquistoSaved && !acquistoDirty && (
+                <span className="text-xs text-emerald-600 dark:text-emerald-400">Salvato</span>
+              )}
+            </div>
+            {acquistoError && <p className="text-xs text-red-600 dark:text-red-400">{acquistoError}</p>}
           </>
         )}
       </div>
@@ -388,6 +469,15 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
                 <span className="flex items-center gap-1 shrink-0">
                   {m.rankOverride && (
                     <ShieldAlert size={13} className="text-amber-500" aria-label="Rank forzato" />
+                  )}
+                  {m.purchaseOverride !== null && (
+                    <ShoppingCart
+                      size={13}
+                      className="text-sky-700 dark:text-sky-300"
+                      aria-label={
+                        m.purchaseOverride ? "Acquisto forzato: sì" : "Acquisto forzato: no"
+                      }
+                    />
                   )}
                   {m.suspended && <Ban size={13} className="text-red-500" aria-label="Sospeso" />}
                 </span>
