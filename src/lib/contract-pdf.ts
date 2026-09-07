@@ -119,7 +119,7 @@ export async function buildContractPdf(
   draw(data.activityCode, MARGIN + 150, y, { font: bold, size: 10 });
   y -= 14;
   draw("Società:", MARGIN, y, { size: 9, color: DIM });
-  draw("Green Mind Group S.r.l.s.", MARGIN + 150, y, { font: bold, size: 10 });
+  draw("Green Mind Group S.r.l.", MARGIN + 150, y, { font: bold, size: 10 });
   y -= 20;
 
   // ---- blocco dati, due colonne ----

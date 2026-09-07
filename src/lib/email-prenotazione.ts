@@ -193,7 +193,7 @@ function confermaCliente(p: Prenotazione, quando: string) {
 
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
         <tr><td style="padding:18px 32px;text-align:center;font-size:12px;line-height:1.7;color:${INK_FAINT};">
-          Green Mind Group S.r.l.s.<br/>
+          Green Mind Group S.r.l.<br/>
           <a href="${SITO_PRODOTTO}" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
         </td></tr>
       </table>
@@ -219,7 +219,7 @@ function confermaCliente(p: Prenotazione, quando: string) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l.s. — greenmindgroup.pro/company",
+    "Green Mind Group S.r.l. — greenmindgroup.pro/company",
   ]
     .filter((r) => r !== "")
     .join("\n");
@@ -341,7 +341,7 @@ function emailBuono(b: BuonoSondaggio) {
 
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
         <tr><td style="padding:18px 32px;text-align:center;font-size:12px;line-height:1.7;color:${INK_FAINT};">
-          Green Mind Group S.r.l.s.<br/>
+          Green Mind Group S.r.l.<br/>
           <a href="${SITO_PRODOTTO}" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
         </td></tr>
       </table>
@@ -369,7 +369,7 @@ function emailBuono(b: BuonoSondaggio) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l.s. — greenmindgroup.pro/company",
+    "Green Mind Group S.r.l. — greenmindgroup.pro/company",
   ].join("\n");
 
   return { html, text };
