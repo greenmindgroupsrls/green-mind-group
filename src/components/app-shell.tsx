@@ -171,7 +171,10 @@ export function AppShell({
                 attiva(href)
                   ? "glass-nav-active font-medium text-gray-900 dark:text-white"
                   : highlighted
-                    ? "text-orange-600 dark:text-orange-400 hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-300"
+                    // Arancione = gestione aziendale. Sul tema chiaro serve un
+                    // tono profondo: orange-600 sul vetro sta a 2,6:1. Sullo
+                    // scuro orange-400 arriva a 5:1 e resta un arancione vivo.
+                    ? "text-orange-800 dark:text-orange-400 hover:bg-orange-500/10 hover:text-orange-900 dark:hover:text-orange-300"
                     : "text-gray-600 dark:text-gray-300 hover:bg-[var(--glass-bg)] hover:text-gray-900 dark:hover:text-white",
               ].join(" ")}
             >
