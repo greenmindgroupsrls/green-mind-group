@@ -399,7 +399,7 @@ const steps = [
 
   { type:'q', key:'q15', kind:'scale', q:'Con quanta probabilità acquisteresti Vortix se potessi averlo in cucina da subito?',
     left:'Molto improbabile', right:'Molto probabile',
-    insight:'Per aiutarti a decidere, ti offriamo un buono da 250€ da scontare sull\'acquisto: lo trovi nell\'ultimo passaggio.' },
+    insight:'Per aiutarti a decidere, ti offriamo un buono da 100€ da scontare sull\'acquisto: lo trovi nell\'ultimo passaggio.' },
 
   { type:'contact' },
 
@@ -436,8 +436,8 @@ function render(){
     card.innerHTML = `
       <div class="center-block">
         <div class="badge">15 domande · circa 3 minuti</div>
-        <h1 class="q">Raccontaci la tua cucina, ricevi un buono da 250€ su Vortix</h1>
-        <p class="sub">Vortix è il dispositivo che riduce il volume dei rifiuti alimentari e i cattivi odori direttamente in cucina. Rispondi a un breve sondaggio: a fine percorso ricevi un buono sconto di 250€ da utilizzare sull'acquisto.</p>
+        <h1 class="q">Raccontaci la tua cucina, ricevi un buono da 100€ su Vortix</h1>
+        <p class="sub">Vortix è il dispositivo che riduce il volume dei rifiuti alimentari e i cattivi odori direttamente in cucina. Rispondi a un breve sondaggio: a fine percorso ricevi un buono sconto di 100€ da utilizzare sull'acquisto.</p>
         <div class="nav-row" style="justify-content:flex-start;">
           <button class="btn btn-primary" onclick="next()">Inizia il sondaggio</button>
         </div>
@@ -508,7 +508,7 @@ function render(){
   if(step.type === 'contact'){
     card.innerHTML = `
       <div class="progress-text">Ultimo passaggio</div>
-      <h1 class="q">Dove ti inviamo il buono da 250€?</h1>
+      <h1 class="q">Dove ti inviamo il buono da 100€?</h1>
       <p class="sub">Lasciaci i tuoi dati: riceverai il codice sconto e potrai essere tra i primi a provare Vortix.</p>
       <input type="text" id="cName" placeholder="Nome e cognome" value="${answers.name||''}" oninput="answers.name=this.value; refreshNav();">
       <input type="email" id="cEmail" placeholder="Indirizzo email" value="${answers.email||''}" oninput="answers.email=this.value; refreshNav();">
@@ -531,9 +531,9 @@ function render(){
       <div class="center-block">
         <div class="badge">Sondaggio completato</div>
         <h1 class="q">Ora sai come Vortix cambia la tua cucina${answers.name ? ', ' + answers.name.split(' ')[0] : ''}</h1>
-        <p class="sub">Meno volume, meno odori, meno tempo perso: è il momento di provarlo. Ecco il tuo buono da 250€, valido sul primo acquisto. Il codice arriva anche via email all'indirizzo che ci hai lasciato.</p>
+        <p class="sub">Meno volume, meno odori, meno tempo perso: è il momento di provarlo. Ecco il tuo buono da 100€, valido sul primo acquisto. Il codice arriva anche via email all'indirizzo che ci hai lasciato.</p>
         <div class="voucher">
-          <div class="amount">250€</div>
+          <div class="amount">100€</div>
           <div style="font-size:13px;color:var(--ink-soft);margin-top:4px;">di sconto sul tuo Vortix</div>
           <div class="code">${code}</div>
         </div>
