@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useTesti } from "@/i18n/testi-client";
 
 export function SlidePanel({
   open,
@@ -13,6 +14,7 @@ export function SlidePanel({
   title: string;
   children: React.ReactNode;
 }) {
+  const T = useTesti().eventi;
   if (!open) return null;
 
   return (
@@ -25,7 +27,7 @@ export function SlidePanel({
             type="button"
             onClick={onClose}
             className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
-            aria-label="Chiudi"
+            aria-label={T.chiudi}
           >
             <X size={18} />
           </button>

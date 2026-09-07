@@ -9,14 +9,10 @@ import { InviteGuestForm } from "./invite-guest-form";
 import { GuestArchive } from "./guest-archive";
 import { SlidePanel } from "./slide-panel";
 import type { EventGuest, EventRow } from "@/lib/events";
+import { useTesti } from "@/i18n/testi-client";
 
 type Tab = "prossimi" | "archivio" | "ospiti";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "prossimi", label: "Prossimi eventi" },
-  { id: "archivio", label: "Archivio eventi" },
-  { id: "ospiti", label: "Ospiti" },
-];
 
 function todayIso() {
   return new Date().toISOString().slice(0, 10);
@@ -35,6 +31,13 @@ export function EventiExplorer({
   currentMember: { activity_code: number; username: string };
   memberNameByCode: Record<number, string>;
 }) {
+  const T = useTesti().eventi;
+  // Le etichette dipendono dalla lingua: l'elenco vive dentro il componente.
+  const TABS: { id: Tab; label: string }[] = [
+    { id: "prossimi", label: T.prossimi },
+    { id: "archivio", label: T.archivio },
+    { id: "ospiti", label: T.ospiti },
+  ];
   const [tab, setTab] = useState<Tab>("prossimi");
   const [eventFormOpen, setEventFormOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null);
@@ -125,7 +128,7 @@ export function EventiExplorer({
           events={upcoming}
           isRoot={isRoot}
           guestCounts={guestCounts}
-          emptyLabel="Nessun evento in programma."
+          emptyLabel={T.nessunEvento}
           onEdit={handleEditEvent}
           onInvite={handleInviteToEvent}
         />
@@ -136,7 +139,7 @@ export function EventiExplorer({
           events={past}
           isRoot={isRoot}
           guestCounts={guestCounts}
-          emptyLabel="Nessun evento passato."
+          emptyLabel={T.nessunEventoPassato}
           onEdit={handleEditEvent}
           onInvite={handleInviteToEvent}
         />

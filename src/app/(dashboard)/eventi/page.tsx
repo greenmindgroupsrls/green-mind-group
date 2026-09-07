@@ -3,10 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import type { EventGuest, EventRow } from "@/lib/events";
 import { EventiExplorer } from "./eventi-explorer";
+import { getDizionario } from "@/i18n/dizionario";
 
 export const dynamic = "force-dynamic";
 
 export default async function EventiPage() {
+  const T = (await getDizionario()).eventi;
   if (!supabaseConfigured()) {
     return (
       <div className="p-8">
@@ -37,8 +39,8 @@ export default async function EventiPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Ospiti — Eventi</h1>
-      <p className="text-gray-600 dark:text-gray-300 mt-1">Gestisci eventi e invita i tuoi ospiti</p>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
+      <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
       <div className="mt-6">
         <EventiExplorer
           events={events}

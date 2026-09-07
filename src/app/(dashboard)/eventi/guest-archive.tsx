@@ -12,6 +12,7 @@ import {
   type EventRow,
   type GuestStatus,
 } from "@/lib/events";
+import { useTesti } from "@/i18n/testi-client";
 
 const guestInitialState: GuestState = { error: null, success: false };
 
@@ -33,6 +34,7 @@ function GuestRow({
   isRoot: boolean;
   inviterName: string;
 }) {
+  const T = useTesti().eventi;
   const [editing, setEditing] = useState(false);
   const [state, formAction, pending] = useActionState(updateGuest, guestInitialState);
 
@@ -49,19 +51,19 @@ function GuestRow({
           >
             <input type="hidden" name="id" value={guest.id} />
             <label className="flex flex-col gap-1 w-32">
-              <span className="text-[11px] text-gray-500 dark:text-gray-400">Cognome</span>
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">{T.cognome}</span>
               <input name="last_name" defaultValue={guest.last_name} required className={cellInputClass} />
             </label>
             <label className="flex flex-col gap-1 w-32">
-              <span className="text-[11px] text-gray-500 dark:text-gray-400">Nome</span>
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">{T.nome}</span>
               <input name="first_name" defaultValue={guest.first_name} required className={cellInputClass} />
             </label>
             <label className="flex flex-col gap-1 w-36">
-              <span className="text-[11px] text-gray-500 dark:text-gray-400">Telefono</span>
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">{T.telefono}</span>
               <input name="phone" defaultValue={guest.phone} required className={cellInputClass} />
             </label>
             <label className="flex flex-col gap-1 w-48">
-              <span className="text-[11px] text-gray-500 dark:text-gray-400">Email</span>
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">{T.email}</span>
               <input name="email" type="email" defaultValue={guest.email} required className={cellInputClass} />
             </label>
             <div className="flex items-center gap-2">
@@ -70,7 +72,7 @@ function GuestRow({
                 disabled={pending}
                 className="h-9 rounded-lg bg-accent px-3 text-xs font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                {pending ? "Salvataggio..." : "Salva"}
+                {pending ? T.salvataggio : T.salva}
               </button>
               <button
                 type="button"
@@ -129,7 +131,7 @@ function GuestRow({
             type="button"
             onClick={() => setEditing(true)}
             className="text-gray-300 hover:text-accent dark:text-gray-600 dark:hover:text-accent"
-            aria-label="Modifica ospite"
+            aria-label={T.modificaOspite}
           >
             <Pencil size={15} />
           </button>
@@ -139,7 +141,7 @@ function GuestRow({
               if (confirm(`Eliminare ${guest.first_name} ${guest.last_name} dagli ospiti?`)) deleteGuest(guest.id);
             }}
             className="text-gray-300 hover:text-red-600 dark:text-gray-600 dark:hover:text-red-400"
-            aria-label="Elimina ospite"
+            aria-label={T.eliminaOspite}
           >
             <Trash2 size={15} />
           </button>
@@ -160,6 +162,7 @@ export function GuestArchive({
   isRoot: boolean;
   memberNameByCode: Record<number, string>;
 }) {
+  const T = useTesti().eventi;
   const [query, setQuery] = useState("");
   const eventById = useMemo(() => new Map(events.map((e) => [e.id, e])), [events]);
 
@@ -178,7 +181,7 @@ export function GuestArchive({
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cerca ospite"
+          placeholder={T.cercaOspite}
           className="w-full pl-9 pr-3 h-11 glass-input text-sm"
         />
       </div>
@@ -188,15 +191,15 @@ export function GuestArchive({
           <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                <th className="px-4 py-3 font-medium">Cognome</th>
-                <th className="px-4 py-3 font-medium">Nome</th>
-                <th className="px-4 py-3 font-medium">Telefono</th>
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Tipo</th>
-                {isRoot && <th className="px-4 py-3 font-medium">Invitato da</th>}
-                <th className="px-4 py-3 font-medium">Data</th>
-                <th className="px-4 py-3 font-medium">Stato</th>
-                <th className="px-4 py-3 font-medium">Azioni</th>
+                <th className="px-4 py-3 font-medium">{T.cognome}</th>
+                <th className="px-4 py-3 font-medium">{T.nome}</th>
+                <th className="px-4 py-3 font-medium">{T.telefono}</th>
+                <th className="px-4 py-3 font-medium">{T.email}</th>
+                <th className="px-4 py-3 font-medium">{T.tipo}</th>
+                {isRoot && <th className="px-4 py-3 font-medium">{T.invitatoDa}</th>}
+                <th className="px-4 py-3 font-medium">{T.colData}</th>
+                <th className="px-4 py-3 font-medium">{T.stato}</th>
+                <th className="px-4 py-3 font-medium">{T.azioni}</th>
               </tr>
             </thead>
             <tbody>
@@ -212,7 +215,7 @@ export function GuestArchive({
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={isRoot ? 9 : 8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                    {guests.length === 0 ? "Nessun ospite invitato ancora." : "Nessun ospite trovato."}
+                    {guests.length === 0 ? T.nessunOspite : T.nessunOspiteTrovato}
                   </td>
                 </tr>
               )}

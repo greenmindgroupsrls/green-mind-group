@@ -5,6 +5,7 @@ import { Mic, Laptop } from "lucide-react";
 import { inviteGuest, type GuestState } from "./actions";
 import { formatActivityCode } from "@/lib/activity-code";
 import type { EventRow, InviteType } from "@/lib/events";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: GuestState = { error: null, success: false };
 
@@ -12,10 +13,6 @@ const inputClass =
   "h-11 glass-input px-3.5 text-sm";
 const labelClass = "text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase";
 
-const TYPE_OPTIONS: { value: InviteType; label: string; sub: string; icon: typeof Mic }[] = [
-  { value: "live", label: "Live", sub: "In sala", icon: Mic },
-  { value: "zoom", label: "Zoom", sub: "Online", icon: Laptop },
-];
 
 function formatEventOption(ev: EventRow) {
   return `${ev.event_date} — ${ev.city}${ev.venue ? ` — ${ev.venue}` : ""}`;
@@ -32,6 +29,13 @@ export function InviteGuestForm({
   currentMember: { activity_code: number; username: string };
   onDone: () => void;
 }) {
+  const T = useTesti().eventi;
+  // "Live" e "Zoom" sono nomi propri e restano; a cambiare e' la
+  // spiegazione sotto, che dice cosa vuol dire in pratica.
+  const TYPE_OPTIONS: { value: InviteType; label: string; sub: string; icon: typeof Mic }[] = [
+    { value: "live", label: "Live", sub: T.inSala, icon: Mic },
+    { value: "zoom", label: "Zoom", sub: T.online, icon: Laptop },
+  ];
   const [state, formAction, pending] = useActionState(inviteGuest, initialState);
   const [inviteType, setInviteType] = useState<InviteType>("live");
   const [prevSuccess, setPrevSuccess] = useState(state.success);
@@ -50,7 +54,7 @@ export function InviteGuestForm({
 
       <form action={formAction} className="flex flex-col gap-4">
         <div>
-          <span className={labelClass}>Tipo evento *</span>
+          <span className={labelClass}>{T.tipoEvento}</span>
           <div className="grid grid-cols-2 gap-3 mt-1.5">
             {TYPE_OPTIONS.map(({ value, label, sub, icon: Icon }) => (
               <button
@@ -74,7 +78,7 @@ export function InviteGuestForm({
 
         {inviteType === "live" && (
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Evento Live *</span>
+            <span className={labelClass}>{T.eventoLive}</span>
             <select name="event_id" required defaultValue={preselectedEventId ?? ""} className={inputClass}>
               <option value="" disabled>
                 — Seleziona —
@@ -95,19 +99,19 @@ export function InviteGuestForm({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Cognome *</span>
-            <input name="last_name" required placeholder="Cognome" className={inputClass} />
+            <span className={labelClass}>{T.cognomeObbl}</span>
+            <input name="last_name" required placeholder={T.cognome} className={inputClass} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Nome *</span>
-            <input name="first_name" required placeholder="Nome" className={inputClass} />
+            <span className={labelClass}>{T.nomeObbl}</span>
+            <input name="first_name" required placeholder={T.nome} className={inputClass} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Telefono *</span>
+            <span className={labelClass}>{T.telefonoObbl}</span>
             <input name="phone" required placeholder="+39..." className={inputClass} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Email *</span>
+            <span className={labelClass}>{T.emailObbl}</span>
             <input name="email" type="email" required placeholder="email@..." className={inputClass} />
           </label>
         </div>
@@ -119,7 +123,7 @@ export function InviteGuestForm({
             required
             className="h-4 w-4 mt-0.5 rounded border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
           />
-          <span>Acconsento al trattamento dei dati personali (GDPR) *</span>
+          <span>{T.gdpr}</span>
         </label>
 
         <div className="flex items-center gap-3">
@@ -128,7 +132,7 @@ export function InviteGuestForm({
             disabled={pending || (inviteType === "live" && events.length === 0)}
             className="glass-btn-primary rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-50"
           >
-            {pending ? "Invio..." : "Invita ospite"}
+            {pending ? T.invio : T.invitaOspite}
           </button>
           {state.error && <p className="text-sm text-red-600 dark:text-red-400">{state.error}</p>}
         </div>

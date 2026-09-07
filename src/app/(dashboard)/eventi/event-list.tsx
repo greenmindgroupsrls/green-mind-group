@@ -3,6 +3,7 @@
 import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { deleteEvent } from "./actions";
 import type { EventRow } from "@/lib/events";
+import { useTesti } from "@/i18n/testi-client";
 
 function formatEventDate(iso: string) {
   const d = new Date(`${iso}T00:00:00`);
@@ -29,6 +30,7 @@ export function EventList({
   onEdit: (event: EventRow) => void;
   onInvite: (event: EventRow) => void;
 }) {
+  const T = useTesti().eventi;
   if (events.length === 0) {
     return (
       <div className="glass-card p-12 text-center">
@@ -68,7 +70,7 @@ export function EventList({
                       type="button"
                       onClick={() => onEdit(ev)}
                       className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-accent hover:bg-accent/10 transition-colors"
-                      aria-label="Modifica evento"
+                      aria-label={T.modificaEvento}
                     >
                       <Pencil size={15} />
                     </button>
@@ -78,7 +80,7 @@ export function EventList({
                         if (confirm(`Eliminare l'evento di ${ev.city}?`)) deleteEvent(ev.id);
                       }}
                       className="h-8 w-8 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-                      aria-label="Elimina evento"
+                      aria-label={T.eliminaEvento}
                     >
                       <Trash2 size={15} />
                     </button>
