@@ -677,6 +677,17 @@
         openBookingModal();
       });
     });
+
+    // La prenotazione e' una finestra che si apre da un pulsante, quindi da
+    // fuori non ci si arriva. Con #prenota nell'indirizzo si apre da sola:
+    // serve ai link che arrivano da altrove, per esempio il pulsante
+    // dell'email del buono, che altrimenti scaricherebbe la persona in cima
+    // alla pagina a cercarsela.
+    function apriDaIndirizzo(){
+      if(location.hash === '#prenota') openBookingModal();
+    }
+    apriDaIndirizzo();
+    window.addEventListener('hashchange', apriDaIndirizzo);
     bookingClose.addEventListener('click', closeBookingModal);
     bookingDoneBtn.addEventListener('click', closeBookingModal);
     bookingOverlay.addEventListener('click', function(e){

@@ -19,6 +19,11 @@ import { sendEmail } from "./email";
 const MITTENTE = "VORTIX <hello@greenmindgroup.pro>";
 const DESTINATARIO_INTERNO = "greenmindgroupsrls@gmail.com";
 
+// Il sito prodotto sta sotto /company/: greenmindgroup.pro da solo e' il
+// back office, e un cliente che ci clicca finisce sulla pagina di accesso.
+// #prenota apre direttamente la finestra dell'appuntamento (vedi main.js).
+const PRENOTAZIONE_URL = "https://greenmindgroup.pro/company/#prenota";
+
 // Palette VORTIX (tema chiaro, da public/company/css/style.css)
 const INK = "#0b2529";
 const INK_DIM = "#3e5c60";
@@ -320,7 +325,7 @@ function emailBuono(b: BuonoSondaggio) {
         </td></tr>
 
         <tr><td style="padding:22px 32px 0;text-align:center;">
-          <a href="https://greenmindgroup.pro" style="display:inline-block;background:${INK};color:#ffffff;text-decoration:none;border-radius:9px;padding:14px 28px;font-size:15px;font-weight:600;">Scopri VORTIX</a>
+          <a href="${PRENOTAZIONE_URL}" style="display:inline-block;background:${INK};color:#ffffff;text-decoration:none;border-radius:9px;padding:14px 28px;font-size:15px;font-weight:600;">Prenota la dimostrazione</a>
         </td></tr>
 
         <tr><td style="padding:24px 32px 32px;">
@@ -356,7 +361,7 @@ function emailBuono(b: BuonoSondaggio) {
     "",
     "Vuoi vederlo prima di decidere? La dimostrazione a casa tua è gratuita",
     "e senza impegno: un tecnico installa VORTIX sotto il tuo lavello e te lo",
-    "mostra in funzione. https://greenmindgroup.pro",
+    `mostra in funzione. Prenotala qui: ${PRENOTAZIONE_URL}`,
     "",
     "Se hai domande, puoi rispondere direttamente a questa email.",
     "",
