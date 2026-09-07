@@ -20,7 +20,6 @@ type LeadRow = {
   requested_date: string | null;
   requested_time: string | null;
   status: string;
-  internal_notes: string | null;
   assigned_to: number | null;
   assigned_at: string | null;
   appointment_at: string | null;
@@ -109,7 +108,7 @@ export default async function LeadPage() {
                   {formatDate(l.created_at)}
                 </td>
                 <td className="px-6 py-3">
-                  <LeadRowActions id={l.id} status={l.status} internalNotes={l.internal_notes} />
+                  <LeadRowActions id={l.id} status={l.status} />
                 </td>
                 <td className="px-6 py-3">
                   <LeadAssignAction

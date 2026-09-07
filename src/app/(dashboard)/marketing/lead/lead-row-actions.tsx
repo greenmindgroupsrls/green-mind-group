@@ -17,18 +17,9 @@ const STATUS_BADGE_CLASS: Record<string, string> = {
   perso: "bg-gray-100 text-gray-500 dark:bg-white/10 dark:text-gray-400",
 };
 
-export function LeadRowActions({
-  id,
-  status,
-  internalNotes,
-}: {
-  id: number;
-  status: string;
-  internalNotes: string | null;
-}) {
+export function LeadRowActions({ id, status }: { id: number; status: string }) {
   const [pending, startTransition] = useTransition();
   const [currentStatus, setCurrentStatus] = useState(status);
-  const [notes, setNotes] = useState(internalNotes ?? "");
   const [error, setError] = useState<string | null>(null);
 
   function handleStatusChange(next: string) {
@@ -37,20 +28,9 @@ export function LeadRowActions({
     setError(null);
     startTransition(async () => {
       try {
-        await updateLeadStatus(id, next, null);
+        await updateLeadStatus(id, next);
       } catch (e) {
         setCurrentStatus(previous);
-        setError(e instanceof Error ? e.message : "Errore imprevisto");
-      }
-    });
-  }
-
-  function handleSaveNotes() {
-    setError(null);
-    startTransition(async () => {
-      try {
-        await updateLeadStatus(id, currentStatus, notes.trim() || null);
-      } catch (e) {
         setError(e instanceof Error ? e.message : "Errore imprevisto");
       }
     });
@@ -76,22 +56,6 @@ export function LeadRowActions({
             </option>
           ))}
         </select>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <input
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Note interne"
-          className="text-xs rounded-md border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 px-2 py-1 w-32"
-        />
-        <button
-          type="button"
-          onClick={handleSaveNotes}
-          disabled={pending}
-          className="text-[11px] text-accent hover:underline disabled:opacity-50 shrink-0"
-        >
-          Salva
-        </button>
       </div>
       {error && <span className="text-[11px] text-red-600 dark:text-red-400">{error}</span>}
     </div>

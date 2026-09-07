@@ -2,8 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { assignLead } from "./actions";
-
-type MemberOption = { activity_code: number; username: string };
+import { MemberPicker, type MemberOption } from "./member-picker";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
@@ -21,20 +20,19 @@ export function LeadAssignAction({
   assignedAt: string | null;
 }) {
   const [pending, startTransition] = useTransition();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [justAssigned, setJustAssigned] = useState<string | null>(null);
 
   function handleAssign() {
-    if (!selected) return;
+    if (selected === null) return;
     setError(null);
-    const memberCode = Number(selected);
-    const username = members.find((m) => m.activity_code === memberCode)?.username ?? null;
+    const username = members.find((m) => m.activity_code === selected)?.username ?? null;
     startTransition(async () => {
       try {
-        await assignLead(id, memberCode);
+        await assignLead(id, selected);
         setJustAssigned(username);
-        setSelected("");
+        setSelected(null);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Errore imprevisto");
       }
@@ -54,23 +52,17 @@ export function LeadAssignAction({
         </p>
       )}
       <div className="flex items-center gap-1.5">
-        <select
+        <MemberPicker
+          members={members}
           value={selected}
-          onChange={(e) => setSelected(e.target.value)}
+          onChange={setSelected}
           disabled={pending}
-          className="text-xs glass-input rounded-md text-gray-700 dark:text-gray-300 px-1.5 py-1 disabled:opacity-50 flex-1 min-w-0"
-        >
-          <option value="">{currentAssignee ? "Inoltra ad un altro…" : "Scegli membro…"}</option>
-          {members.map((m) => (
-            <option key={m.activity_code} value={m.activity_code}>
-              {m.username}
-            </option>
-          ))}
-        </select>
+          placeholder={currentAssignee ? "Cerca un altro membro…" : "Cerca membro…"}
+        />
         <button
           type="button"
           onClick={handleAssign}
-          disabled={pending || !selected}
+          disabled={pending || selected === null}
           className="text-[11px] text-accent hover:underline disabled:opacity-50 shrink-0"
         >
           Inoltra
