@@ -26,6 +26,19 @@ export const BANDIERA: Record<Lingua, string> = {
   ru: "🇷🇺",
 };
 
+// Anche numeri e date vanno nella lingua scelta: "1.390,00 €" per un
+// italiano, "€1,390.00" per un inglese, "7 сент. 2026" per un russo.
+// Scriverli sempre all'italiana in un'interfaccia tradotta e' la stessa
+// mezza traduzione di prima, solo meno evidente.
+export const LOCALE: Record<Lingua, string> = {
+  it: "it-IT",
+  en: "en-GB",
+  fr: "fr-FR",
+  es: "es-ES",
+  de: "de-DE",
+  ru: "ru-RU",
+};
+
 export const COOKIE_LINGUA = "lingua";
 
 export function isLingua(v: string | undefined | null): v is Lingua {

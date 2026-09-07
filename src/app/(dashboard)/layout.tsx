@@ -4,6 +4,7 @@ import { getUnreadMessageCount, getRecentNotifications } from "@/lib/notificatio
 import { AppShell } from "@/components/app-shell";
 import { getDizionario, linguaCorrente } from "@/i18n/dizionario";
 import { createClient } from "@/lib/supabase/server";
+import { TestiProvider } from "@/i18n/testi-client";
 
 export default async function DashboardLayout({ children }: LayoutProps<"/">) {
   const { isAuthenticated, member } = await getAuthState();
@@ -29,14 +30,16 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
     : [0, []];
 
   return (
-    <AppShell
-      currentMember={member}
-      unreadCount={unreadCount}
-      notifications={notifications}
-      testi={testi}
-      lingua={lingua}
-    >
-      {children}
-    </AppShell>
+    <TestiProvider testi={testi} lingua={lingua}>
+      <AppShell
+        currentMember={member}
+        unreadCount={unreadCount}
+        notifications={notifications}
+        testi={testi}
+        lingua={lingua}
+      >
+        {children}
+      </AppShell>
+    </TestiProvider>
   );
 }

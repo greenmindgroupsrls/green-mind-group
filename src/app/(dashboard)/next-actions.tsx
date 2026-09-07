@@ -12,6 +12,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseConfigured } from "@/lib/current-member";
+import { getDizionario, linguaCorrente, riempi } from "@/i18n/dizionario";
+import { LOCALE } from "@/i18n/config";
 
 // Il cruscotto racconta come sta andando. Questo pannello risponde all'altra
 // domanda, quella che uno si fa davvero aprendo il back office: cosa devo
@@ -32,11 +34,13 @@ type Azione = {
   urgente?: boolean;
 };
 
-function euro(v: number) {
-  return v.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
+function euro(v: number, locale: string) {
+  return v.toLocaleString(locale, { style: "currency", currency: "EUR" });
 }
 
 export async function NextActions({ activityCode }: { activityCode: number }) {
+  const T = (await getDizionario()).azioni;
+  const locale = LOCALE[await linguaCorrente()];
   if (!supabaseConfigured()) return null;
 
   const supabase = await createClient();
@@ -99,13 +103,10 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
       chiave: "vip",
       icona: TrendingUp,
       testo:
-        mancanti === 1
-          ? "Ti manca una vendita per diventare VIP"
-          : `Ti mancano ${mancanti} vendite per diventare VIP`,
-      dettaglio:
-        "Dopo la qualifica i tuoi iscritti restano nella tua struttura e i pass-up arrivano a te.",
+        mancanti === 1 ? T.vipUna : riempi(T.vipMolte, { n: mancanti }),
+      dettaglio: T.vipDettaglio,
       href: "/registrazione",
-      etichettaLink: "Registra una vendita",
+      etichettaLink: T.vipLink,
     });
   }
 
@@ -118,19 +119,19 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
       azioni.push({
         chiave: "profilo",
         icona: Wallet,
-        testo: `Hai ${euro(disponibile)} da riscuotere, ma il profilo è incompleto`,
-        dettaglio: "Senza i dati anagrafici e bancari il prelievo resta bloccato.",
+        testo: riempi(T.profiloTesto, { importo: euro(disponibile, locale) }),
+        dettaglio: T.profiloDettaglio,
         href: "/impostazioni",
-        etichettaLink: "Completa il profilo",
+        etichettaLink: T.profiloLink,
         urgente: true,
       });
     } else {
       azioni.push({
         chiave: "prelievo",
         icona: Wallet,
-        testo: `Hai ${euro(disponibile)} disponibili`,
+        testo: riempi(T.prelievoTesto, { importo: euro(disponibile, locale) }),
         href: "/payout",
-        etichettaLink: "Richiedi il prelievo",
+        etichettaLink: T.prelievoLink,
       });
     }
   }
@@ -142,10 +143,10 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
     azioni.push({
       chiave: "lead",
       icona: PhoneCall,
-      testo: lead === 1 ? "Hai 1 lead da richiamare" : `Hai ${lead} lead da richiamare`,
-      dettaglio: "Hanno chiesto di essere contattati e non hanno ancora un appuntamento.",
+      testo: lead === 1 ? T.leadUno : riempi(T.leadMolti, { n: lead }),
+      dettaglio: T.leadDettaglio,
       href: "/marketing/lead",
-      etichettaLink: "Vai ai lead",
+      etichettaLink: T.leadLink,
       urgente: true,
     });
   }
@@ -155,24 +156,24 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
     azioni.push({
       chiave: "messaggi",
       icona: Mail,
-      testo: messaggi === 1 ? "Hai 1 messaggio non letto" : `Hai ${messaggi} messaggi non letti`,
+      testo: messaggi === 1 ? T.messaggiUno : riempi(T.messaggiMolti, { n: messaggi }),
       href: "/messaggi",
-      etichettaLink: "Leggi",
+      etichettaLink: T.messaggiLink,
     });
   }
 
   if (prossimoEvento) {
-    const quando = new Date(prossimoEvento.event_date).toLocaleDateString("it-IT", {
+    const quando = new Date(prossimoEvento.event_date).toLocaleDateString(locale, {
       day: "numeric",
       month: "long",
     });
     azioni.push({
       chiave: "evento",
       icona: CalendarClock,
-      testo: `Prossimo evento: ${prossimoEvento.city}, ${quando}`,
-      dettaglio: "Porta un ospite: è il modo più semplice per far partire una vendita.",
+      testo: riempi(T.eventoTesto, { luogo: prossimoEvento.city, quando }),
+      dettaglio: T.eventoDettaglio,
       href: "/eventi",
-      etichettaLink: "Dettagli",
+      etichettaLink: T.eventoLink,
     });
   }
 
@@ -182,10 +183,10 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
     azioni.push({
       chiave: "tutto-ok",
       icona: UserPlus,
-      testo: "Non hai nulla in sospeso",
-      dettaglio: "Il prossimo passo è sempre lo stesso: far entrare qualcuno di nuovo.",
+      testo: T.tuttoOkTesto,
+      dettaglio: T.tuttoOkDettaglio,
       href: "/iscrivi",
-      etichettaLink: "Iscrivi una persona",
+      etichettaLink: T.tuttoOkLink,
     });
   }
 
@@ -193,10 +194,10 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
     <div className="glass-card p-6">
       <div className="flex items-center gap-2">
         <CheckCircle2 size={17} className="text-accent" />
-        <h2 className="font-semibold text-gray-900 dark:text-white">Cosa fare adesso</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white">{T.titolo}</h2>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        Quello che ti riguarda oggi, in ordine di importanza
+        {T.sottotitolo}
       </p>
 
       <ul className="mt-4 flex flex-col gap-2.5">

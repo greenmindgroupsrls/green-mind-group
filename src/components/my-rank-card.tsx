@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Crown, TrendingUp } from "lucide-react";
 import type { Member } from "@/lib/members";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
+import { useTesti } from "@/i18n/testi-client";
 
 const RANK_STYLE: Record<Rank, { badge: string; icona: string; barra: string }> = {
   standard: {
@@ -41,6 +42,7 @@ export function MyRankCard({
   ranks: Record<number, Rank>;
   rootCode: number;
 }) {
+  const T = useTesti().rango;
   const mioRank: Rank = ranks[rootCode] ?? "standard";
   const stile = RANK_STYLE[mioRank];
 
@@ -72,15 +74,15 @@ export function MyRankCard({
             verso: "VIP",
             attuale: progresso.cedute,
             totale: VENDITE_PER_VIP,
-            cosa: "vendite di qualifica cedute",
-            nota: "Le prime due vendite vanno al VIP sopra di te. Dopo sei libero: i tuoi iscritti restano tuoi.",
+            cosa: T.venditeCedute,
+            nota: T.notaVendite,
           }
         : {
             verso: "Royal",
             attuale: progresso.vipDiretti,
             totale: VIP_PER_ROYAL,
-            cosa: "VIP diretti nella tua struttura",
-            nota: "Con 10 VIP diretti entri nel Royal Pool.",
+            cosa: T.vipDiretti,
+            nota: T.notaRoyal,
           };
 
   const percentuale = obiettivo
@@ -89,8 +91,8 @@ export function MyRankCard({
 
   return (
     <div className="glass-card p-6">
-      <h2 className="font-semibold text-gray-900 dark:text-white">Il tuo rank</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400">La tua posizione nel programma</p>
+      <h2 className="font-semibold text-gray-900 dark:text-white">{T.ilTuoRank}</h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{T.laTuaPosizione}</p>
 
       <div className="flex items-center gap-3 mt-4">
         <div
@@ -112,7 +114,7 @@ export function MyRankCard({
           <div className="flex items-center justify-between gap-2 text-sm">
             <span className="flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
               <TrendingUp size={14} className="text-gray-500 dark:text-gray-400" />
-              Verso <strong className="text-gray-900 dark:text-white">{obiettivo.verso}</strong>
+              {T.verso} <strong className="text-gray-900 dark:text-white">{obiettivo.verso}</strong>
             </span>
             <span className="font-semibold text-gray-900 dark:text-white tabular-nums">
               {obiettivo.attuale} / {obiettivo.totale}

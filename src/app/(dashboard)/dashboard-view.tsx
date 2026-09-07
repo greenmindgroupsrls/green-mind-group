@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTesti, useFormato } from "@/i18n/testi-client";
 import dynamic from "next/dynamic";
 import { Euro, Package, Users, Crown, Wallet } from "lucide-react";
 import type { Member } from "@/lib/members";
@@ -37,18 +38,6 @@ const RANK_BADGE_CLASS: Record<Rank, string> = {
   royal: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
 };
 
-function formatEuro(value: number) {
-  return value.toLocaleString("it-IT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
-}
-
-function formatHour(iso: string) {
-  return new Date(iso).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
-}
-
 export function DashboardView({
   members,
   sales,
@@ -72,6 +61,12 @@ export function DashboardView({
   announcementsSlot?: React.ReactNode;
   azioniSlot?: React.ReactNode;
 }) {
+  const T = useTesti().dashboard;
+  const fmt = useFormato();
+  const formatEuro = (v: number) => fmt.euro(v, 0);
+  const formatDate = fmt.data;
+  const formatHour = fmt.ora;
+
   const data = useMemo(
     () => buildDashboardData(members, sales, entries, ranks, rootCode),
     [members, sales, entries, ranks, rootCode],
@@ -79,9 +74,9 @@ export function DashboardView({
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
-        {isRoot ? "Panoramica rete e commissioni" : "Panoramica del tuo team e delle tue commissioni"}
+        {isRoot ? T.sottotitoloRoot : T.sottotitolo}
       </p>
 
       {announcementsSlot && <div className="mt-6">{announcementsSlot}</div>}
@@ -89,7 +84,7 @@ export function DashboardView({
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mt-6">
         <StatCard
           icon={Euro}
-          label="Commissioni totali"
+          label={T.commissioniTotali}
           value={formatEuro(data.totalIncome)}
           tone="accent"
           delta={
@@ -100,14 +95,14 @@ export function DashboardView({
         />
         <StatCard
           icon={Wallet}
-          label="Fatturato totale"
+          label={T.fatturatoTotale}
           value={formatEuro(totalRevenue)}
           tone="violet"
         />
-        <StatCard icon={Package} label="Pezzi venduti" value={String(data.totalPiecesSold)} tone="emerald" />
+        <StatCard icon={Package} label={T.pezziVenduti} value={String(data.totalPiecesSold)} tone="emerald" />
         <StatCard
           icon={Users}
-          label="Iscritti in rete"
+          label={T.iscrittiInRete}
           value={String(data.totalMembers)}
           tone="amber"
           delta={{
@@ -117,7 +112,7 @@ export function DashboardView({
         />
         <StatCard
           icon={Crown}
-          label="VIP + Royal"
+          label={T.vipRoyal}
           value={String(data.rankCounts.vip + data.rankCounts.royal)}
           tone="rose"
         />
@@ -128,8 +123,8 @@ export function DashboardView({
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 mt-4 items-start">
         <div className="flex flex-col gap-4">
           <div className="glass-card p-6">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Team</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Nuovi iscritti per mese</p>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.team}</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{T.nuoviIscrittiPerMese}</p>
             <div className="mt-4">
               <NetworkAreaChart data={data.signupSeries} />
             </div>
@@ -143,7 +138,7 @@ export function DashboardView({
           <PassUpLinesCard members={members} ranks={ranks} rootCode={rootCode} />
 
           <div className="glass-card p-6">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Distribuzione rank</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.distribuzioneRank}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">Standard · VIP · Royal</p>
             <RankDistribution counts={data.rankCounts} />
           </div>
@@ -157,15 +152,15 @@ export function DashboardView({
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4">
         <div className="glass-card overflow-hidden">
           <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Ultimi iscritti</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.ultimiIscritti}</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                  <th className="px-6 py-2 font-medium">Utente</th>
-                  <th className="px-6 py-2 font-medium">Rank</th>
-                  <th className="px-6 py-2 font-medium">Iscritto il</th>
+                  <th className="px-6 py-2 font-medium">{T.colonne.utente}</th>
+                  <th className="px-6 py-2 font-medium">{T.colonne.rank}</th>
+                  <th className="px-6 py-2 font-medium">{T.colonne.iscrittoIl}</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,18 +200,18 @@ export function DashboardView({
 
         <div className="glass-card overflow-hidden">
           <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Team performance</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.teamPerformance}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {isRoot ? "Diretti strutturali dell'azienda" : "I tuoi diretti strutturali"}
+              {isRoot ? T.direttiAzienda : T.direttiTuoi}
             </p>
           </div>
           <div className="overflow-x-auto">
             <table className="glass-table w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                  <th className="px-6 py-2 font-medium">Utente</th>
-                  <th className="px-6 py-2 font-medium">Team</th>
-                  <th className="px-6 py-2 font-medium text-right">Commissioni</th>
+                  <th className="px-6 py-2 font-medium">{T.colonne.utente}</th>
+                  <th className="px-6 py-2 font-medium">{T.colonne.team}</th>
+                  <th className="px-6 py-2 font-medium text-right">{T.colonne.commissioni}</th>
                 </tr>
               </thead>
               <tbody>
@@ -251,7 +246,7 @@ export function DashboardView({
 
       <div className="mt-4 glass-card overflow-hidden">
         <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
-          <h2 className="font-semibold text-gray-900 dark:text-white">Attività di rete</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-white">{T.attivitaDiRete}</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             Ultime iscrizioni introdotte da te o dal tuo team, in tutta la struttura
           </p>
@@ -260,12 +255,12 @@ export function DashboardView({
           <table className="glass-table w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-                <th className="px-6 py-2 font-medium">Chi ha introdotto</th>
-                <th className="px-6 py-2 font-medium">Evento</th>
-                <th className="px-6 py-2 font-medium">Nuovo iscritto</th>
-                <th className="px-6 py-2 font-medium">Data</th>
+                <th className="px-6 py-2 font-medium">{T.colonne.chiHaIntrodotto}</th>
+                <th className="px-6 py-2 font-medium">{T.colonne.evento}</th>
+                <th className="px-6 py-2 font-medium">{T.colonne.nuovoIscritto}</th>
+                <th className="px-6 py-2 font-medium">{T.colonne.data}</th>
                 <th className="px-6 py-2 font-medium">Ora</th>
-                <th className="px-6 py-2 font-medium text-right">Commissione</th>
+                <th className="px-6 py-2 font-medium text-right">{T.colonne.commissione}</th>
               </tr>
             </thead>
             <tbody>
@@ -302,7 +297,7 @@ export function DashboardView({
                   </td>
                   <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white whitespace-nowrap">
                     {row.amount !== null
-                      ? row.amount.toLocaleString("it-IT", { style: "currency", currency: "EUR" })
+                      ? fmt.euro(row.amount)
                       : "—"}
                   </td>
                 </tr>

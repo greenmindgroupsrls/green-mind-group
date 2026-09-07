@@ -5,6 +5,7 @@ import { ArrowUpRight, Users } from "lucide-react";
 import type { Member } from "@/lib/members";
 import { formatActivityCode } from "@/lib/activity-code";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
+import { useTesti, riempiTesto } from "@/i18n/testi-client";
 
 // Le due facce del pass-up, viste da chi guarda:
 //   cedute      = persone che ho iscritto io ma che sono finite sotto il VIP
@@ -23,6 +24,7 @@ export function PassUpLinesCard({
   ranks: Record<number, Rank>;
   rootCode: number;
 }) {
+  const T = useTesti().linee;
   const { cedute, proprie } = useMemo(() => {
     const cedute = members.filter(
       (m) => m.ref_sponsor_code === rootCode && m.parent_code !== rootCode,
@@ -40,16 +42,16 @@ export function PassUpLinesCard({
 
   return (
     <div className="glass-card p-6">
-      <h2 className="font-semibold text-gray-900 dark:text-white">Le tue linee</h2>
+      <h2 className="font-semibold text-gray-900 dark:text-white">{T.titolo}</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        Chi hai ceduto per qualificarti e chi è rimasto tuo
+        {T.sottotitolo}
       </p>
 
       {cedute.length > 0 && (
         <div className="mt-5">
           <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
             <ArrowUpRight size={13} />
-            Cedute per la qualifica ({cedute.length})
+            {riempiTesto(T.cedute, { n: cedute.length })}
           </h3>
           <ul className="mt-2 flex flex-col gap-1.5">
             {cedute.map((m) => {
@@ -66,7 +68,7 @@ export function PassUpLinesCard({
                     {m.username}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">
-                    → {destinatario?.username ?? "azienda"}
+                    → {destinatario?.username ?? T.azienda}
                   </span>
                 </li>
               );
@@ -79,7 +81,7 @@ export function PassUpLinesCard({
         <div className="mt-5">
           <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
             <Users size={13} />
-            Nella tua struttura ({proprie.length})
+            {riempiTesto(T.nellaTuaStruttura, { n: proprie.length })}
           </h3>
           <ul className="mt-2 flex flex-col gap-1.5">
             {proprie.map((m) => {
@@ -97,7 +99,7 @@ export function PassUpLinesCard({
                   </span>
                   <span className="flex items-center gap-2 shrink-0">
                     {ereditato && (
-                      <span className="text-xs text-gray-500 dark:text-gray-400">ereditato</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{T.ereditato}</span>
                     )}
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                       {RANK_LABEL[ranks[m.activity_code] ?? "standard"]}
