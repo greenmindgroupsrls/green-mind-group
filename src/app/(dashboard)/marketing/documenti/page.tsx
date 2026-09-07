@@ -2,16 +2,8 @@ import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import { createClient } from "@/lib/supabase/server";
 import { MarketingDocumentRow } from "./marketing-document-row";
 import { BusinessCardRow } from "./business-card-row";
+import { getDizionario } from "@/i18n/dizionario";
 
-const DOC_TYPES: { type: string; label: string }[] = [
-  { type: "privacy", label: "Informativa Privacy" },
-  { type: "modulo_ordine", label: "Modulo d'ordine" },
-  { type: "contratto_incaricato", label: "Contratto Incaricato alle Vendite" },
-  { type: "presentazione", label: "Presentazione Attività" },
-  { type: "flyer", label: "Flyer" },
-  { type: "piano_compensi", label: "Piano Compensi e Posizioni Aziendali" },
-  { type: "scheda_prodotto", label: "Scheda Prodotto" },
-];
 
 function fileNameFromUrl(url: string | null) {
   if (!url) return null;
@@ -23,6 +15,17 @@ function fileNameFromUrl(url: string | null) {
 }
 
 export default async function MarketingDocumentiPage() {
+  const T = (await getDizionario()).marketing;
+  // Le etichette dipendono dalla lingua: l'elenco vive dentro la pagina.
+  const DOC_TYPES: { type: string; label: string }[] = [
+    { type: "privacy", label: T.docPrivacy },
+    { type: "modulo_ordine", label: T.docOrdine },
+    { type: "contratto_incaricato", label: T.docContratto },
+    { type: "presentazione", label: T.docPresentazione },
+    { type: "flyer", label: T.docFlyer },
+    { type: "piano_compensi", label: T.docPiano },
+    { type: "scheda_prodotto", label: T.docProdotto },
+  ];
   if (!supabaseConfigured()) {
     return (
       <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">

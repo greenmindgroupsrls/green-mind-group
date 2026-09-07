@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { ContactCard } from "./contact-card";
 import { CONTACT_STATUSES, CONTACT_STATUS_LABEL, type Contact } from "@/lib/crm";
+import { useTesti } from "@/i18n/testi-client";
 
 export function ContactsExplorer({
   contacts,
@@ -12,6 +13,7 @@ export function ContactsExplorer({
   contacts: Contact[];
   members: { activity_code: number; username: string }[];
 }) {
+  const T = useTesti().marketing;
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<Contact["status"] | "tutti">("tutti");
 
@@ -39,7 +41,7 @@ export function ContactsExplorer({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Cerca per nome, telefono o email"
+            placeholder={T.cercaContatto}
             className="w-full pl-9 pr-3 h-11 glass-input text-sm"
           />
         </div>
@@ -48,7 +50,7 @@ export function ContactsExplorer({
           onChange={(e) => setStatusFilter(e.target.value as Contact["status"] | "tutti")}
           className="h-11 glass-input px-3 text-sm"
         >
-          <option value="tutti">Tutti gli stati</option>
+          <option value="tutti">{T.tuttiGliStati}</option>
           {CONTACT_STATUSES.map((s) => (
             <option key={s} value={s}>
               {CONTACT_STATUS_LABEL[s]}
@@ -60,7 +62,7 @@ export function ContactsExplorer({
       {filtered.length === 0 ? (
         <div className="glass-card p-12 text-center">
           <p className="text-gray-500 dark:text-gray-400">
-            {contacts.length === 0 ? "Nessun contatto ancora." : "Nessun contatto trovato."}
+            {contacts.length === 0 ? T.nessunContatto : T.nessunContattoTrovato}
           </p>
         </div>
       ) : (

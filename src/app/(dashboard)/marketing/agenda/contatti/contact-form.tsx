@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createContact, type ContactState } from "../actions";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: ContactState = { error: null, success: false };
 
@@ -10,6 +11,7 @@ const inputClass =
 const labelClass = "text-sm font-medium text-gray-700 dark:text-gray-300";
 
 export function ContactForm() {
+  const T = useTesti().marketing;
   const [state, formAction, pending] = useActionState(createContact, initialState);
   const [open, setOpen] = useState(false);
   const [prevSuccess, setPrevSuccess] = useState(state.success);
@@ -41,20 +43,20 @@ export function ContactForm() {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Nome *</span>
+          <span className={labelClass}>{T.nomeObbl}</span>
           <input name="name" required className={inputClass} placeholder="Mario Rossi" />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Telefono</span>
+          <span className={labelClass}>{T.telefono}</span>
           <input name="phone" className={inputClass} placeholder="opzionale" />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Email</span>
+          <span className={labelClass}>{T.email}</span>
           <input name="email" type="email" className={inputClass} placeholder="opzionale" />
         </label>
       </div>
       <label className="flex flex-col gap-1.5">
-        <span className={labelClass}>Note</span>
+        <span className={labelClass}>{T.note}</span>
         <textarea name="notes" rows={2} className={`${inputClass} h-auto py-2.5 resize-none`} />
       </label>
       <div className="flex items-center gap-3">
@@ -63,7 +65,7 @@ export function ContactForm() {
           disabled={pending}
           className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
         >
-          {pending ? "Salvataggio..." : "Salva contatto"}
+          {pending ? T.salvataggio : T.salvaContatto}
         </button>
         <button
           type="button"

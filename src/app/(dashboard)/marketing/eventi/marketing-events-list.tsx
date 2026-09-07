@@ -5,6 +5,7 @@ import { UserPlus } from "lucide-react";
 import { SlidePanel } from "../../eventi/slide-panel";
 import { InviteGuestForm } from "../../eventi/invite-guest-form";
 import type { EventRow } from "@/lib/events";
+import { useTesti } from "@/i18n/testi-client";
 
 function formatEventDate(iso: string) {
   const d = new Date(`${iso}T00:00:00`);
@@ -22,12 +23,13 @@ export function MarketingEventsList({
   events: EventRow[];
   currentMember: { activity_code: number; username: string };
 }) {
+  const T = useTesti().marketing;
   const [invitePanelEvent, setInvitePanelEvent] = useState<EventRow | null>(null);
 
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h2 className="font-semibold text-gray-900 dark:text-white">Eventi in programma</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white">{T.eventiInProgramma}</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Invita i tuoi ospiti agli eventi Live organizzati dall&apos;azienda.
         </p>
@@ -35,7 +37,7 @@ export function MarketingEventsList({
 
       {events.length === 0 ? (
         <div className="glass-card p-12 text-center">
-          <p className="text-gray-500 dark:text-gray-400">Nessun evento in programma al momento.</p>
+          <p className="text-gray-500 dark:text-gray-400">{T.nessunEvento}</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
@@ -88,7 +90,7 @@ export function MarketingEventsList({
         </div>
       )}
 
-      <SlidePanel open={invitePanelEvent !== null} onClose={() => setInvitePanelEvent(null)} title="Invita ospite">
+      <SlidePanel open={invitePanelEvent !== null} onClose={() => setInvitePanelEvent(null)} title={T.invitaOspite}>
         {invitePanelEvent && (
           <InviteGuestForm
             key={invitePanelEvent.id}

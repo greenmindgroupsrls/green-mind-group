@@ -5,6 +5,7 @@ import { Tag } from "lucide-react";
 import { TaskItem } from "./task-item";
 import { CompletedTasksList } from "./completed-tasks-list";
 import { CONTACT_STATUSES, CONTACT_STATUS_LABEL, type Contact, type Task } from "@/lib/crm";
+import { useTesti } from "@/i18n/testi-client";
 
 type LabelFilter = "tutte" | "nessuna" | Contact["status"];
 
@@ -24,6 +25,7 @@ function formatTime(iso: string) {
 }
 
 export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: Contact[] }) {
+  const T = useTesti().marketing;
   const [labelFilter, setLabelFilter] = useState<LabelFilter>("tutte");
 
   const contactById = useMemo(() => new Map(contacts.map((c) => [c.id, c])), [contacts]);
@@ -58,14 +60,14 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
 
     return {
       activeSections: [
-        { title: "Scadute", items: overdue },
-        { title: "Oggi", items: todayTasks, emptyLabel: "Nessuna attività per oggi." },
-        { title: "Prossimi 7 giorni", items: upcoming },
-        { title: "Più avanti", items: later },
+        { title: T.scadute, items: overdue },
+        { title: T.oggi, items: todayTasks, emptyLabel: T.nessunaOggi },
+        { title: T.prossimi7, items: upcoming },
+        { title: T.piuAvanti, items: later },
       ] as { title: string; items: Task[]; emptyLabel?: string }[],
       doneTasks: done,
     };
-  }, [filteredTasks]);
+  }, [filteredTasks, T]);
 
   const noResultsForFilter = labelFilter !== "tutte" && filteredTasks.length === 0;
 
@@ -73,25 +75,25 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2">
         <Tag size={15} className="text-gray-500 dark:text-gray-400 shrink-0" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">Stato contatto:</span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">{T.statoContatto}</span>
         <select
           value={labelFilter}
           onChange={(e) => setLabelFilter(e.target.value as LabelFilter)}
           className="h-10 glass-input px-3 text-sm"
         >
-          <option value="tutte">Tutti gli stati</option>
+          <option value="tutte">{T.tuttiGliStati}</option>
           {CONTACT_STATUSES.map((s) => (
             <option key={s} value={s}>
               {CONTACT_STATUS_LABEL[s]}
             </option>
           ))}
-          <option value="nessuna">Senza contatto</option>
+          <option value="nessuna">{T.senzaContatto}</option>
         </select>
       </div>
 
       {noResultsForFilter ? (
         <div className="glass-card p-12 text-center">
-          <p className="text-gray-500 dark:text-gray-400">Nessuna attività con questo stato contatto.</p>
+          <p className="text-gray-500 dark:text-gray-400">{T.nessunaConStato}</p>
         </div>
       ) : (
         <>

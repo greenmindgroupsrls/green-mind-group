@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { createTask, type TaskState } from "./actions";
 import { TASK_RECURRENCES, TASK_RECURRENCE_LABEL, type Contact } from "@/lib/crm";
+import { useTesti } from "@/i18n/testi-client";
 
 const initialState: TaskState = { error: null, success: false };
 
@@ -17,6 +18,7 @@ function defaultDueAt() {
 }
 
 export function TaskForm({ contacts }: { contacts: Contact[] }) {
+  const T = useTesti().marketing;
   const [state, formAction, pending] = useActionState(createTask, initialState);
   const [showExtra, setShowExtra] = useState(false);
   const [prevSuccess, setPrevSuccess] = useState(state.success);
@@ -35,11 +37,11 @@ export function TaskForm({ contacts }: { contacts: Contact[] }) {
     <form ref={formRef} action={formAction} className="flex flex-col gap-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <label className="flex flex-col gap-1.5 flex-1">
-          <span className={labelClass}>Nuova attività</span>
+          <span className={labelClass}>{T.nuovaAttivita}</span>
           <input name="title" required placeholder="es. Richiama Mario" className={inputClass} />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>Quando</span>
+          <span className={labelClass}>{T.quando}</span>
           <input
             name="due_at"
             type="datetime-local"
@@ -50,9 +52,9 @@ export function TaskForm({ contacts }: { contacts: Contact[] }) {
         </label>
         {contacts.length > 0 && (
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Contatto</span>
+            <span className={labelClass}>{T.contatto}</span>
             <select name="contact_id" defaultValue="" className={inputClass}>
-              <option value="">Nessuno</option>
+              <option value="">{T.nessuno}</option>
               {contacts.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -66,7 +68,7 @@ export function TaskForm({ contacts }: { contacts: Contact[] }) {
           disabled={pending}
           className="h-11 rounded-lg bg-accent px-5 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
         >
-          {pending ? "Aggiunta..." : "Aggiungi"}
+          {pending ? T.aggiunta : T.aggiungi}
         </button>
       </div>
 
@@ -75,17 +77,17 @@ export function TaskForm({ contacts }: { contacts: Contact[] }) {
         onClick={() => setShowExtra((v) => !v)}
         className="self-start text-xs font-medium text-accent hover:underline"
       >
-        {showExtra ? "Nascondi dettagli" : "+ Note e ripetizione"}
+        {showExtra ? T.nascondiDettagli : "+ Note e ripetizione"}
       </button>
 
       {showExtra && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Note</span>
+            <span className={labelClass}>{T.note}</span>
             <textarea name="notes" rows={2} className={`${inputClass} h-auto py-2.5 resize-none`} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>Ripeti</span>
+            <span className={labelClass}>{T.ripeti}</span>
             <select name="recurrence" defaultValue="none" className={inputClass}>
               {TASK_RECURRENCES.map((r) => (
                 <option key={r} value={r}>

@@ -18,6 +18,7 @@ import {
   type ContactStatus,
 } from "@/lib/crm";
 import { formatActivityCode } from "@/lib/activity-code";
+import { useTesti } from "@/i18n/testi-client";
 
 const contactInitialState: ContactState = { error: null, success: false };
 const appointmentInitialState: AppointmentState = { error: null, success: false };
@@ -26,7 +27,7 @@ const inputClass =
   "h-10 glass-input px-3 text-sm";
 const labelClass = "text-xs font-medium text-gray-700 dark:text-gray-300";
 
-// "Appuntamento" non è mai una scelta manuale da questo select: è uno stato
+// T.appuntamento non è mai una scelta manuale da questo select: è uno stato
 // derivato (vedi crm.ts:withEffectiveStatus) che compare da solo quando
 // c'è un'attività aperta collegata, fissata col bottone qui sotto.
 const MANUAL_STATUSES: ContactStatus[] = CONTACT_STATUSES.filter((s) => s !== "appuntamento");
@@ -44,6 +45,7 @@ export function ContactCard({
   contact: Contact;
   members: { activity_code: number; username: string }[];
 }) {
+  const T = useTesti().marketing;
   const [editing, setEditing] = useState(false);
   const [schedulingAppt, setSchedulingAppt] = useState(false);
   const [editState, editAction, editPending] = useActionState(updateContact, contactInitialState);
@@ -69,20 +71,20 @@ export function ContactCard({
         <input type="hidden" name="id" value={contact.id} />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Nome *</span>
+            <span className={labelClass}>{T.nomeObbl}</span>
             <input name="name" defaultValue={contact.name} required className={inputClass} />
           </label>
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Telefono</span>
+            <span className={labelClass}>{T.telefono}</span>
             <input name="phone" defaultValue={contact.phone ?? ""} className={inputClass} />
           </label>
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Email</span>
+            <span className={labelClass}>{T.email}</span>
             <input name="email" type="email" defaultValue={contact.email ?? ""} className={inputClass} />
           </label>
         </div>
         <label className="flex flex-col gap-1">
-          <span className={labelClass}>Note</span>
+          <span className={labelClass}>{T.note}</span>
           <textarea
             name="notes"
             defaultValue={contact.notes ?? ""}
@@ -92,13 +94,13 @@ export function ContactCard({
         </label>
         {members.length > 0 && (
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Collegato a un iscritto</span>
+            <span className={labelClass}>{T.collegatoAIscritto}</span>
             <select
               name="linked_member_code"
               defaultValue={contact.linked_member_code ?? ""}
               className={inputClass}
             >
-              <option value="">Nessuno</option>
+              <option value="">{T.nessuno}</option>
               {members.map((m) => (
                 <option key={m.activity_code} value={m.activity_code}>
                   {formatActivityCode(m.activity_code)} {m.username}
@@ -113,7 +115,7 @@ export function ContactCard({
             disabled={editPending}
             className="rounded-lg bg-accent px-4 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
           >
-            {editPending ? "Salvataggio..." : "Salva"}
+            {editPending ? T.salvataggio : T.salva}
           </button>
           <button
             type="button"
@@ -173,7 +175,7 @@ export function ContactCard({
           type="button"
           onClick={() => setSchedulingAppt((v) => !v)}
           className="text-gray-300 hover:text-emerald-600 dark:text-gray-600 dark:hover:text-emerald-400 shrink-0"
-          aria-label="Fissa appuntamento"
+          aria-label={T.fissaAppuntamento}
         >
           <CalendarPlus size={16} />
         </button>
@@ -181,7 +183,7 @@ export function ContactCard({
           type="button"
           onClick={() => setEditing(true)}
           className="text-gray-300 hover:text-accent dark:text-gray-600 dark:hover:text-accent shrink-0"
-          aria-label="Modifica contatto"
+          aria-label={T.modificaContatto}
         >
           <Pencil size={15} />
         </button>
@@ -189,7 +191,7 @@ export function ContactCard({
           type="button"
           onClick={() => deleteContact(contact.id)}
           className="text-gray-300 hover:text-red-600 dark:text-gray-600 dark:hover:text-red-400 shrink-0"
-          aria-label="Elimina contatto"
+          aria-label={T.eliminaContatto}
         >
           <Trash2 size={15} />
         </button>
@@ -205,7 +207,7 @@ export function ContactCard({
         >
           <input type="hidden" name="contact_id" value={contact.id} />
           <label className="flex flex-col gap-1 flex-1">
-            <span className={labelClass}>Data e ora appuntamento</span>
+            <span className={labelClass}>{T.dataOraAppuntamento}</span>
             <input
               name="due_at"
               type="datetime-local"
@@ -215,7 +217,7 @@ export function ContactCard({
             />
           </label>
           <label className="flex flex-col gap-1 flex-1">
-            <span className={labelClass}>Note (opzionale)</span>
+            <span className={labelClass}>{T.noteOpzionale}</span>
             <input name="notes" className={inputClass} />
           </label>
           <div className="flex items-center gap-3">
@@ -224,7 +226,7 @@ export function ContactCard({
               disabled={apptPending}
               className="rounded-lg bg-accent px-3 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {apptPending ? "Salvataggio..." : "Fissa"}
+              {apptPending ? T.salvataggio : T.fissa}
             </button>
             <button
               type="button"

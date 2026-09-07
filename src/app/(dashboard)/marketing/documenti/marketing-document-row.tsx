@@ -4,6 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { FileText, Upload, Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { setMarketingDocument } from "./actions";
+import { useTesti } from "@/i18n/testi-client";
 
 export function MarketingDocumentRow({
   docType,
@@ -18,6 +19,7 @@ export function MarketingDocumentRow({
   fileName: string | null;
   isRoot: boolean;
 }) {
+  const T = useTesti().marketing;
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export function MarketingDocumentRow({
     if (!file) return;
 
     if (file.size > 15 * 1024 * 1024) {
-      setError("File troppo grande (max 15MB)");
+      setError(T.fileTroppoGrande);
       return;
     }
 
@@ -55,7 +57,7 @@ export function MarketingDocumentRow({
       try {
         await setMarketingDocument(docType, publicUrl, file.name);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Errore imprevisto");
+        setError(err instanceof Error ? err.message : T.erroreImprevisto);
       } finally {
         setUploading(false);
         if (inputRef.current) inputRef.current.value = "";
@@ -73,7 +75,7 @@ export function MarketingDocumentRow({
           <div className="min-w-0">
             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{label}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-              {fileName ?? "Non ancora caricato"}
+              {fileName ?? T.nonAncoraCaricato}
             </p>
           </div>
         </div>
@@ -99,7 +101,7 @@ export function MarketingDocumentRow({
                 className="inline-flex items-center gap-1.5 px-3 h-9 rounded-lg border border-gray-300 dark:border-white/10 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors disabled:opacity-50"
               >
                 <Upload size={14} />
-                {uploading || pending ? "Caricamento..." : fileUrl ? "Sostituisci" : "Carica"}
+                {uploading || pending ? T.caricamento : fileUrl ? T.sostituisci : T.carica}
               </button>
               <input
                 ref={inputRef}

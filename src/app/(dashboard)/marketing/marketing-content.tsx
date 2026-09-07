@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import QRCode from "qrcode";
 import { Check, Copy, Download, Pencil, Plus } from "lucide-react";
 import { setCallScript, addCallScript } from "./actions";
+import { useTesti } from "@/i18n/testi-client";
 
 type CallScript = { id: number; label: string; body: string };
 
@@ -21,6 +22,7 @@ export function MarketingContent({
   scripts: CallScript[];
   isRoot: boolean;
 }) {
+  const T = useTesti().marketing;
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [copiedId, setCopiedId] = useState<number | null>(null);
@@ -101,7 +103,7 @@ export function MarketingContent({
         );
         setEditingId(null);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Errore imprevisto");
+        setError(e instanceof Error ? e.message : T.erroreImprevisto);
       }
     });
   }
@@ -114,7 +116,7 @@ export function MarketingContent({
         setScripts((prev) => [...prev, created]);
         setAdding(false);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Errore imprevisto");
+        setError(e instanceof Error ? e.message : T.erroreImprevisto);
       }
     });
   }
@@ -124,7 +126,7 @@ export function MarketingContent({
   return (
     <div className="flex flex-col gap-6">
       <div className="glass-card p-6">
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Il tuo link personale</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{T.linkPersonale}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
             <p className="text-sm text-gray-600 dark:text-gray-300 break-all rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 px-3.5 py-2.5">
@@ -137,7 +139,7 @@ export function MarketingContent({
                 className="flex items-center gap-2 glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium"
               >
                 {linkCopied ? <Check size={16} /> : <Copy size={16} />}
-                {linkCopied ? "Copiato" : "Copia link"}
+                {linkCopied ? T.copiato : T.copiaLink}
               </button>
               <a
                 href={bannerUrl}
@@ -161,7 +163,7 @@ export function MarketingContent({
       </div>
 
       <div className="glass-card p-6">
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-1">Testi pronti da condividere</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{T.testiPronti}</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
           Copia, incolla, personalizza se vuoi — il link è già dentro.
         </p>
@@ -174,7 +176,7 @@ export function MarketingContent({
                     value={draftLabel}
                     onChange={(e) => setDraftLabel(e.target.value)}
                     className={inputClass}
-                    placeholder="Etichetta"
+                    placeholder={T.etichetta}
                   />
                   <textarea
                     value={draftBody}
@@ -190,7 +192,7 @@ export function MarketingContent({
                       disabled={pending}
                       className="glass-btn-primary rounded-lg px-3.5 py-2 text-xs font-medium disabled:opacity-50"
                     >
-                      {pending ? "Salvataggio..." : "Salva"}
+                      {pending ? T.salvataggio : T.salva}
                     </button>
                     <button
                       type="button"
@@ -222,7 +224,7 @@ export function MarketingContent({
                         className="flex items-center gap-1.5 text-xs font-medium text-accent hover:opacity-80"
                       >
                         {copiedId === script.id ? <Check size={13} /> : <Copy size={13} />}
-                        {copiedId === script.id ? "Copiato" : "Copia"}
+                        {copiedId === script.id ? T.copiato : T.copia}
                       </button>
                     </div>
                   </div>
@@ -241,7 +243,7 @@ export function MarketingContent({
                   value={draftLabel}
                   onChange={(e) => setDraftLabel(e.target.value)}
                   className={inputClass}
-                  placeholder="Etichetta"
+                  placeholder={T.etichetta}
                 />
                 <textarea
                   value={draftBody}
@@ -257,7 +259,7 @@ export function MarketingContent({
                     disabled={pending}
                     className="glass-btn-primary rounded-lg px-3.5 py-2 text-xs font-medium disabled:opacity-50"
                   >
-                    {pending ? "Salvataggio..." : "Salva"}
+                    {pending ? T.salvataggio : T.salva}
                   </button>
                   <button
                     type="button"

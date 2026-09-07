@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { TaskItem } from "./task-item";
 import type { Contact, Task } from "@/lib/crm";
+import { useTesti } from "@/i18n/testi-client";
 
 const PAGE_SIZE = 10;
 
@@ -15,6 +16,7 @@ export function CompletedTasksList({
   contacts: Contact[];
   formatTime: (iso: string) => string;
 }) {
+  const T = useTesti().marketing;
   const [expanded, setExpanded] = useState(false);
   const visible = expanded ? tasks : tasks.slice(0, PAGE_SIZE);
   const contactById = useMemo(() => new Map(contacts.map((c) => [c.id, c])), [contacts]);
@@ -47,7 +49,7 @@ export function CompletedTasksList({
           onClick={() => setExpanded((v) => !v)}
           className="px-4 py-2.5 text-xs font-medium text-accent hover:underline text-left"
         >
-          {expanded ? "Mostra solo le ultime 10" : `Mostra tutte (${tasks.length})`}
+          {expanded ? T.mostraUltime10 : `Mostra tutte (${tasks.length})`}
         </button>
       )}
     </div>

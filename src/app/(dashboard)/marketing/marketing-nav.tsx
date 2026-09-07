@@ -2,23 +2,22 @@
 
 import { usePathname } from "next/navigation";
 import { TabBar, TabLink } from "@/components/tab-bar";
-
-const ITEMS = [
-  { href: "/marketing", label: "Link & Materiali" },
-  { href: "/marketing/agenda", label: "Agenda" },
-  { href: "/marketing/eventi", label: "Eventi" },
-  { href: "/marketing/documenti", label: "Documenti" },
-];
-
-// Voce riservata alla gestione aziendale: arancione, stessa convenzione
-// delle voci root del menu laterale.
-const ROOT_ITEMS = [{ href: "/marketing/lead", label: "Lead", gestione: true }];
+import { useTesti } from "@/i18n/testi-client";
 
 export function MarketingNav({ isRoot }: { isRoot: boolean }) {
   const pathname = usePathname();
-  const items: { href: string; label: string; gestione?: boolean }[] = isRoot
-    ? [...ITEMS, ...ROOT_ITEMS]
-    : ITEMS;
+  const T = useTesti().marketing;
+
+  // Le etichette dipendono dalla lingua: l'elenco vive dentro il componente.
+  // "Lead" e' riservata alla gestione aziendale e si distingue in arancione,
+  // stessa convenzione delle voci root del menu laterale.
+  const items: { href: string; label: string; gestione?: boolean }[] = [
+    { href: "/marketing", label: T.linkMateriali },
+    { href: "/marketing/agenda", label: T.agenda },
+    { href: "/marketing/eventi", label: T.eventi },
+    { href: "/marketing/documenti", label: T.documenti },
+    ...(isRoot ? [{ href: "/marketing/lead", label: T.lead, gestione: true }] : []),
+  ];
 
   return (
     <TabBar>

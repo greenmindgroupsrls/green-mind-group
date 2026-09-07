@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { Trash2, Pencil, CalendarClock, Repeat } from "lucide-react";
 import { toggleTaskDone, deleteTask, updateTask, type TaskState } from "./actions";
+import { useTesti } from "@/i18n/testi-client";
 import {
   TASK_RECURRENCES,
   TASK_RECURRENCE_LABEL,
@@ -53,6 +54,7 @@ export function TaskItem({
   recurrence: TaskRecurrence;
   contacts: Contact[];
 }) {
+  const T = useTesti().marketing;
   const [editing, setEditing] = useState(false);
   const [state, formAction, pending] = useActionState(updateTask, initialState);
 
@@ -68,11 +70,11 @@ export function TaskItem({
         <input type="hidden" name="id" value={id} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Titolo</span>
+            <span className={labelClass}>{T.titoloCampo}</span>
             <input name="title" defaultValue={title} required className={inputClass} />
           </label>
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Quando</span>
+            <span className={labelClass}>{T.quando}</span>
             <input
               name="due_at"
               type="datetime-local"
@@ -83,9 +85,9 @@ export function TaskItem({
           </label>
           {contacts.length > 0 && (
             <label className="flex flex-col gap-1">
-              <span className={labelClass}>Contatto</span>
+              <span className={labelClass}>{T.contatto}</span>
               <select name="contact_id" defaultValue={contactId ?? ""} className={inputClass}>
-                <option value="">Nessuno</option>
+                <option value="">{T.nessuno}</option>
                 {contacts.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
@@ -95,7 +97,7 @@ export function TaskItem({
             </label>
           )}
           <label className="flex flex-col gap-1">
-            <span className={labelClass}>Ripeti</span>
+            <span className={labelClass}>{T.ripeti}</span>
             <select name="recurrence" defaultValue={recurrence} className={inputClass}>
               {TASK_RECURRENCES.map((r) => (
                 <option key={r} value={r}>
@@ -106,7 +108,7 @@ export function TaskItem({
           </label>
         </div>
         <label className="flex flex-col gap-1">
-          <span className={labelClass}>Note</span>
+          <span className={labelClass}>{T.note}</span>
           <textarea
             name="notes"
             defaultValue={notes ?? ""}
@@ -120,7 +122,7 @@ export function TaskItem({
             disabled={pending}
             className="rounded-lg bg-accent px-4 py-2 text-xs font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
           >
-            {pending ? "Salvataggio..." : "Salva"}
+            {pending ? T.salvataggio : T.salva}
           </button>
           <button
             type="button"
@@ -177,7 +179,7 @@ export function TaskItem({
         type="button"
         onClick={() => setEditing(true)}
         className="text-gray-300 hover:text-accent dark:text-gray-600 dark:hover:text-accent shrink-0"
-        aria-label="Modifica"
+        aria-label={T.modifica}
       >
         <Pencil size={14} />
       </button>
@@ -185,7 +187,7 @@ export function TaskItem({
         type="button"
         onClick={() => deleteTask(id)}
         className="text-gray-300 hover:text-red-600 dark:text-gray-600 dark:hover:text-red-400 shrink-0"
-        aria-label="Elimina"
+        aria-label={T.elimina}
       >
         <Trash2 size={15} />
       </button>
