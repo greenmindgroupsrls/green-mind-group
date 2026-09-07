@@ -204,17 +204,17 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
         {" · "}Iscritto il {formatDate(member.created_at)}
       </p>
 
-      <div className="rounded-xl border border-amber-200 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/10 p-4 flex flex-col gap-2.5">
+      <div className="rounded-xl border border-amber-200 dark:border-amber-500/25 bg-amber-50 dark:bg-amber-950/70 p-4 flex flex-col gap-2.5">
         <div className="flex items-center gap-2 text-amber-800 dark:text-amber-400">
           <Wand2 size={15} />
           <span className="text-sm font-semibold">Rank forzato</span>
         </div>
-        <p className="text-xs text-amber-800/80 dark:text-amber-400/80">
+        <p className="text-xs text-amber-700 dark:text-amber-300">
           Bypassa le regole automatiche (VIP con 2 diretti attivi, Royal con 10 VIP/Royal in struttura) e si
           applica subito al calcolo commissioni.
         </p>
         {isAzienda ? (
-          <p className="text-xs text-amber-800/80 dark:text-amber-400/80">
+          <p className="text-xs text-amber-700 dark:text-amber-300">
             L&apos;account aziendale è sempre Royal, non è modificabile.
           </p>
         ) : (
@@ -238,7 +238,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
                 type="button"
                 onClick={handleSaveRank}
                 disabled={rankPending || !rankDirty}
-                className="rounded-lg bg-amber-600 px-3 h-10 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+                className="rounded-lg bg-amber-700 px-3 h-10 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-40"
               >
                 {rankPending ? "Salvataggio..." : "Salva"}
               </button>
@@ -468,7 +468,11 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
                 </p>
                 <span className="flex items-center gap-1 shrink-0">
                   {m.rankOverride && (
-                    <ShieldAlert size={13} className="text-amber-500" aria-label="Rank forzato" />
+                    <ShieldAlert
+                      size={13}
+                      className="text-amber-700 dark:text-amber-400"
+                      aria-label="Rank forzato"
+                    />
                   )}
                   {m.purchaseOverride !== null && (
                     <ShoppingCart
