@@ -28,6 +28,7 @@ function formatDate(iso: string) {
 
 export default async function PayoutPrelevarePage() {
   const T = (await getDizionario()).payout;
+  const TV = (await getDizionario()).vuoto;
   const [currentMember, network] = await Promise.all([getCurrentMember(), loadNetworkData()]);
   const code = network.usingMockData ? 0 : (currentMember?.activity_code ?? 0);
   const isRoot = code === 0;
@@ -123,7 +124,7 @@ export default async function PayoutPrelevarePage() {
               {myRequests.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                    Nessuna richiesta di prelievo ancora.
+                    {TV.nessunPrelievo}
                   </td>
                 </tr>
               )}
@@ -196,7 +197,7 @@ export default async function PayoutPrelevarePage() {
                 {withdrawals.length === 0 && (
                   <tr>
                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                      Nessuna richiesta di prelievo ancora.
+                      {TV.nessunPrelievo}
                     </td>
                   </tr>
                 )}

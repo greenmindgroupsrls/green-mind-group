@@ -155,7 +155,7 @@ export function MarketingContent({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={qrDataUrl}
-              alt="QR code del link personale"
+              alt={T.qrCode}
               className="h-36 w-36 rounded-lg border border-gray-200 dark:border-white/10 bg-white p-2 justify-self-center"
             />
           )}
@@ -165,7 +165,7 @@ export function MarketingContent({
       <div className="glass-card p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{T.testiPronti}</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-          Copia, incolla, personalizza se vuoi — il link è già dentro.
+          {T.copiaIncolla}
         </p>
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {scripts.map((script) => (
@@ -183,7 +183,7 @@ export function MarketingContent({
                     onChange={(e) => setDraftBody(e.target.value)}
                     rows={4}
                     className={`${inputClass} resize-y`}
-                    placeholder="Testo del messaggio (usa {{link}} dove vuoi che compaia il link personale)"
+                    placeholder="{T.testoMessaggio}"
                   />
                   <div className="flex gap-2">
                     <button
@@ -250,7 +250,7 @@ export function MarketingContent({
                   onChange={(e) => setDraftBody(e.target.value)}
                   rows={4}
                   className={`${inputClass} resize-y`}
-                  placeholder="Testo del messaggio (usa {{link}} dove vuoi che compaia il link personale)"
+                  placeholder="{T.testoMessaggio}"
                 />
                 <div className="flex gap-2">
                   <button

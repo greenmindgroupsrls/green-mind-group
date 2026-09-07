@@ -185,7 +185,7 @@ export function NetworkExplorer({
         Team: albero strutturale
       </h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
-        Posizione usata per le commissioni. Clicca un nodo per vederne il dettaglio.
+        {T.posizioneUsata}
       </p>
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-6">
@@ -245,7 +245,7 @@ export function NetworkExplorer({
         <div className="glass-card p-6 h-fit sticky top-6">
           {!selected ? (
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Seleziona un nodo dell&apos;albero per vederne il dettaglio.
+              {T.selezionaNodo}
             </p>
           ) : (
             <div className="flex flex-col gap-5">

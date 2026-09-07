@@ -259,7 +259,10 @@
     "posizioneStrutturale": "Structural position (under)",
     "azienda": "Company",
     "passUp": "Pass-up",
-    "direttiStrutturali": "Direct downline"
+    "direttiStrutturali": "Direct downline",
+    "posizioneUsata": "Position used for commissions. Click a node to see its details.",
+    "selezionaNodo": "Select a node in the tree to see its details.",
+    "spostato": "Moved from the initial position (ref) to the current one"
   },
   "messaggi": {
     "titolo": "Messages",
@@ -393,7 +396,11 @@
     "rimuoviFoto": "Remove photo",
     "caricamento": "Uploading...",
     "scegliFile": "Choose file",
-    "immagineTroppoGrande": "Image too large (max 5MB)"
+    "immagineTroppoGrande": "Image too large (max 5MB)",
+    "esCitta": "e.g. Vicenza",
+    "esVenue": "e.g. Vicenza Business Tower",
+    "esIndirizzo": "e.g. Via Brescia 31, 36040 Torri di Quartesolo",
+    "esNote": "e.g. No entry after 7pm..."
   },
   "marketing": {
     "titolo": "Marketing",
@@ -470,6 +477,38 @@
     "cercaContatto": "Search by name, phone or email",
     "nessunContatto": "No contacts yet.",
     "nessunContattoTrovato": "No contacts found.",
-    "salvaContatto": "Save contact"
+    "salvaContatto": "Save contact",
+    "qrCode": "QR code for your personal link",
+    "copiaIncolla": "Copy, paste, tweak if you like — the link is already in there.",
+    "testoMessaggio": "Message text (use {{link}} where the personal link should appear)",
+    "esRichiama": "e.g. Call Mario back"
+  },
+  "vuoto": {
+    "nessunIscritto": "No members yet.",
+    "nessunDiretto": "No direct members yet.",
+    "nessunaAttivita": "No activity yet.",
+    "nessunProdotto": "No products available right now.",
+    "nessunEventoLive": "No live events scheduled right now.",
+    "nessunPrelievo": "No withdrawal requests yet.",
+    "nessunIndirizzo": "No saved addresses.",
+    "nessunAnnuncio": "No announcements yet.",
+    "nessunMessaggio": "No messages.",
+    "nessunaCommissione": "No commissions received so far.",
+    "qualcosaStorto": "Something went wrong"
+  },
+  "contratto": {
+    "titolo": "Distributor contract not signed yet",
+    "testo": "Fill it in and sign it to put your position in order: it takes a few minutes.",
+    "azione": "Fill in the contract"
+  },
+  "sezioni": {
+    "marketing": "Promotional materials, your personal link and your daily work agenda.",
+    "eventiInvita": "Invite your guests to the live events organised by the company.",
+    "registrazione": "Register a new customer or distributor in the network.",
+    "payout": "Requests and history of your commission payments.",
+    "ticket": "Open a support ticket, we'll reply within 24 hours.",
+    "ultimeIscrizioni": "Latest members introduced by you or your team, across the structure",
+    "selezionaArgomento": "Select a topic",
+    "inArrivo": "Coming with the shop and payments."
   }
 }

@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function EventiPage() {
   const T = (await getDizionario()).eventi;
+  const TS = (await getDizionario()).sezioni;
   if (!supabaseConfigured()) {
     return (
       <div className="p-8">

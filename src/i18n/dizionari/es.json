@@ -259,7 +259,10 @@
     "posizioneStrutturale": "Posición estructural (bajo)",
     "azienda": "Empresa",
     "passUp": "Pass-up",
-    "direttiStrutturali": "Directos estructurales"
+    "direttiStrutturali": "Directos estructurales",
+    "posizioneUsata": "Posición usada para las comisiones. Haz clic en un nodo para ver el detalle.",
+    "selezionaNodo": "Selecciona un nodo del árbol para ver el detalle.",
+    "spostato": "Movido de la posición inicial (ref) a la actual"
   },
   "messaggi": {
     "titolo": "Mensajes",
@@ -393,7 +396,11 @@
     "rimuoviFoto": "Quitar foto",
     "caricamento": "Cargando...",
     "scegliFile": "Elegir archivo",
-    "immagineTroppoGrande": "Imagen demasiado grande (máx. 5 MB)"
+    "immagineTroppoGrande": "Imagen demasiado grande (máx. 5 MB)",
+    "esCitta": "p. ej. Vicenza",
+    "esVenue": "p. ej. Vicenza Business Tower",
+    "esIndirizzo": "p. ej. Via Brescia 31, 36040 Torri di Quartesolo",
+    "esNote": "p. ej. No se podrá entrar después de las 19:00..."
   },
   "marketing": {
     "titolo": "Marketing",
@@ -470,6 +477,38 @@
     "cercaContatto": "Buscar por nombre, teléfono o correo",
     "nessunContatto": "Aún no hay contactos.",
     "nessunContattoTrovato": "No se encontraron contactos.",
-    "salvaContatto": "Guardar contacto"
+    "salvaContatto": "Guardar contacto",
+    "qrCode": "Código QR del enlace personal",
+    "copiaIncolla": "Copia, pega, personaliza si quieres: el enlace ya está dentro.",
+    "testoMessaggio": "Texto del mensaje (usa {{link}} donde deba aparecer el enlace personal)",
+    "esRichiama": "p. ej. Llamar a Mario"
+  },
+  "vuoto": {
+    "nessunIscritto": "Aún no hay inscritos.",
+    "nessunDiretto": "Aún no hay directos.",
+    "nessunaAttivita": "Aún no hay actividad.",
+    "nessunProdotto": "No hay productos disponibles ahora.",
+    "nessunEventoLive": "No hay eventos en vivo programados.",
+    "nessunPrelievo": "Aún no hay solicitudes de retirada.",
+    "nessunIndirizzo": "No hay direcciones guardadas.",
+    "nessunAnnuncio": "Aún no hay anuncios.",
+    "nessunMessaggio": "No hay mensajes.",
+    "nessunaCommissione": "No se han recibido comisiones.",
+    "qualcosaStorto": "Algo salió mal"
+  },
+  "contratto": {
+    "titolo": "Contrato de distribuidor aún sin firmar",
+    "testo": "Complétalo y fírmalo para regularizar tu posición: bastan unos minutos.",
+    "azione": "Completar el contrato"
+  },
+  "sezioni": {
+    "marketing": "Materiales promocionales, enlace personal y tu agenda de trabajo diaria.",
+    "eventiInvita": "Invita a tus invitados a los eventos en vivo de la empresa.",
+    "registrazione": "Registra un nuevo cliente o distribuidor en la red.",
+    "payout": "Solicitudes e historial de pagos de tus comisiones.",
+    "ticket": "Abre un ticket de soporte, responderemos en 24 horas.",
+    "ultimeIscrizioni": "Últimas altas traídas por ti o tu equipo, en toda la estructura",
+    "selezionaArgomento": "Selecciona un tema",
+    "inArrivo": "Llegará con la tienda y los pagos."
   }
 }

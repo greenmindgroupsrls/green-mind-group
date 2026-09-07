@@ -259,7 +259,10 @@
     "posizioneStrutturale": "Strukturposition (unter)",
     "azienda": "Unternehmen",
     "passUp": "Pass-up",
-    "direttiStrutturali": "Direkte Partner"
+    "direttiStrutturali": "Direkte Partner",
+    "posizioneUsata": "Position für die Provisionen. Klicken Sie auf einen Knoten für Details.",
+    "selezionaNodo": "Wählen Sie einen Knoten aus, um Details zu sehen.",
+    "spostato": "Von der Ausgangsposition (Ref) zur aktuellen verschoben"
   },
   "messaggi": {
     "titolo": "Nachrichten",
@@ -393,7 +396,11 @@
     "rimuoviFoto": "Foto entfernen",
     "caricamento": "Wird geladen...",
     "scegliFile": "Datei wählen",
-    "immagineTroppoGrande": "Bild zu groß (max. 5 MB)"
+    "immagineTroppoGrande": "Bild zu groß (max. 5 MB)",
+    "esCitta": "z. B. Vicenza",
+    "esVenue": "z. B. Vicenza Business Tower",
+    "esIndirizzo": "z. B. Via Brescia 31, 36040 Torri di Quartesolo",
+    "esNote": "z. B. Kein Einlass nach 19:00 Uhr..."
   },
   "marketing": {
     "titolo": "Marketing",
@@ -470,6 +477,38 @@
     "cercaContatto": "Nach Name, Telefon oder E-Mail suchen",
     "nessunContatto": "Noch keine Kontakte.",
     "nessunContattoTrovato": "Keine Kontakte gefunden.",
-    "salvaContatto": "Kontakt speichern"
+    "salvaContatto": "Kontakt speichern",
+    "qrCode": "QR-Code des persönlichen Links",
+    "copiaIncolla": "Kopieren, einfügen, nach Wunsch anpassen — der Link ist schon drin.",
+    "testoMessaggio": "Nachrichtentext (verwenden Sie {{link}}, wo der persönliche Link stehen soll)",
+    "esRichiama": "z. B. Mario zurückrufen"
+  },
+  "vuoto": {
+    "nessunIscritto": "Noch keine Mitglieder.",
+    "nessunDiretto": "Noch keine direkten Partner.",
+    "nessunaAttivita": "Noch keine Aktivität.",
+    "nessunProdotto": "Derzeit keine Produkte verfügbar.",
+    "nessunEventoLive": "Derzeit keine Live-Veranstaltungen geplant.",
+    "nessunPrelievo": "Noch keine Auszahlungsanfragen.",
+    "nessunIndirizzo": "Keine gespeicherten Adressen.",
+    "nessunAnnuncio": "Noch keine Ankündigungen.",
+    "nessunMessaggio": "Keine Nachrichten.",
+    "nessunaCommissione": "Bisher keine Provisionen erhalten.",
+    "qualcosaStorto": "Etwas ist schiefgelaufen"
+  },
+  "contratto": {
+    "titolo": "Vertriebspartnervertrag noch nicht unterschrieben",
+    "testo": "Füllen Sie ihn aus und unterschreiben Sie, um Ihre Position zu regeln: es dauert nur wenige Minuten.",
+    "azione": "Vertrag ausfüllen"
+  },
+  "sezioni": {
+    "marketing": "Werbematerialien, persönlicher Link und Ihr täglicher Arbeitsplan.",
+    "eventiInvita": "Laden Sie Ihre Gäste zu den Live-Veranstaltungen des Unternehmens ein.",
+    "registrazione": "Registrieren Sie einen neuen Kunden oder Vertriebspartner.",
+    "payout": "Anfragen und Verlauf Ihrer Provisionszahlungen.",
+    "ticket": "Eröffnen Sie ein Support-Ticket, wir antworten innerhalb von 24 Stunden.",
+    "ultimeIscrizioni": "Neueste Anmeldungen von Ihnen oder Ihrem Team, in der gesamten Struktur",
+    "selezionaArgomento": "Thema wählen",
+    "inArrivo": "Kommt mit Shop und Zahlungen."
   }
 }

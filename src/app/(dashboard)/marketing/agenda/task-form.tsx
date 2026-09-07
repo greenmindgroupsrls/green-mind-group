@@ -38,7 +38,7 @@ export function TaskForm({ contacts }: { contacts: Contact[] }) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <label className="flex flex-col gap-1.5 flex-1">
           <span className={labelClass}>{T.nuovaAttivita}</span>
-          <input name="title" required placeholder="es. Richiama Mario" className={inputClass} />
+          <input name="title" required placeholder={T.esRichiama} className={inputClass} />
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>{T.quando}</span>

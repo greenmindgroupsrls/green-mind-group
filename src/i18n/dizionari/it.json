@@ -259,7 +259,10 @@
     "posizioneStrutturale": "Posizione strutturale (sotto)",
     "azienda": "Company",
     "passUp": "Pass-up",
-    "direttiStrutturali": "Diretti strutturali"
+    "direttiStrutturali": "Diretti strutturali",
+    "posizioneUsata": "Posizione usata per le commissioni. Clicca un nodo per vederne il dettaglio.",
+    "selezionaNodo": "Seleziona un nodo dell'albero per vederne il dettaglio.",
+    "spostato": "Spostato dalla posizione iniziale (ref) a quella attuale"
   },
   "messaggi": {
     "titolo": "Messaggi",
@@ -393,7 +396,11 @@
     "rimuoviFoto": "Rimuovi foto",
     "caricamento": "Caricamento...",
     "scegliFile": "Scegli file",
-    "immagineTroppoGrande": "Immagine troppo grande (max 5MB)"
+    "immagineTroppoGrande": "Immagine troppo grande (max 5MB)",
+    "esCitta": "es. Vicenza",
+    "esVenue": "es. Vicenza Business Tower",
+    "esIndirizzo": "es. Via Brescia 31, 36040 Torri di Quartesolo",
+    "esNote": "es. Dopo le 19:00 non sarà più possibile accedere..."
   },
   "marketing": {
     "titolo": "Marketing",
@@ -470,6 +477,38 @@
     "cercaContatto": "Cerca per nome, telefono o email",
     "nessunContatto": "Nessun contatto ancora.",
     "nessunContattoTrovato": "Nessun contatto trovato.",
-    "salvaContatto": "Salva contatto"
+    "salvaContatto": "Salva contatto",
+    "qrCode": "QR code del link personale",
+    "copiaIncolla": "Copia, incolla, personalizza se vuoi — il link è già dentro.",
+    "testoMessaggio": "Testo del messaggio (usa {{link}} dove vuoi che compaia il link personale)",
+    "esRichiama": "es. Richiama Mario"
+  },
+  "vuoto": {
+    "nessunIscritto": "Nessun iscritto ancora.",
+    "nessunDiretto": "Nessun diretto ancora.",
+    "nessunaAttivita": "Nessuna attività ancora.",
+    "nessunProdotto": "Nessun prodotto disponibile al momento.",
+    "nessunEventoLive": "Nessun evento Live in programma al momento.",
+    "nessunPrelievo": "Nessuna richiesta di prelievo ancora.",
+    "nessunIndirizzo": "Nessun indirizzo salvato.",
+    "nessunAnnuncio": "Nessun annuncio ancora.",
+    "nessunMessaggio": "Nessun messaggio.",
+    "nessunaCommissione": "Nessuna commissione ricevuta finora.",
+    "qualcosaStorto": "Qualcosa è andato storto"
+  },
+  "contratto": {
+    "titolo": "Contratto da incaricato non ancora firmato",
+    "testo": "Compilalo e firmalo per mettere in regola la tua posizione: bastano pochi minuti.",
+    "azione": "Compila il contratto"
+  },
+  "sezioni": {
+    "marketing": "Materiali promozionali, link personale e la tua agenda di lavoro quotidiana.",
+    "eventiInvita": "Invita i tuoi ospiti agli eventi Live organizzati dall'azienda.",
+    "registrazione": "Registra un nuovo cliente o incaricato nella rete.",
+    "payout": "Richieste e storico dei pagamenti delle tue commissioni.",
+    "ticket": "Apri un ticket di assistenza, ti risponderemo entro 24 ore.",
+    "ultimeIscrizioni": "Ultime iscrizioni introdotte da te o dal tuo team, in tutta la struttura",
+    "selezionaArgomento": "Seleziona un argomento",
+    "inArrivo": "In arrivo con lo shop e i pagamenti."
   }
 }

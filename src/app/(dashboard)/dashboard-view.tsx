@@ -62,6 +62,7 @@ export function DashboardView({
   azioniSlot?: React.ReactNode;
 }) {
   const T = useTesti().dashboard;
+  const TV = useTesti().vuoto;
   const fmt = useFormato();
   const formatEuro = (v: number) => fmt.euro(v, 0);
   const formatDate = fmt.data;
@@ -189,7 +190,7 @@ export function DashboardView({
                 {data.recentReferrals.length === 0 && (
                   <tr>
                     <td colSpan={3} className="px-6 py-6 text-center text-gray-500 dark:text-gray-400">
-                      Nessun iscritto ancora.
+                      {TV.nessunIscritto}
                     </td>
                   </tr>
                 )}
@@ -234,7 +235,7 @@ export function DashboardView({
                 {data.teamPerformance.length === 0 && (
                   <tr>
                     <td colSpan={3} className="px-6 py-6 text-center text-gray-500 dark:text-gray-400">
-                      Nessun diretto ancora.
+                      {TV.nessunDiretto}
                     </td>
                   </tr>
                 )}
@@ -305,7 +306,7 @@ export function DashboardView({
               {data.networkActivity.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                    Nessuna attività ancora.
+                    {TV.nessunaAttivita}
                   </td>
                 </tr>
               )}

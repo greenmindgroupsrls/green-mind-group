@@ -24,6 +24,7 @@ export function MarketingEventsList({
   currentMember: { activity_code: number; username: string };
 }) {
   const T = useTesti().marketing;
+  const TS = useTesti().sezioni;
   const [invitePanelEvent, setInvitePanelEvent] = useState<EventRow | null>(null);
 
   return (
@@ -31,7 +32,7 @@ export function MarketingEventsList({
       <div>
         <h2 className="font-semibold text-gray-900 dark:text-white">{T.eventiInProgramma}</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Invita i tuoi ospiti agli eventi Live organizzati dall&apos;azienda.
+          {TS.eventiInvita}
         </p>
       </div>
 

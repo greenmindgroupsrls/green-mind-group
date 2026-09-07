@@ -49,7 +49,7 @@ export function EventForm({
               name="city"
               required
               defaultValue={event?.city ?? ""}
-              placeholder="es. Vicenza"
+              placeholder={T.esCitta}
               className={`${inputClass} uppercase`}
             />
           </label>
@@ -70,7 +70,7 @@ export function EventForm({
           <input
             name="venue"
             defaultValue={event?.venue ?? ""}
-            placeholder="es. Vicenza Business Tower"
+            placeholder={T.esVenue}
             className={inputClass}
           />
         </label>
@@ -80,7 +80,7 @@ export function EventForm({
           <input
             name="address"
             defaultValue={event?.address ?? ""}
-            placeholder="es. Via Brescia 31, 36040 Torri di Quartesolo"
+            placeholder={T.esIndirizzo}
             className={inputClass}
           />
         </label>
@@ -112,7 +112,7 @@ export function EventForm({
             name="notes"
             rows={2}
             defaultValue={event?.notes ?? ""}
-            placeholder="es. Dopo le 19:00 non sarà più possibile accedere..."
+            placeholder={T.esNote}
             className={`${inputClass} h-auto py-2.5 resize-none`}
           />
         </label>

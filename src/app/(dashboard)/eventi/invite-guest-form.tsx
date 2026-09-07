@@ -30,6 +30,7 @@ export function InviteGuestForm({
   onDone: () => void;
 }) {
   const T = useTesti().eventi;
+  const TV = useTesti().vuoto;
   // "Live" e "Zoom" sono nomi propri e restano; a cambiare e' la
   // spiegazione sotto, che dice cosa vuol dire in pratica.
   const TYPE_OPTIONS: { value: InviteType; label: string; sub: string; icon: typeof Mic }[] = [
@@ -91,7 +92,7 @@ export function InviteGuestForm({
             </select>
             {events.length === 0 && (
               <p className="text-xs text-amber-600 dark:text-amber-400">
-                Nessun evento Live in programma al momento.
+                {TV.nessunEventoLive}
               </p>
             )}
           </label>

@@ -5,6 +5,7 @@ import { supabaseConfigured } from "@/lib/current-member";
 import { MOCK_PRODUCTS } from "@/lib/mock-products";
 import type { Product } from "@/lib/products";
 import { AddToCartButton } from "./add-to-cart-button";
+import { getDizionario } from "@/i18n/dizionario";
 
 function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
@@ -32,6 +33,7 @@ async function loadProducts(): Promise<Product[]> {
 }
 
 export default async function ShopPage() {
+  const TV = (await getDizionario()).vuoto;
   const products = await loadProducts();
 
   return (
@@ -75,7 +77,7 @@ export default async function ShopPage() {
       })}
       {products.length === 0 && (
         <p className="text-sm text-gray-500 dark:text-gray-400 col-span-2 text-center py-12">
-          Nessun prodotto disponibile al momento.
+          {TV.nessunProdotto}
         </p>
       )}
     </div>

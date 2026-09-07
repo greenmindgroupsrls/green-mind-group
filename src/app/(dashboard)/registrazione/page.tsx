@@ -7,6 +7,7 @@ import { getDizionario } from "@/i18n/dizionario";
 
 export default async function RegistrazionePage() {
   const T = (await getDizionario()).iscrizione;
+  const TS = (await getDizionario()).sezioni;
   let slug: string | null = null;
   let isCliente = false;
 
@@ -28,7 +29,7 @@ export default async function RegistrazionePage() {
     <div className="p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
-        Registra un nuovo cliente o incaricato nella rete.
+        {TS.registrazione}
       </p>
 
       {isCliente ? (
