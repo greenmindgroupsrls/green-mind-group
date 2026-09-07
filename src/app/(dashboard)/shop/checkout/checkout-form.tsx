@@ -1,9 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { placeOrder, type CheckoutState } from "./actions";
+import { placeOrder, verificaCoupon, type CheckoutState } from "./actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { StreetAutocompleteInput, type AddressSuggestion } from "@/components/street-autocomplete-input";
 
@@ -24,6 +24,33 @@ export function CheckoutForm() {
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
   const [prevSuccess, setPrevSuccess] = useState(state.success);
   const [address, setAddress] = useState(emptyAddress);
+  const [coupon, setCoupon] = useState("");
+  const [scontoApplicato, setScontoApplicato] = useState<{ codice: string; importo: number } | null>(null);
+  const [couponErrore, setCouponErrore] = useState<string | null>(null);
+  const [couponPending, startCouponTransition] = useTransition();
+
+  // Lo sconto non puo' superare il totale: il buono sconta, non rimborsa.
+  const sconto = scontoApplicato ? Math.min(scontoApplicato.importo, subtotal) : 0;
+  const totale = subtotal - sconto;
+
+  function applicaCoupon() {
+    setCouponErrore(null);
+    startCouponTransition(async () => {
+      const esito = await verificaCoupon(coupon);
+      if (esito.valido) {
+        setScontoApplicato({ codice: coupon.trim().toUpperCase(), importo: esito.importo });
+      } else {
+        setScontoApplicato(null);
+        setCouponErrore(esito.motivo ?? "Codice non valido");
+      }
+    });
+  }
+
+  function rimuoviCoupon() {
+    setScontoApplicato(null);
+    setCoupon("");
+    setCouponErrore(null);
+  }
 
   if (state.success !== prevSuccess) {
     setPrevSuccess(state.success);
@@ -174,9 +201,61 @@ export function CheckoutForm() {
             </div>
           ))}
         </div>
+        <div className="flex flex-col gap-2 pt-2 border-t border-gray-200 dark:border-white/10">
+          <label className={labelClass} htmlFor="coupon">
+            Buono sconto
+          </label>
+          {scontoApplicato ? (
+            <div className="flex items-center justify-between gap-2 rounded-lg bg-[var(--accent)]/15 px-3 py-2">
+              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                {scontoApplicato.codice}
+              </span>
+              <button
+                type="button"
+                onClick={rimuoviCoupon}
+                className="text-xs text-gray-600 dark:text-gray-300 hover:underline shrink-0"
+              >
+                Rimuovi
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <input
+                id="coupon"
+                value={coupon}
+                onChange={(e) => {
+                  setCoupon(e.target.value.toUpperCase());
+                  setCouponErrore(null);
+                }}
+                placeholder="VORTIX-XXXXX"
+                autoComplete="off"
+                className={`${inputClass} flex-1 min-w-0 uppercase`}
+              />
+              <button
+                type="button"
+                onClick={applicaCoupon}
+                disabled={couponPending || !coupon.trim()}
+                className="glass-btn-soft rounded-lg px-3 h-11 text-sm font-medium shrink-0 disabled:opacity-40"
+              >
+                {couponPending ? "..." : "Applica"}
+              </button>
+            </div>
+          )}
+          {couponErrore && (
+            <p className="text-xs text-red-600 dark:text-red-400">{couponErrore}</p>
+          )}
+          <input type="hidden" name="coupon_code" value={scontoApplicato?.codice ?? ""} />
+        </div>
+
+        {sconto > 0 && (
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-300">Sconto</span>
+            <span className="font-medium text-gray-900 dark:text-white">−{formatEuro(sconto)}</span>
+          </div>
+        )}
         <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-white/10 text-sm font-semibold">
           <span className="text-gray-900 dark:text-white">Totale</span>
-          <span className="text-gray-900 dark:text-white">{formatEuro(subtotal)}</span>
+          <span className="text-gray-900 dark:text-white">{formatEuro(totale)}</span>
         </div>
         <button
           type="submit"

@@ -13,6 +13,23 @@ export type CheckoutState = {
   success: { orderId: number } | null;
 };
 
+export type CouponCheck = { valido: boolean; importo: number; motivo: string | null };
+
+// Controllo prima dell'invio, per non far scoprire un codice sbagliato solo
+// a ordine confermato. Il controllo che conta resta comunque quello dentro
+// create_shop_order: e' li' che il buono viene bloccato e speso.
+export async function verificaCoupon(code: string): Promise<CouponCheck> {
+  const pulito = code.trim().toUpperCase();
+  if (!pulito) return { valido: false, importo: 0, motivo: "Inserisci un codice" };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("verifica_coupon", { p_code: pulito }).single();
+  if (error) return { valido: false, importo: 0, motivo: "Non riusciamo a verificare il codice" };
+
+  const riga = data as { valido: boolean; importo: number; motivo: string | null };
+  return { valido: riga.valido, importo: Number(riga.importo ?? 0), motivo: riga.motivo };
+}
+
 export async function placeOrder(
   _prevState: CheckoutState,
   formData: FormData,
@@ -35,6 +52,7 @@ export async function placeOrder(
   const country = String(formData.get("country") ?? "").trim();
   const postalCode = String(formData.get("postal_code") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
+  const coupon = String(formData.get("coupon_code") ?? "").trim().toUpperCase();
 
   if (!recipientName) return { error: "Nome destinatario obbligatorio", success: null };
   if (!street) return { error: "Indirizzo obbligatorio", success: null };
@@ -53,6 +71,7 @@ export async function placeOrder(
       p_country: country,
       p_postal_code: postalCode,
       p_phone: phone || null,
+      p_coupon_code: coupon || null,
     })
     .single();
 

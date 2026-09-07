@@ -56,8 +56,12 @@ export async function proxy(request: NextRequest) {
   // unicita' sullo slot stanno nel route handler e nel database.
   // Prenotazioni ed elenchi geografici: entrambe servono al modulo del sito
   // pubblico, dove chi compila non ha un account.
+  // /api/coupon genera il buono di fine sondaggio: stessa ragione, chi
+  // risponde al sondaggio non ha ancora un account.
   const isPrenotazioneRoute =
-    pathname.startsWith("/api/prenotazioni") || pathname.startsWith("/api/comuni");
+    pathname.startsWith("/api/prenotazioni") ||
+    pathname.startsWith("/api/comuni") ||
+    pathname.startsWith("/api/coupon");
   // /company e' il sito prodotto Vortix montato via rewrite (vedi
   // next.config.ts): pagina pubblica, non fa parte del back office, deve
   // restare raggiungibile da chiunque senza login.

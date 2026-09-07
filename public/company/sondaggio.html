@@ -358,7 +358,7 @@ const steps = [
 
   { type:'q', key:'q4', kind:'single', q:'Quante volte a settimana porti fuori il sacchetto dell\'umido?',
     options:['1 volta','2–3 volte','Quasi ogni giorno','Più volte al giorno'],
-    insight:'Riducendo drasticamente il volume degli scarti, con Vortix questi viaggi diventano molto meno frequenti.' },
+    insight:'Vortix prende il posto del secchio dell\'umido: gli scarti se ne vanno con l\'acqua di scarico nel momento stesso in cui li butti. Niente sacchetto da chiudere, niente viaggi fino al cassonetto.' },
 
   { type:'q', key:'q5', kind:'single', q:'Ti è mai capitato di rimandare la preparazione di un piatto (pesce, verdure, ecc.) per non doverne gestire subito gli scarti?',
     options:['Spesso','Qualche volta','Mai'],
@@ -390,7 +390,7 @@ const steps = [
 
   { type:'q', key:'q12', kind:'single', q:'Vivi in un condominio o in una casa indipendente?',
     options:['Condominio','Casa indipendente','Altro'],
-    insight:'In condominio, dove i bidoni sono spesso condivisi, ridurre odori e volume fa la differenza anche per il vicinato.' },
+    insight:'In condominio Vortix lavora anche per le tubature: riduce gli scarti in particelle microscopiche che l\'acqua porta via subito, invece di lasciarle ristagnare e incrostare. Colonne di scarico più pulite, un pensiero in meno sugli intasamenti — e niente bidoni condivisi che fanno odore sul pianerottolo.' },
 
   { type:'q', key:'q13', kind:'text', q:'In che città o zona vivi?', placeholder:'Es. Milano, zona Navigli' },
 
@@ -516,6 +516,7 @@ function render(){
         <input type="checkbox" id="cConsent" ${answers.consent?'checked':''} onchange="answers.consent=this.checked; refreshNav();">
         <span>Acconsento al trattamento dei miei dati personali da parte di NTAMBIENTE per l'invio del buono sconto e di comunicazioni informative su Vortix, ai sensi del Regolamento (UE) 2016/679 (GDPR). Potrò revocare il consenso in qualsiasi momento.</span>
       </label>
+      <div id="couponError" style="display:none;margin-top:14px;padding:10px 12px;border-radius:10px;background:#fdecec;color:#8a1c1c;font-size:14px;line-height:1.45;"></div>
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="prev()">Indietro</button>
         <button class="btn btn-primary" id="nextBtn" onclick="submitContact()">Ricevi il buono</button>
@@ -525,8 +526,7 @@ function render(){
   }
 
   if(step.type === 'final'){
-    const code = answers.voucherCode || generateCode();
-    answers.voucherCode = code;
+    const code = answers.voucherCode || '···';
     card.innerHTML = `
       <div class="center-block">
         <div class="badge">Sondaggio completato</div>
@@ -569,12 +569,7 @@ function refreshNav(){
   btn.disabled = !ok;
 }
 
-function generateCode(){
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = 'VORTIX-';
-  for(let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
-  return s;
-}
+
 
 function next(){
   const step = steps[idx];
@@ -598,13 +593,33 @@ function prev(){
   render(); updateGauge();
   window.scrollTo(0,0);
 }
-function submitContact(){
+async function submitContact(){
   const name = (answers.name||'').trim();
   const email = (answers.email||'').trim();
   if(!name || !/\S+@\S+\.\S+/.test(email) || !answers.consent) return;
+
+  const btn = document.getElementById('nextBtn');
+  if(btn){ btn.disabled = true; btn.textContent = 'Un istante...'; }
+
+  // Il codice lo assegna il database: uno inventato qui non sarebbe
+  // spendibile al negozio, perche' li' viene verificato davvero.
+  try {
+    const r = await fetch('/api/coupon', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, nome: name })
+    });
+    const dati = await r.json();
+    if(!r.ok || !dati.codice) throw new Error(dati.error || 'Errore');
+    answers.voucherCode = dati.codice;
+  } catch(e) {
+    if(btn){ btn.disabled = false; btn.textContent = 'Ricevi il buono'; }
+    const box = document.getElementById('couponError');
+    if(box){ box.textContent = 'Non riusciamo a generare il buono in questo momento. Riprova fra poco.'; box.style.display = 'block'; }
+    return;
+  }
+
   answers.contactDone = true;
-  // Placeholder: in produzione, qui va la chiamata al backend/CRM
-  // per registrare il lead e inviare il buono via email.
   idx = Math.min(idx+1, steps.length-1);
   render(); updateGauge();
   window.scrollTo(0,0);
