@@ -112,7 +112,7 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient();
   const { error } = await supabase.from("leads").insert({
-    source: "vortix",
+    source: "appuntamento",
     name: prenotazione.name,
     phone: prenotazione.phone,
     email: prenotazione.email,

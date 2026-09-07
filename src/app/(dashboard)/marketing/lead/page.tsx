@@ -5,6 +5,7 @@ import { LeadRowActions } from "./lead-row-actions";
 import { LeadDeleteAction } from "./lead-delete-action";
 import { LeadAssignAction } from "./lead-assign-action";
 import { LeadViewSwitch } from "./lead-view-switch";
+import { SurveyAnswers, type SurveyAnswer } from "./survey-answers";
 import type { CalendarLead } from "./lead-calendar";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +13,9 @@ export const dynamic = "force-dynamic";
 type LeadRow = {
   id: number;
   source: string;
+  survey_answers: SurveyAnswer[] | null;
   name: string;
-  phone: string;
+  phone: string | null;
   email: string;
   address: string | null;
   notes: string | null;
@@ -24,6 +26,20 @@ type LeadRow = {
   assigned_at: string | null;
   appointment_at: string | null;
   created_at: string;
+};
+
+// "source" dice cosa ha fatto la persona, non da che sito arriva: prima
+// valeva sempre "vortix", che ora che i progetti sono uno solo non
+// distingueva piu' niente.
+const PROVENIENZA: Record<string, { etichetta: string; classe: string }> = {
+  appuntamento: {
+    etichetta: "Appuntamento",
+    classe: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300",
+  },
+  sondaggio: {
+    etichetta: "Sondaggio",
+    classe: "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300",
+  },
 };
 
 function formatDate(iso: string) {
@@ -78,6 +94,7 @@ export default async function LeadPage() {
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               <th className="px-6 py-2 font-medium">Contatto</th>
+              <th className="px-6 py-2 font-medium">Da dove arriva</th>
               <th className="px-6 py-2 font-medium">Richiesta</th>
               <th className="px-6 py-2 font-medium">Note dal cliente</th>
               <th className="px-6 py-2 font-medium">Ricevuto</th>
@@ -91,11 +108,24 @@ export default async function LeadPage() {
               <tr key={l.id} className="border-t border-[var(--glass-edge)] align-top">
                 <td className="px-6 py-3">
                   <p className="font-medium text-gray-900 dark:text-white">{l.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{l.phone}</p>
+                  {l.phone && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{l.phone}</p>
+                  )}
                   <p className="text-xs text-gray-500 dark:text-gray-400">{l.email}</p>
                   {l.address && (
                     <p className="text-xs text-gray-500 dark:text-gray-400">{l.address}</p>
                   )}
+                </td>
+                <td className="px-6 py-3">
+                  <span
+                    className={`inline-block text-xs font-medium rounded-full px-2.5 py-1 whitespace-nowrap ${
+                      PROVENIENZA[l.source]?.classe ??
+                      "bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300"
+                    }`}
+                  >
+                    {PROVENIENZA[l.source]?.etichetta ?? l.source}
+                  </span>
+                  {l.survey_answers && <SurveyAnswers risposte={l.survey_answers} />}
                 </td>
                 <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                   {l.requested_date ? formatDate(l.requested_date) : "—"}
@@ -125,7 +155,7 @@ export default async function LeadPage() {
             ))}
             {leads.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   Nessun lead ricevuto finora.
                 </td>
               </tr>

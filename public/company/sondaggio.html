@@ -593,6 +593,22 @@ function prev(){
   render(); updateGauge();
   window.scrollTo(0,0);
 }
+function raccogliRisposte(){
+  const fuori = [];
+  for(const step of steps){
+    if(step.type !== 'q') continue;
+    const val = answers[step.key];
+    if(val === undefined || val === null || val === '') continue;
+    fuori.push({
+      domanda: step.q,
+      risposta: Array.isArray(val)
+        ? val.join(', ')
+        : (step.kind === 'scale' ? val + ' su 5 (' + step.left + ' → ' + step.right + ')' : String(val))
+    });
+  }
+  return fuori;
+}
+
 async function submitContact(){
   const name = (answers.name||'').trim();
   const email = (answers.email||'').trim();
@@ -607,7 +623,7 @@ async function submitContact(){
     const r = await fetch('/api/coupon', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, nome: name })
+      body: JSON.stringify({ email: email, nome: name, risposte: raccogliRisposte() })
     });
     const dati = await r.json();
     if(!r.ok || !dati.codice) throw new Error(dati.error || 'Errore');

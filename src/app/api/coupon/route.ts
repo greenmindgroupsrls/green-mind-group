@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+// Fine del sondaggio: registra il contatto fra i lead e gli consegna il
+// buono. Le due cose nascono insieme dentro registra_sondaggio: emettere
+// uno sconto senza sapere a chi sarebbe regalare 100 euro al buio.
+//
 // Il buono di fine sondaggio. Prima il codice lo inventava il browser e non
 // veniva registrato da nessuna parte: al negozio non serviva a niente,
 // perche' non c'era modo di sapere se fosse vero o gia' speso.
@@ -13,7 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 const EMAIL_VALIDA = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 export async function POST(request: Request) {
-  let corpo: { email?: unknown; nome?: unknown };
+  let corpo: { email?: unknown; nome?: unknown; risposte?: unknown };
   try {
     corpo = await request.json();
   } catch {
@@ -32,9 +36,10 @@ export async function POST(request: Request) {
     // concessa ad anon proprio perche' questa strada non ha una sessione.
     // Nessun motivo di usare la chiave che puo' fare tutto.
     const supabase = await createClient();
-    const { data, error } = await supabase.rpc("crea_coupon_sondaggio", {
+    const { data, error } = await supabase.rpc("registra_sondaggio", {
       p_email: email,
       p_nome: nome || null,
+      p_risposte: Array.isArray(corpo.risposte) ? corpo.risposte : null,
     });
     if (error) throw new Error(error.message);
     return NextResponse.json({ codice: data as string });

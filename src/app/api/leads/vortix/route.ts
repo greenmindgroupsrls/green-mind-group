@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient();
   const { error } = await supabase.from("leads").insert({
-    source: "vortix",
+    source: "appuntamento",
     name: String(name),
     phone: String(phone),
     email: String(email),

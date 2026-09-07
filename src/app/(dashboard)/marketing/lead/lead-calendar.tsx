@@ -7,7 +7,7 @@ import { setLeadAppointment } from "./actions";
 export type CalendarLead = {
   id: number;
   name: string;
-  phone: string;
+  phone: string | null;
   email: string;
   address: string | null;
   notes: string | null;
@@ -103,9 +103,11 @@ function DettaglioLead({ lead }: { lead: CalendarLead }) {
         <div className="min-w-0">
           <p className="font-medium text-gray-900 dark:text-white">{lead.name}</p>
           <div className="flex flex-col gap-0.5 mt-1 text-xs text-gray-500 dark:text-gray-400">
-            <span className="flex items-center gap-1.5">
-              <Phone size={11} /> {lead.phone}
-            </span>
+            {lead.phone && (
+              <span className="flex items-center gap-1.5">
+                <Phone size={11} /> {lead.phone}
+              </span>
+            )}
             <span className="flex items-center gap-1.5 truncate">
               <Mail size={11} /> {lead.email}
             </span>
