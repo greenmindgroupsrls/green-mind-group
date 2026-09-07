@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TabBar, TabButton } from "@/components/tab-bar";
 import { ControlCenterExplorer, type ControlCenterMember } from "./control-center-explorer";
 import { AuditLogView, type AuditLogRow } from "./audit-log-view";
 import { ExportDataView } from "./export-data-view";
@@ -31,22 +32,13 @@ export function ControlCenterTabs({
 
   return (
     <div className="flex flex-col gap-6">
-      <nav className="flex gap-1 overflow-x-auto border-b border-gray-200 dark:border-white/10">
+      <TabBar>
         {TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => setTab(id)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
-              tab === id
-                ? "border-accent text-accent"
-                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-            }`}
-          >
+          <TabButton key={id} attiva={tab === id} onClick={() => setTab(id)}>
             {label}
-          </button>
+          </TabButton>
         ))}
-      </nav>
+      </TabBar>
 
       {tab === "membri" && <ControlCenterExplorer members={members} />}
       {tab === "registro" && <AuditLogView entries={auditLog} />}

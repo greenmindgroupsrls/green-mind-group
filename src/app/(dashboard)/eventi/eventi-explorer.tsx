@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { TabBar, TabButton } from "@/components/tab-bar";
 import { Plus, UserPlus } from "lucide-react";
 import { EventList } from "./event-list";
 import { EventForm } from "./event-form";
@@ -84,22 +85,13 @@ export function EventiExplorer({
 
   return (
     <div className="flex flex-col gap-6">
-      <nav className="flex gap-1 border-b border-gray-200 dark:border-white/10">
+      <TabBar>
         {TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => setTab(id)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
-              tab === id
-                ? "border-accent text-accent"
-                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-            }`}
-          >
+          <TabButton key={id} attiva={tab === id} onClick={() => setTab(id)}>
             {label}
-          </button>
+          </TabButton>
         ))}
-      </nav>
+      </TabBar>
 
       {(tab === "prossimi" || tab === "archivio") && isRoot && (
         <div>
