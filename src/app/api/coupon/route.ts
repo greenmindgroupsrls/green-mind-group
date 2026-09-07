@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { inviaEmailBuono } from "@/lib/email-prenotazione";
 
 // Fine del sondaggio: registra il contatto fra i lead e gli consegna il
 // buono. Le due cose nascono insieme dentro registra_sondaggio: emettere
@@ -42,7 +43,17 @@ export async function POST(request: Request) {
       p_risposte: Array.isArray(corpo.risposte) ? corpo.risposte : null,
     });
     if (error) throw new Error(error.message);
-    return NextResponse.json({ codice: data as string });
+    const codice = data as string;
+
+    // La posta non deve far fallire niente: il buono e' gia' registrato e la
+    // pagina lo mostra comunque. Se non parte resta scritto nei log.
+    try {
+      await inviaEmailBuono({ nome: nome || null, email, codice, importo: 100 });
+    } catch (e) {
+      console.error("[coupon] email non inviata a", email, e);
+    }
+
+    return NextResponse.json({ codice });
   } catch (e) {
     console.error("[coupon] creazione fallita", e);
     return NextResponse.json({ error: "Non riusciamo a generare il buono" }, { status: 500 });

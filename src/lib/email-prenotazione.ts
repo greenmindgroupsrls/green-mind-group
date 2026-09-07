@@ -246,3 +246,138 @@ export async function inviaEmailPrenotazione(p: Prenotazione) {
     }),
   ]);
 }
+
+// ---------------------------------------------------------------------------
+// Il buono di fine sondaggio.
+//
+// La schermata finale dice "il codice arriva anche via email": questa e'
+// quella email. Il codice resta comunque a schermo, quindi se la posta non
+// parte nessuno perde niente - ma va detto, perche' chi chiude la pagina si
+// aspetta di ritrovarlo nella casella.
+//
+// Il vincolo che va scritto nero su bianco: il buono e' legato a QUESTO
+// indirizzo. Chi si registra al negozio con un'altra email si ritrova un
+// codice che non funziona e non capisce perche'.
+
+export type BuonoSondaggio = {
+  nome: string | null;
+  email: string;
+  codice: string;
+  importo: number;
+};
+
+function emailBuono(b: BuonoSondaggio) {
+  const saluto = b.nome ? ` ${b.nome.split(" ")[0]}` : "";
+  const cifra = `${b.importo.toLocaleString("it-IT", { maximumFractionDigits: 0 })}€`;
+
+  const html = `<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:${SAND};font-family:${FONT};-webkit-font-smoothing:antialiased;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Il tuo codice sconto ${esc(b.codice)} da ${esc(cifra)} sul primo acquisto VORTIX.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${SAND};padding:28px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;">
+
+        <tr><td style="background:${INK};padding:22px 32px;text-align:center;">
+          <span style="color:#ffffff;font-size:15px;font-weight:700;letter-spacing:.22em;">VORTIX</span>
+          <div style="color:${GOLD};font-size:11px;letter-spacing:.14em;margin-top:5px;">POTENZA SENZA LIMITI</div>
+        </td></tr>
+
+        <tr><td style="padding:36px 32px 8px;">
+          <h1 style="margin:0 0 6px;font-size:23px;line-height:1.3;color:${INK};font-weight:700;">Ecco il tuo buono</h1>
+          <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:${INK_DIM};">
+            Grazie${esc(saluto)} per aver raccontato la tua cucina. Come promesso, ecco il codice da usare sul tuo primo VORTIX.
+          </p>
+        </td></tr>
+
+        <tr><td style="padding:0 32px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};border-radius:10px;">
+            <tr><td style="padding:26px 22px;text-align:center;border-radius:10px;">
+              <div style="font-size:40px;line-height:1;color:${INK};font-weight:700;">${esc(cifra)}</div>
+              <div style="font-size:13px;color:${INK_FAINT};margin-top:6px;">di sconto sul tuo VORTIX</div>
+              <div style="margin-top:16px;display:inline-block;background:${INK};color:#ffffff;border-radius:8px;padding:12px 22px;font-size:19px;font-weight:700;letter-spacing:.10em;font-family:'SF Mono',Menlo,Consolas,monospace;">${esc(b.codice)}</div>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <tr><td style="padding:24px 32px 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};border-radius:10px;">
+            <tr><td style="padding:20px 22px;border-left:3px solid ${GOLD};border-radius:10px;">
+              <div style="font-size:11px;letter-spacing:.13em;color:${GOLD};font-weight:700;margin-bottom:7px;">COME SI USA</div>
+              <div style="font-size:15px;line-height:1.65;color:${INK};">
+                Il buono è intestato a <strong>${esc(b.email)}</strong> e vale una volta sola.
+                Quando acquisti, usa questo stesso indirizzo: con un altro il codice non viene riconosciuto.
+              </div>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <tr><td style="padding:24px 32px 0;">
+          <p style="margin:0;font-size:15px;line-height:1.7;color:${INK_DIM};">
+            Vuoi vederlo prima di decidere? La dimostrazione a casa tua è <strong style="color:${INK};">gratuita e senza impegno</strong>: un tecnico installa VORTIX sotto il tuo lavello e te lo mostra in funzione.
+          </p>
+        </td></tr>
+
+        <tr><td style="padding:22px 32px 0;text-align:center;">
+          <a href="https://greenmindgroup.pro" style="display:inline-block;background:${INK};color:#ffffff;text-decoration:none;border-radius:9px;padding:14px 28px;font-size:15px;font-weight:600;">Scopri VORTIX</a>
+        </td></tr>
+
+        <tr><td style="padding:24px 32px 32px;">
+          <p style="margin:0;padding-top:20px;border-top:1px solid rgba(11,37,41,0.10);font-size:14px;line-height:1.7;color:${INK_FAINT};">
+            Hai domande? Rispondi pure direttamente a questa email.<br/><br/>
+            A presto,<br/>
+            <strong style="color:${INK};">Il team VORTIX</strong>
+          </p>
+        </td></tr>
+
+      </table>
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+        <tr><td style="padding:18px 32px;text-align:center;font-size:12px;line-height:1.7;color:${INK_FAINT};">
+          Green Mind Group S.r.l.s.<br/>
+          <a href="https://greenmindgroup.pro" style="color:${INK_DIM};text-decoration:none;">greenmindgroup.pro</a>
+        </td></tr>
+      </table>
+
+    </td></tr>
+  </table>
+</body></html>`;
+
+  const text = [
+    `Grazie${saluto} per aver raccontato la tua cucina.`,
+    "",
+    `IL TUO BUONO: ${b.codice}`,
+    `${cifra} di sconto sul tuo primo VORTIX.`,
+    "",
+    "COME SI USA",
+    `Il buono è intestato a ${b.email} e vale una volta sola.`,
+    "Quando acquisti usa questo stesso indirizzo: con un altro il codice non viene riconosciuto.",
+    "",
+    "Vuoi vederlo prima di decidere? La dimostrazione a casa tua è gratuita",
+    "e senza impegno: un tecnico installa VORTIX sotto il tuo lavello e te lo",
+    "mostra in funzione. https://greenmindgroup.pro",
+    "",
+    "Se hai domande, puoi rispondere direttamente a questa email.",
+    "",
+    "A presto,",
+    "Il team VORTIX",
+    "",
+    "Green Mind Group S.r.l.s. — greenmindgroup.pro",
+  ].join("\n");
+
+  return { html, text };
+}
+
+// Come per le prenotazioni: la posta non deve mai far fallire niente. Il
+// codice e' gia' registrato e gia' a schermo.
+export async function inviaEmailBuono(b: BuonoSondaggio) {
+  const { html, text } = emailBuono(b);
+  await sendEmail({
+    from: MITTENTE,
+    to: b.email,
+    subject: `Il tuo buono VORTIX: ${b.codice}`,
+    html,
+    text,
+  });
+}
