@@ -93,30 +93,29 @@ export default async function LeadPage() {
       <table className="glass-table w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
-              <th className="px-6 py-2 font-medium">Contatto</th>
-              <th className="px-6 py-2 font-medium">Da dove arriva</th>
-              <th className="px-6 py-2 font-medium">Richiesta</th>
-              <th className="px-6 py-2 font-medium">Note dal cliente</th>
-              <th className="px-6 py-2 font-medium">Ricevuto</th>
-              <th className="px-6 py-2 font-medium">Stato</th>
-              <th className="px-6 py-2 font-medium">Inoltra</th>
-              <th className="px-6 py-2 font-medium sr-only">Elimina</th>
+              <th className="px-4 py-2 font-medium">Contatto</th>
+              <th className="px-4 py-2 font-medium">Da dove arriva</th>
+              <th className="px-4 py-2 font-medium">Richiesta</th>
+              <th className="px-4 py-2 font-medium">Note</th>
+              <th className="px-4 py-2 font-medium">Stato</th>
+              <th className="px-4 py-2 font-medium">Inoltra</th>
+              <th className="px-4 py-2 font-medium sr-only">Elimina</th>
             </tr>
           </thead>
           <tbody>
             {leads.map((l) => (
               <tr key={l.id} className="border-t border-[var(--glass-edge)] align-top">
-                <td className="px-6 py-3">
+                <td className="px-4 py-3 max-w-[190px]">
                   <p className="font-medium text-gray-900 dark:text-white">{l.name}</p>
                   {l.phone && (
                     <p className="text-xs text-gray-500 dark:text-gray-400">{l.phone}</p>
                   )}
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{l.email}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 break-words">{l.email}</p>
                   {l.address && (
                     <p className="text-xs text-gray-500 dark:text-gray-400">{l.address}</p>
                   )}
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-4 py-3">
                   <span
                     className={`inline-block text-xs font-medium rounded-full px-2.5 py-1 whitespace-nowrap ${
                       PROVENIENZA[l.source]?.classe ??
@@ -127,20 +126,28 @@ export default async function LeadPage() {
                   </span>
                   {l.survey_answers && <SurveyAnswers risposte={l.survey_answers} />}
                 </td>
-                <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                <td className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[110px]">
+                  {/* Data e ora su due righe invece che separate da un punto:
+                      andando a capo da sole, il punto restava appeso a inizio
+                      riga. */}
                   {l.requested_date ? formatDate(l.requested_date) : "—"}
-                  {l.requested_time ? ` · ${l.requested_time}` : ""}
+                  {l.requested_time && (
+                    <span className="block">alle {l.requested_time}</span>
+                  )}
+                  {/* La data di arrivo non merita una colonna sua: sta sotto
+                      quella richiesta, dove si legge nello stesso sguardo. */}
+                  <span className="block text-[11px] text-gray-400 dark:text-gray-500">
+                    ricevuto {formatDate(l.created_at)}
+                  </span>
                 </td>
-                <td className="px-6 py-3 text-gray-500 dark:text-gray-400 max-w-[220px]">
+                <td className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[150px]">
                   {l.notes || "—"}
                 </td>
-                <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                  {formatDate(l.created_at)}
-                </td>
-                <td className="px-6 py-3">
+
+                <td className="px-4 py-3">
                   <LeadRowActions id={l.id} status={l.status} />
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-4 py-3">
                   <LeadAssignAction
                     id={l.id}
                     members={members}
@@ -155,7 +162,7 @@ export default async function LeadPage() {
             ))}
             {leads.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan={7} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   Nessun lead ricevuto finora.
                 </td>
               </tr>

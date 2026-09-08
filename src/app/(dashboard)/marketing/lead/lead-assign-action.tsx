@@ -61,7 +61,7 @@ export function LeadAssignAction({
   const currentAssignee = liberato ? null : (justAssigned ?? assignedToUsername);
 
   return (
-    <div className="flex flex-col gap-1.5 min-w-[170px]">
+    <div className="flex flex-col gap-1.5 w-[118px]">
       {currentAssignee && (
         <p className="text-xs text-gray-600 dark:text-gray-300">
           Inoltrato a <span className="font-medium">{currentAssignee}</span>
@@ -78,7 +78,7 @@ export function LeadAssignAction({
           </button>
         </p>
       )}
-      <div className="flex items-center gap-1.5">
+      <div className="flex flex-col items-start gap-1">
         <MemberPicker
           members={members}
           value={selected}

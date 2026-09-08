@@ -37,18 +37,18 @@ export function LeadRowActions({ id, status }: { id: number; status: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-1.5 min-w-[190px]">
-      <div className="flex items-center gap-2">
-        <span
-          className={`shrink-0 text-xs font-medium rounded-full px-2.5 py-1 ${STATUS_BADGE_CLASS[currentStatus]}`}
-        >
-          {STATUS_LABEL[currentStatus]}
-        </span>
+    // La pastiglia colorata e la tendina dicevano la stessa cosa due volte, e
+    // insieme si prendevano piu' spazio di qualsiasi altra colonna. Adesso e'
+    // un comando solo: si legge a colpo d'occhio dal colore e si cambia
+    // cliccandolo.
+    <div className="flex flex-col gap-1 w-fit">
+      <div className="flex items-center">
         <select
           value={currentStatus}
           onChange={(e) => handleStatusChange(e.target.value)}
           disabled={pending}
-          className="text-xs glass-input rounded-md text-gray-700 dark:text-gray-300 px-1.5 py-1 disabled:opacity-50"
+          aria-label="Stato del lead"
+          className={`text-xs font-medium rounded-full border-0 pl-2.5 pr-6 py-1 cursor-pointer disabled:opacity-50 ${STATUS_BADGE_CLASS[currentStatus]}`}
         >
           {Object.entries(STATUS_LABEL).map(([value, label]) => (
             <option key={value} value={value}>
