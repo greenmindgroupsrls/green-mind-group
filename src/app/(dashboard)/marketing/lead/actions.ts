@@ -46,6 +46,16 @@ export async function setLeadAppointment(id: number, appointmentAt: string | nul
   revalidatePath("/marketing/lead");
 }
 
+// Liberare un lead non e' cancellarlo: torna nell'elenco senza padrone,
+// pronto per qualcun altro. La copia dell'incaricato sparisce solo se non
+// l'aveva ancora toccata (il controllo sta nel database).
+export async function unassignLead(id: number) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_unassign_lead", { p_id: id });
+  if (error) throw new Error(error.message);
+  revalidatePath("/marketing/lead");
+}
+
 // La cancellazione e' definitiva: il controllo su chi puo' farla sta nel
 // database, qui si passa solo la richiesta. Prima di sparire il lead finisce
 // nel registro delle azioni, cosi' resta traccia di cosa e' stato tolto.

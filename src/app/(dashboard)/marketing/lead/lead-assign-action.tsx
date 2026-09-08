@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { assignLead } from "./actions";
+import { assignLead, unassignLead } from "./actions";
 import { MemberPicker, type MemberOption } from "./member-picker";
 
 function formatDate(iso: string) {
@@ -23,6 +23,7 @@ export function LeadAssignAction({
   const [selected, setSelected] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [justAssigned, setJustAssigned] = useState<string | null>(null);
+  const [liberato, setLiberato] = useState(false);
 
   function handleAssign() {
     if (selected === null) return;
@@ -32,6 +33,7 @@ export function LeadAssignAction({
       try {
         await assignLead(id, selected);
         setJustAssigned(username);
+        setLiberato(false);
         setSelected(null);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Errore imprevisto");
@@ -39,7 +41,24 @@ export function LeadAssignAction({
     });
   }
 
-  const currentAssignee = justAssigned ?? assignedToUsername;
+  function handleUnassign() {
+    setError(null);
+    startTransition(async () => {
+      try {
+        await unassignLead(id);
+        setJustAssigned(null);
+        setLiberato(true);
+        setSelected(null);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Errore imprevisto");
+      }
+    });
+  }
+
+  // Dopo aver liberato, la riga mostrata dal server e' ancora quella vecchia
+  // finche' la pagina non si aggiorna: senza questo, l'assegnatario appena
+  // tolto resterebbe scritto sotto gli occhi di chi l'ha appena tolto.
+  const currentAssignee = liberato ? null : (justAssigned ?? assignedToUsername);
 
   return (
     <div className="flex flex-col gap-1.5 min-w-[170px]">
@@ -49,6 +68,14 @@ export function LeadAssignAction({
           {assignedAt && !justAssigned && (
             <span className="text-gray-500 dark:text-gray-400"> il {formatDate(assignedAt)}</span>
           )}
+          <button
+            type="button"
+            onClick={handleUnassign}
+            disabled={pending}
+            className="ml-1.5 text-[11px] text-gray-500 dark:text-gray-400 hover:underline disabled:opacity-50"
+          >
+            togli
+          </button>
         </p>
       )}
       <div className="flex items-center gap-1.5">
