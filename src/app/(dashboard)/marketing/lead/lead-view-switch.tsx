@@ -51,7 +51,7 @@ export function LeadViewSwitch({
         )}
       </div>
 
-      {vista === "elenco" ? tabella : <div className="p-6">
+      {vista === "elenco" ? tabella : <div className="p-4 sm:p-6">
         <LeadCalendar leads={leads} />
       </div>}
     </div>

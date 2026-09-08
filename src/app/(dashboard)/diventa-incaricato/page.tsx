@@ -110,7 +110,7 @@ export default async function DiventaIncaricatoPage() {
   const missing = known.filter((k) => !k.value).map((k) => k.label);
 
   return (
-    <div className="p-8 max-w-3xl mx-auto flex flex-col gap-6">
+    <div className="p-4 sm:p-8 max-w-3xl mx-auto flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
           {alreadyIncaricato

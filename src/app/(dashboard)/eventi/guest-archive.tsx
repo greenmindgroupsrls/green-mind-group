@@ -94,22 +94,22 @@ function GuestRow({
       <td className="px-4 py-3 text-gray-900 dark:text-white font-medium whitespace-nowrap">
         {guest.last_name}
       </td>
-      <td className="px-4 py-3 text-gray-900 dark:text-white whitespace-nowrap">{guest.first_name}</td>
-      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{guest.phone}</td>
-      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{guest.email}</td>
-      <td className="px-4 py-3">
+      <td data-label={T.nome} className="px-4 py-3 text-gray-900 dark:text-white whitespace-nowrap">{guest.first_name}</td>
+      <td data-label={T.telefono} className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{guest.phone}</td>
+      <td data-label={T.email} className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{guest.email}</td>
+      <td data-label={T.tipo} className="px-4 py-3">
         <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${INVITE_TYPE_BADGE_CLASS[guest.invite_type]}`}>
           {INVITE_TYPE_LABEL[guest.invite_type]}
         </span>
         {event && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 whitespace-nowrap">{event.city}</p>}
       </td>
       {isRoot && (
-        <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{inviterName}</td>
+        <td data-label={T.invitatoDa} className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{inviterName}</td>
       )}
-      <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+      <td data-label={T.colData} className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
         {formatDate(guest.created_at)}
       </td>
-      <td className="px-4 py-3">
+      <td data-label={T.stato} className="px-4 py-3">
         {isRoot ? (
           <select
             value={guest.status}
@@ -125,7 +125,7 @@ function GuestRow({
           </span>
         )}
       </td>
-      <td className="px-4 py-3">
+      <td data-label={T.azioni} className="px-4 py-3">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -188,7 +188,7 @@ export function GuestArchive({
 
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="glass-table w-full text-sm">
+          <table className="glass-table tabella-adattiva w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-4 py-3 font-medium">{T.cognome}</th>

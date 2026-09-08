@@ -94,7 +94,8 @@
       "chiHaIntrodotto": "Introduced by",
       "evento": "Event",
       "nuovoIscritto": "New member",
-      "data": "Date"
+      "data": "Date",
+      "ora": "Time"
     },
     "ilTuoRank": "Your rank",
     "laTuaPosizione": "Your position in the programme",

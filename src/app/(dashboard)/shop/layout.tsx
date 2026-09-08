@@ -11,7 +11,7 @@ export default async function ShopLayout({ children }: LayoutProps<"/shop">) {
 
   return (
     <CartProvider>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <ShopHeader isRoot={isRoot} />
         <div className="mt-6">{children}</div>
       </div>

@@ -81,7 +81,7 @@ export default async function AlberoPage() {
 
   if (!usingMockData && currentMember?.role === "cliente") {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <IncaricatoOnlyNotice />
       </div>
     );

@@ -67,7 +67,7 @@ export default async function PayoutCommissioniPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="glass-table w-full text-sm">
+          <table className="glass-table tabella-adattiva w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">#</th>
@@ -81,7 +81,7 @@ export default async function PayoutCommissioniPage() {
               {rows.map((r, i) => (
                 <tr key={r.id} className="border-t border-[var(--glass-edge)]">
                   <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{i + 1}</td>
-                  <td className="px-6 py-3">
+                  <td data-label={T.colUtente} className="px-6 py-3">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-medium px-2 py-0.5">
                         {r.sellerUsername}
@@ -91,17 +91,17 @@ export default async function PayoutCommissioniPage() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-3">
+                  <td data-label={T.colCategoria} className="px-6 py-3">
                     <span
                       className={`text-xs font-medium rounded-full px-2.5 py-1 ${coloreProvvigione(r.kind, r.level)}`}
                     >
                       {etichettaProvvigione(r.kind, r.level, TP)}
                     </span>
                   </td>
-                  <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
+                  <td data-label={T.colImporto} className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
                     {formatEuro(r.amount)}
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                  <td data-label={T.colData} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                     {formatDate(r.createdAt)}
                   </td>
                 </tr>

@@ -35,7 +35,7 @@ function subtreeSize(members: Member[], code: number): number {
 export default async function ControlCenterPage() {
   if (!supabaseConfigured()) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">
           Supabase non ancora collegato: il centro di controllo non è disponibile in modalità demo.
         </p>
@@ -215,7 +215,7 @@ export default async function ControlCenterPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Centro di controllo</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
         Vista e gestione completa di tutti i membri della rete — visibile solo all&apos;account aziendale.

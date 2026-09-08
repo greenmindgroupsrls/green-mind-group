@@ -686,6 +686,13 @@ footer ul a:hover{ color: var(--lime); }
   .dial{ width:230px; height:230px; }
   .price-card{ padding: 40px 26px; }
   .nav-cta .price-pill{ display:none; }
+
+  /* "VORTIX" era una parola sola e ci stava; "Green Mind Group" sono tre e
+     andavano a capo, gonfiando l'intestazione e schiacciando il pulsante che
+     serve davvero. Sotto i 640px resta il solo simbolo: e' esattamente il
+     mestiere di un simbolo. */
+  .logo{ font-size:0; gap:0; }
+  .logo-marchio{ width:30px; height:30px; }
 }
 
 @media (prefers-reduced-motion: reduce){

@@ -68,7 +68,7 @@ export default async function PayoutPrelevarePage() {
         <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.richiediPrelievo}</h2>
         </div>
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {network.loadFailed ? (
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Il modulo di richiesta non è disponibile finché i tuoi dati non vengono caricati
@@ -93,7 +93,7 @@ export default async function PayoutPrelevarePage() {
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.leTueRichieste}</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="glass-table w-full text-sm">
+          <table className="glass-table tabella-adattiva w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">{T.colImporto}</th>
@@ -108,15 +108,15 @@ export default async function PayoutPrelevarePage() {
                   <td className="px-6 py-3 font-medium text-gray-900 dark:text-white">
                     {formatEuro(w.net_amount)}
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{w.iban}</td>
-                  <td className="px-6 py-3">
+                  <td data-label={T.iban.replace(' *','')} className="px-6 py-3 text-gray-500 dark:text-gray-400">{w.iban}</td>
+                  <td data-label={T.colStato} className="px-6 py-3">
                     <span
                       className={`text-xs font-medium rounded-full px-2.5 py-1 ${WITHDRAWAL_STATUS_BADGE_CLASS[w.status]}`}
                     >
                       {WITHDRAWAL_STATUS_LABEL[w.status]}
                     </span>
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                  <td data-label={T.colData} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                     {formatDate(w.created_at)}
                   </td>
                 </tr>
@@ -142,7 +142,7 @@ export default async function PayoutPrelevarePage() {
             </p>
           </div>
           <div className="overflow-x-auto">
-            <table className="glass-table w-full text-sm">
+            <table className="glass-table tabella-adattiva w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">{T.colUtente}</th>
@@ -168,23 +168,23 @@ export default async function PayoutPrelevarePage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-3 font-medium text-gray-900 dark:text-white">
+                      <td data-label={T.colImporto} className="px-6 py-3 font-medium text-gray-900 dark:text-white">
                         {formatEuro(w.net_amount)}
                       </td>
-                      <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                      <td data-label={T.colBancaIban} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                         {w.bank_name} — {w.iban}
                       </td>
-                      <td className="px-6 py-3">
+                      <td data-label={T.colStato} className="px-6 py-3">
                         <span
                           className={`text-xs font-medium rounded-full px-2.5 py-1 ${WITHDRAWAL_STATUS_BADGE_CLASS[w.status]}`}
                         >
                           {WITHDRAWAL_STATUS_LABEL[w.status]}
                         </span>
                       </td>
-                      <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                      <td data-label={T.colData} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                         {formatDate(w.created_at)}
                       </td>
-                      <td className="px-6 py-3">
+                      <td data-label={T.colAzioni} className="px-6 py-3">
                         {w.status === "pending" ? (
                           <WithdrawalStatusActions id={w.id} />
                         ) : (

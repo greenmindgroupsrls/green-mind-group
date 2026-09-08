@@ -15,7 +15,7 @@ export default function DashboardError({
   }, [error]);
 
   return (
-    <div className="p-8 flex flex-col items-center justify-center text-center min-h-[60vh]">
+    <div className="p-4 sm:p-8 flex flex-col items-center justify-center text-center min-h-[60vh]">
       <div className="h-12 w-12 rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center text-red-600 dark:text-red-400 mb-4">
         <AlertTriangle size={22} />
       </div>

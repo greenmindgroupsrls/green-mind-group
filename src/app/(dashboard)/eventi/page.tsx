@@ -11,7 +11,7 @@ export default async function EventiPage() {
   const T = (await getDizionario()).eventi;
   if (!supabaseConfigured()) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <p className="rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 py-2">
           Supabase non ancora collegato: gli eventi non sono disponibili in modalità demo.
         </p>
@@ -38,7 +38,7 @@ export default async function EventiPage() {
   for (const m of memberNamesData ?? []) memberNameByCode[m.activity_code] = m.username;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
       <div className="mt-6">

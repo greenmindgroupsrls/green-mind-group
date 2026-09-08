@@ -115,7 +115,7 @@ export default async function PayoutOverviewPage() {
             <Wallet size={18} className="text-accent" />
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.portafoglioCommissioni}</h2>
           </div>
-          <div className="p-6 flex flex-col gap-5">
+          <div className="p-4 sm:p-6 flex flex-col gap-5">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
                 <PiggyBank size={24} />
@@ -147,7 +147,7 @@ export default async function PayoutOverviewPage() {
           <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.riepilogoCategoria}</h2>
           </div>
-          <div className="p-6 flex flex-col divide-y divide-gray-100 dark:divide-white/5">
+          <div className="p-4 sm:p-6 flex flex-col divide-y divide-gray-100 dark:divide-white/5">
             {categoryBreakdown.map((r) => (
               <div key={r.label} className="flex items-center justify-between py-2.5 text-sm">
                 <span className="text-gray-600 dark:text-gray-300">{r.label}</span>

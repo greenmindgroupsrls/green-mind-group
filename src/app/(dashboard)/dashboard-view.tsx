@@ -76,7 +76,7 @@ export function DashboardView({
   );
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">
         {isRoot ? T.sottotitoloRoot : T.sottotitolo}
@@ -84,7 +84,7 @@ export function DashboardView({
 
       {announcementsSlot && <div className="mt-6">{announcementsSlot}</div>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mt-6">
+      <div className="grid grid-cols-2 xl:grid-cols-5 gap-3 sm:gap-4 mt-6">
         <StatCard
           icon={Euro}
           label={T.commissioniTotali}
@@ -172,7 +172,7 @@ export function DashboardView({
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.ultimiIscritti}</h2>
           </div>
           <div className="overflow-x-auto">
-            <table className="glass-table w-full text-sm">
+            <table className="glass-table tabella-adattiva w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">{T.colonne.utente}</th>
@@ -191,14 +191,14 @@ export function DashboardView({
                         <span>{r.username}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-3">
+                    <td data-label={T.colonne.rank} className="px-6 py-3">
                       <span
                         className={`text-xs font-medium rounded-full px-2 py-0.5 ${RANK_BADGE_CLASS[r.rank]}`}
                       >
                         {RANK_LABEL[r.rank]}
                       </span>
                     </td>
-                    <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                    <td data-label={T.colonne.iscrittoIl} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                       {formatDate(r.created_at)}
                     </td>
                   </tr>
@@ -223,7 +223,7 @@ export function DashboardView({
             </p>
           </div>
           <div className="overflow-x-auto">
-            <table className="glass-table w-full text-sm">
+            <table className="glass-table tabella-adattiva w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-2 font-medium">{T.colonne.utente}</th>
@@ -242,8 +242,8 @@ export function DashboardView({
                         <span>{t.username}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{t.teamSize}</td>
-                    <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
+                    <td data-label={T.colonne.team} className="px-6 py-3 text-gray-500 dark:text-gray-400">{t.teamSize}</td>
+                    <td data-label={T.colonne.commissioni} className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
                       {formatEuro(t.earnings)}
                     </td>
                   </tr>
@@ -269,7 +269,7 @@ export function DashboardView({
           </p>
         </div>
         <div className="overflow-x-auto">
-          <table className="glass-table w-full text-sm">
+          <table className="glass-table tabella-adattiva w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-2 font-medium">{T.colonne.chiHaIntrodotto}</th>
@@ -293,12 +293,12 @@ export function DashboardView({
                       <span>{row.sponsorName}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-3">
+                  <td data-label={T.colonne.evento} className="px-6 py-3">
                     <span className="text-xs font-medium rounded-full px-2 py-0.5 bg-accent/10 text-accent whitespace-nowrap">
                       {row.eventLabel}
                     </span>
                   </td>
-                  <td className="px-6 py-3 text-gray-900 dark:text-white whitespace-nowrap">
+                  <td data-label={T.colonne.nuovoIscritto} className="px-6 py-3 text-gray-900 dark:text-white whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center rounded-md bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 text-xs font-medium px-2 py-0.5">
                         {formatActivityCode(row.memberCode)}
@@ -306,13 +306,13 @@ export function DashboardView({
                       <span>{row.memberName}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <td data-label={T.colonne.data} className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatDate(row.created_at)}
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <td data-label={T.colonne.ora} className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatHour(row.created_at)}
                   </td>
-                  <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                  <td data-label={T.colonne.commissione} className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white whitespace-nowrap">
                     {row.amount !== null
                       ? fmt.euro(row.amount)
                       : "—"}

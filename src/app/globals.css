@@ -166,6 +166,78 @@ body::before {
   background: rgba(22, 24, 46, 0.9);
 }
 
+/* ---------- Tabelle sul telefono ---------- */
+/* Una tabella a sei colonne in 309px non e' una tabella: e' un nastro che
+   scorre di lato, dove per leggere una riga intera bisogna trascinare avanti
+   e indietro perdendo di vista da chi si era partiti.
+   Sotto i 640px ogni riga diventa una scheda: le intestazioni spariscono e
+   ricompaiono come etichetta accanto al valore, presa da data-label. Sopra i
+   640px resta la tabella, che li' e' il modo giusto di leggere. */
+@media (max-width: 639px) {
+  .tabella-adattiva thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .tabella-adattiva,
+  .tabella-adattiva tbody,
+  .tabella-adattiva tr,
+  .tabella-adattiva td {
+    display: block;
+    width: auto;
+  }
+
+  .tabella-adattiva tr {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--glass-edge);
+  }
+
+  .tabella-adattiva td {
+    padding: 0.25rem 0 !important;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: none !important;
+  }
+
+  /* L'etichetta sta a sinistra e il valore a destra, incolonnato con quello
+     della riga sopra: e' quello che rende la scheda leggibile a colpo
+     d'occhio invece di un elenco di frasi. */
+  .tabella-adattiva td[data-label]::before {
+    content: attr(data-label);
+    flex: none;
+    color: var(--muted);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tabella-adattiva td > * {
+    text-align: right;
+  }
+
+  /* La prima cella e' il titolo della scheda: niente etichetta, riga intera. */
+  .tabella-adattiva td:first-child {
+    display: block;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .tabella-adattiva td:first-child > * {
+    text-align: left;
+  }
+
+  /* Una cella vuota su schermo grande e' una colonna in meno; sul telefono
+     sarebbe una riga con l'etichetta e il nulla accanto. */
+  .tabella-adattiva td:empty {
+    display: none;
+  }
+}
+
 /* ---------- Campi ---------- */
 .glass-input {
   background: var(--glass-bg);

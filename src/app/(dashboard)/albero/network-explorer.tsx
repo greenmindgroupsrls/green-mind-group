@@ -180,7 +180,7 @@ export function NetworkExplorer({
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
         Team: albero strutturale
       </h1>

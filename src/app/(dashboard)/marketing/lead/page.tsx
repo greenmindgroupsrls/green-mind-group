@@ -90,7 +90,7 @@ export default async function LeadPage() {
 
   const tabella = (
     <div className="overflow-x-auto">
-      <table className="glass-table w-full text-sm">
+      <table className="glass-table tabella-adattiva w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               <th className="px-4 py-2 font-medium">Contatto</th>
@@ -115,7 +115,7 @@ export default async function LeadPage() {
                     <p className="text-xs text-gray-500 dark:text-gray-400">{l.address}</p>
                   )}
                 </td>
-                <td className="px-4 py-3">
+                <td data-label={"Da dove arriva"} className="px-4 py-3">
                   <span
                     className={`inline-block text-xs font-medium rounded-full px-2.5 py-1 whitespace-nowrap ${
                       PROVENIENZA[l.source]?.classe ??
@@ -126,7 +126,7 @@ export default async function LeadPage() {
                   </span>
                   {l.survey_answers && <SurveyAnswers risposte={l.survey_answers} />}
                 </td>
-                <td className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[110px]">
+                <td data-label={"Richiesta"} className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[110px]">
                   {/* Data e ora su due righe invece che separate da un punto:
                       andando a capo da sole, il punto restava appeso a inizio
                       riga. */}
@@ -140,14 +140,14 @@ export default async function LeadPage() {
                     ricevuto {formatDate(l.created_at)}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[150px]">
+                <td data-label={"Note"} className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-[150px]">
                   {l.notes || "—"}
                 </td>
 
-                <td className="px-4 py-3">
+                <td data-label={"Stato"} className="px-4 py-3">
                   <LeadRowActions id={l.id} status={l.status} />
                 </td>
-                <td className="px-4 py-3">
+                <td data-label={"Inoltra"} className="px-4 py-3">
                   <LeadAssignAction
                     id={l.id}
                     members={members}

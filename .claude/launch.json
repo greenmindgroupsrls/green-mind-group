@@ -9,6 +9,15 @@
         "dev"
       ],
       "port": 3000
+    },
+    {
+      "name": "vetrina",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:vetrina"
+      ],
+      "port": 3011
     }
   ]
 }

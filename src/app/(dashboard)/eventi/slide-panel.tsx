@@ -32,7 +32,7 @@ export function SlidePanel({
             <X size={18} />
           </button>
         </div>
-        <div className="p-6 flex-1">{children}</div>
+        <div className="p-4 sm:p-6 flex-1">{children}</div>
       </div>
     </div>
   );

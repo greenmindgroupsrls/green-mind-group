@@ -67,7 +67,7 @@ export default async function ShopOrdersPage() {
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="glass-table w-full text-sm">
+        <table className="glass-table tabella-adattiva w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               {isRoot && <th className="px-6 py-2 font-medium">{T.colUtente}</th>}
@@ -93,26 +93,26 @@ export default async function ShopOrdersPage() {
                     </div>
                   </td>
                 )}
-                <td className="px-6 py-3 text-gray-600 dark:text-gray-300">
+                <td data-label={T.colProdotti} className="px-6 py-3 text-gray-600 dark:text-gray-300">
                   {(itemsByOrder.get(order.id) ?? []).map((item) => (
                     <div key={item.id}>
                       {productById.get(item.product_id) ?? "Prodotto"} × {item.quantity}
                     </div>
                   ))}
                 </td>
-                <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                <td data-label={T.colSpedizione} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                   {order.recipient_name}
                   <br />
                   {order.street}, {order.postal_code} {order.city}
                   {order.region ? ` (${order.region})` : ""}, {order.country}
                 </td>
-                <td className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
+                <td data-label={T.totale} className="px-6 py-3 text-right font-medium text-gray-900 dark:text-white">
                   {formatEuro(order.total_amount)}
                 </td>
-                <td className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                <td data-label={T.colData} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                   {formatDate(order.created_at)}
                 </td>
-                <td className="px-6 py-3">
+                <td data-label={T.colStato} className="px-6 py-3">
                   {isRoot ? (
                     <div className="flex flex-col gap-2">
                       <span

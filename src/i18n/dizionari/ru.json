@@ -94,7 +94,8 @@
       "chiHaIntrodotto": "Кто пригласил",
       "evento": "Событие",
       "nuovoIscritto": "Новый участник",
-      "data": "Дата"
+      "data": "Дата",
+      "ora": "Время"
     },
     "ilTuoRank": "Ваш ранг",
     "laTuaPosizione": "Ваша позиция в программе",

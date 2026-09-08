@@ -10,7 +10,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
   const T = (await getDizionario()).impostazioni;
   if (!supabaseConfigured()) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
         <p className="text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2 mt-4 max-w-lg">
           Supabase non ancora collegato: le impostazioni non sono disponibili in modalità demo.
@@ -52,7 +52,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
       : member.username;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{T.titolo}</h1>
       <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
 
