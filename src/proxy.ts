@@ -104,5 +104,9 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
+  // apple-icon.png sta accanto a favicon.ico: e' l'icona che iOS e Android
+  // usano quando si aggiunge il sito alla schermata iniziale, e la chiedono
+  // senza avere una sessione. Passando dal guscio di autenticazione veniva
+  // rimandata al login, e l'icona restava vuota.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|apple-icon.png|icon.png|.*\\.svg$).*)"],
 };
