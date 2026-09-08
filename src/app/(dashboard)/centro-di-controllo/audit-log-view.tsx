@@ -77,7 +77,7 @@ export function AuditLogView({ entries }: { entries: AuditLogRow[] }) {
 
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="glass-table w-full text-sm">
+          <table className="glass-table tabella-adattiva w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                 <th className="px-6 py-3 font-medium">Data</th>
@@ -92,15 +92,15 @@ export function AuditLogView({ entries }: { entries: AuditLogRow[] }) {
                   <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatDate(e.createdAt)}
                   </td>
-                  <td className="px-6 py-3 text-gray-900 dark:text-white font-medium whitespace-nowrap">
+                  <td data-label="Azione" className="px-6 py-3 text-gray-900 dark:text-white font-medium whitespace-nowrap">
                     {ACTION_LABELS[e.actionType] ?? e.actionType}
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <td data-label="Su chi" className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {e.targetCode !== null
                       ? `${formatActivityCode(e.targetCode)} ${e.targetName ?? ""}`
                       : "—"}
                   </td>
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{formatDetails(e.details)}</td>
+                  <td data-label="Dettagli" className="px-6 py-3 text-gray-500 dark:text-gray-400">{formatDetails(e.details)}</td>
                 </tr>
               ))}
               {filtered.length === 0 && (

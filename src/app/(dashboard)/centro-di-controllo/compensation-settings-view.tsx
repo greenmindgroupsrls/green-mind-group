@@ -235,7 +235,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
               Listino e provvigioni per modello — cambia un prezzo e vedi subito il risultato
             </div>
             <div className="overflow-x-auto">
-              <table className="glass-table w-full text-sm">
+              <table className="glass-table tabella-adattiva w-full text-sm">
                 <thead>
                   <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
                     <th className="px-4 py-2 font-medium">Prodotto</th>
@@ -251,7 +251,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
                   {anteprima.map((r) => (
                     <tr key={r.nome} className="border-t border-[var(--glass-edge)]">
                       <td className="px-4 py-2 text-gray-900 dark:text-white">{r.nome}</td>
-                      <td className="px-4 py-2 text-right">
+                      <td data-label="Prezzo" className="px-4 py-2 text-right">
                         <input
                           form="listino"
                           name={`prezzo_${r.id}`}
@@ -265,13 +265,13 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
                           className={`${inputClass} w-28 text-right`}
                         />
                       </td>
-                      <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">
+                      <td data-label="Imponibile" className="px-4 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">
                         {euro(r.imponibile)}
                       </td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.diretta)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.passUp)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.royal)}</td>
-                      <td className="px-4 py-2 text-right tabular-nums">{euro(r.upline)}</td>
+                      <td data-label="Diretta" className="px-4 py-2 text-right tabular-nums">{euro(r.diretta)}</td>
+                      <td data-label="Pass-up" className="px-4 py-2 text-right tabular-nums">{euro(r.passUp)}</td>
+                      <td data-label="Royal" className="px-4 py-2 text-right tabular-nums">{euro(r.royal)}</td>
+                      <td data-label="Indennizzo" className="px-4 py-2 text-right tabular-nums">{euro(r.upline)}</td>
                     </tr>
                   ))}
                 </tbody>
