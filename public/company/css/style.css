@@ -166,6 +166,15 @@ p{ color: var(--ink-dim); line-height:1.6; }
 .logo .dot{ color: var(--lime); }
 .logo-disc{ width:26px; height:26px; }
 .logo-disc svg{ width:100%; height:100%; }
+
+/* Marchio Green Mind Group. Il tratto e' sottile: sotto i 34px le foglie si
+   impastano, quindi qui sta piu' grande del disco che ha sostituito. Le due
+   versioni sono due immagini e non un filtro: invertire avrebbe schiarito
+   anche i bordi morbidi, sporcando il contorno. */
+.logo-marchio{ display:block; width:34px; height:34px; flex:none; }
+.logo-marchio img{ width:100%; height:100%; object-fit:contain; display:block; }
+:root[data-theme="dark"] .solo-chiaro{ display:none; }
+:root[data-theme="light"] .solo-scuro{ display:none; }
 .disc-rim{ fill:none; stroke: var(--gold); stroke-width:2; opacity:.7; }
 .disc-hub{ fill: var(--lime); }
 .disc-spokes line{ stroke: var(--ink-dim); stroke-width:2; stroke-linecap:round; }
