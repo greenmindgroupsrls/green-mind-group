@@ -9,6 +9,7 @@ import { AnnouncementsFeed } from "./announcements-feed";
 import { ClientDashboard } from "./client-dashboard";
 import { ContractReminder } from "./contract-reminder";
 import { NextActions } from "./next-actions";
+import { ProssimiImpegni } from "./prossimi-impegni";
 
 export const dynamic = "force-dynamic";
 
@@ -103,6 +104,11 @@ export default async function Home() {
         azioniSlot={
           !usingMockData && !loadFailed && currentMember ? (
             <NextActions activityCode={currentMember.activity_code} />
+          ) : null
+        }
+        impegniSlot={
+          !usingMockData && !loadFailed && currentMember ? (
+            <ProssimiImpegni activityCode={currentMember.activity_code} />
           ) : null
         }
       />

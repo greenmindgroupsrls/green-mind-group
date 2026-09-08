@@ -49,6 +49,7 @@ export function DashboardView({
   isRoot,
   announcementsSlot,
   azioniSlot,
+  impegniSlot,
 }: {
   members: Member[];
   sales: Sale[];
@@ -60,6 +61,7 @@ export function DashboardView({
   isRoot: boolean;
   announcementsSlot?: React.ReactNode;
   azioniSlot?: React.ReactNode;
+  impegniSlot?: React.ReactNode;
 }) {
   const T = useTesti().dashboard;
   const TV = useTesti().vuoto;
@@ -127,14 +129,28 @@ export function DashboardView({
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.team}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{T.nuoviIscrittiPerMese}</p>
             <div className="mt-4">
-              <NetworkAreaChart data={data.signupSeries} />
+              <NetworkAreaChart data={data.signupSeries} unita={T.iscritti} />
             </div>
           </div>
+
+          {/* I grafici stanno nella colonna larga, gli elenchi in quella
+              stretta: e' anche cio' che tiene le due colonne alte uguali,
+              invece di lasciare un buco sotto una delle due. */}
+          <div className="glass-card p-6">
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.andamentoProvvigioni}</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{T.guadagniPerMese}</p>
+            <div className="mt-4">
+              <NetworkAreaChart data={data.incomeSeries} formato="euro" />
+            </div>
+          </div>
+
           {azioniSlot}
         </div>
 
         <div className="flex flex-col gap-4">
           <MyRankCard members={members} ranks={ranks} rootCode={rootCode} />
+
+          {impegniSlot}
 
           <PassUpLinesCard members={members} ranks={ranks} rootCode={rootCode} />
 

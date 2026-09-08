@@ -100,7 +100,10 @@
     "laTuaPosizione": "La tua posizione nel programma",
     "vipDirettiStruttura": "VIP diretti nella tua struttura",
     "notaRoyalPool": "Con 10 VIP diretti entri nel Royal Pool.",
-    "leTueLinee": "Le tue linee"
+    "leTueLinee": "Le tue linee",
+    "andamentoProvvigioni": "Andamento provvigioni",
+    "guadagniPerMese": "Quanto hai guadagnato, mese per mese",
+    "iscritti": "iscritti"
   },
   "azioni": {
     "titolo": "Cosa fare adesso",
@@ -548,5 +551,15 @@
     "destinatario_non_trovato": "Non troviamo nessun membro chiamato {valore}.",
     "evento_non_trovato": "Evento {valore} non trovato.",
     "slot_occupato": "Questo orario è appena stato preso. Scegline un altro."
+  },
+  "impegni": {
+    "titolo": "Prossimi impegni",
+    "sottotitolo": "I prossimi sette giorni",
+    "nessuno": "Niente in calendario nei prossimi sette giorni.",
+    "oggi": "oggi",
+    "domani": "domani",
+    "evento": "Evento",
+    "appuntamento": "Appuntamento",
+    "vaiAllAgenda": "Vai all'agenda"
   }
 }

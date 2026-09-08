@@ -55,8 +55,13 @@ export function useLingua(): Lingua {
 // Numeri e date nella lingua scelta. Prima ogni componente scriveva
 // "it-IT" a mano: un'interfaccia tradotta che mostra "7 set 2026" a un
 // tedesco e' tradotta a meta'.
+// A differenza dei testi, qui un valore di ripiego esiste: l'italiano. Un
+// componente che finisce fuori dal guscio - una pagina di errore, una prova,
+// un pezzo riusato altrove - deve mostrare numeri all'italiana, non
+// esplodere. Per le parole invece l'eccezione resta: mostrare "undefined" a
+// un utente e' peggio che accorgersene subito.
 export function useFormato() {
-  const lingua = useLingua();
+  const lingua = useContext(Contesto)?.lingua ?? LINGUA_PREDEFINITA;
   const locale = LOCALE[lingua] ?? LOCALE[LINGUA_PREDEFINITA];
   return useMemo(
     () => ({

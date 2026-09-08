@@ -223,6 +223,10 @@ export function buildDashboardData(
     incomeDeltaPct,
     rankCounts,
     signupSeries: seriesForLastMonths(signupsByMonth, 7, now),
+    // gemella della serie degli iscritti: risponde all'altra meta' della
+    // domanda "come sta andando". La mappa mensile c'era gia', serviva
+    // solo portarla fuori.
+    incomeSeries: seriesForLastMonths(incomeByMonth, 7, now),
     recentReferrals,
     networkActivity: buildNetworkActivity(members, sales, entries),
     teamPerformance,

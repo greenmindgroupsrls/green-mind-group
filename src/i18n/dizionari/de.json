@@ -100,7 +100,10 @@
     "laTuaPosizione": "Ihre Position im Programm",
     "vipDirettiStruttura": "direkte VIPs in Ihrer Struktur",
     "notaRoyalPool": "Mit 10 direkten VIPs kommen Sie in den Royal Pool.",
-    "leTueLinee": "Ihre Linien"
+    "leTueLinee": "Ihre Linien",
+    "andamentoProvvigioni": "Provisionsverlauf",
+    "guadagniPerMese": "Was Sie verdient haben, Monat für Monat",
+    "iscritti": "Mitglieder"
   },
   "azioni": {
     "titolo": "Was jetzt zu tun ist",
@@ -548,5 +551,15 @@
     "destinatario_non_trovato": "Wir finden kein Mitglied mit dem Namen {valore}.",
     "evento_non_trovato": "Veranstaltung {valore} nicht gefunden.",
     "slot_occupato": "Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen."
+  },
+  "impegni": {
+    "titolo": "Was ansteht",
+    "sottotitolo": "Die nächsten sieben Tage",
+    "nessuno": "Nichts in den nächsten sieben Tagen geplant.",
+    "oggi": "heute",
+    "domani": "morgen",
+    "evento": "Veranstaltung",
+    "appuntamento": "Termin",
+    "vaiAllAgenda": "Zum Kalender"
   }
 }

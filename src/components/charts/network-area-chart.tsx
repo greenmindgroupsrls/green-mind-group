@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useFormato } from "@/i18n/testi-client";
 
 type Point = { label: string; value: number };
 
@@ -19,7 +20,25 @@ function niceMax(value: number) {
   return step * magnitude;
 }
 
-export function NetworkAreaChart({ data }: { data: Point[] }) {
+// Il grafico serve a due serie diverse - iscritti e provvigioni - che si
+// scrivono in modo diverso: "12" e "1.240 €".
+//
+// Il come si scrivono arriva come parola, non come funzione: una funzione
+// non si puo' passare da un componente server a uno client, e chiunque
+// usasse il grafico da una pagina server si troverebbe la schermata
+// d'errore invece del grafico. Cosi' funziona da qualunque parte, e l'euro
+// esce gia' nel formato della lingua scelta.
+export function NetworkAreaChart({
+  data,
+  formato = "numero",
+  unita,
+}: {
+  data: Point[];
+  formato?: "numero" | "euro";
+  unita?: string;
+}) {
+  const fmt = useFormato();
+  const formatta = (v: number) => (formato === "euro" ? fmt.euro(v, 0) : fmt.numero(v));
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   const max = niceMax(Math.max(...data.map((d) => d.value), 1));
@@ -71,7 +90,7 @@ export function NetworkAreaChart({ data }: { data: Point[] }) {
                 strokeWidth={1}
               />
               <text x={0} y={y + 3} fontSize={10} fill="var(--muted)">
-                {tick}
+                {formatta(tick)}
               </text>
             </g>
           );
@@ -158,7 +177,10 @@ export function NetworkAreaChart({ data }: { data: Point[] }) {
           style={{ left: `${(hoveredXY.x / WIDTH) * 100}%`, top: `${(hoveredXY.y / HEIGHT) * 100 - 2}%` }}
         >
           <div className="font-medium">{hovered.label}</div>
-          <div>{hovered.value} iscritti</div>
+          <div>
+            {formatta(hovered.value)}
+            {unita ? ` ${unita}` : ""}
+          </div>
         </div>
       )}
     </div>

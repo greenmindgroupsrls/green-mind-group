@@ -100,7 +100,10 @@
     "laTuaPosizione": "Ваша позиция в программе",
     "vipDirettiStruttura": "прямых VIP в вашей структуре",
     "notaRoyalPool": "С 10 прямыми VIP вы входите в Royal Pool.",
-    "leTueLinee": "Ваши линии"
+    "leTueLinee": "Ваши линии",
+    "andamentoProvvigioni": "Динамика комиссий",
+    "guadagniPerMese": "Сколько вы заработали, помесячно",
+    "iscritti": "участников"
   },
   "azioni": {
     "titolo": "Что делать сейчас",
@@ -548,5 +551,15 @@
     "destinatario_non_trovato": "Не найден участник с именем {valore}.",
     "evento_non_trovato": "Событие {valore} не найдено.",
     "slot_occupato": "Это время только что заняли. Выберите другое."
+  },
+  "impegni": {
+    "titolo": "Ближайшие дела",
+    "sottotitolo": "Ближайшие семь дней",
+    "nessuno": "На ближайшие семь дней ничего не запланировано.",
+    "oggi": "сегодня",
+    "domani": "завтра",
+    "evento": "Событие",
+    "appuntamento": "Встреча",
+    "vaiAllAgenda": "К ежедневнику"
   }
 }
