@@ -77,7 +77,7 @@ export default async function PayoutOverviewPage() {
       )}
 
       <div className="glass-card">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.panoramica}</h2>
         </div>
         <div className="flex flex-col lg:flex-row items-center gap-8 p-6">
@@ -111,7 +111,7 @@ export default async function PayoutOverviewPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-2">
+          <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-2">
             <Wallet size={18} className="text-accent" />
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.portafoglioCommissioni}</h2>
           </div>
@@ -121,7 +121,7 @@ export default async function PayoutOverviewPage() {
                 <PiggyBank size={24} />
               </div>
               <div>
-                <p className="text-3xl font-bold text-accent">{formatEuro(availableBalance)}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-accent">{formatEuro(availableBalance)}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{T.saldoDisponibile}</p>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default async function PayoutOverviewPage() {
         </div>
 
         <div className="glass-card">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10">
+          <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.riepilogoCategoria}</h2>
           </div>
           <div className="p-4 sm:p-6 flex flex-col divide-y divide-gray-100 dark:divide-white/5">

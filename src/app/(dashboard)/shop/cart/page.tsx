@@ -73,7 +73,7 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="glass-card p-6 h-fit">
+      <div className="glass-card p-4 sm:p-6 h-fit">
         <div className="flex items-center justify-between text-sm mb-4">
           <span className="text-gray-500 dark:text-gray-400">{T.subtotale}</span>
           <span className="font-semibold text-gray-900 dark:text-white">{formatEuro(subtotal)}</span>

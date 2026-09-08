@@ -58,7 +58,7 @@ export default async function ImpostazioniLayout({ children }: LayoutProps<"/imp
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 mt-6">
         <div className="flex flex-col gap-4">
-          <div className="glass-card p-6 flex flex-col items-center text-center">
+          <div className="glass-card p-4 sm:p-6 flex flex-col items-center text-center">
             <AvatarUpload
               activityCode={member.activity_code}
               username={member.username}

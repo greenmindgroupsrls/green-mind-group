@@ -28,7 +28,7 @@ export default async function SavedAddressesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Address Information</h2>
 
         {addresses && addresses.length > 0 ? (
@@ -65,7 +65,7 @@ export default async function SavedAddressesPage() {
         )}
       </div>
 
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Aggiungi indirizzo</h2>
         <AddressForm />
       </div>

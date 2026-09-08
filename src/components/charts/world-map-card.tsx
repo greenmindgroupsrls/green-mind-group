@@ -49,7 +49,7 @@ export function WorldMapCard({ countries }: { countries: Record<number, string> 
   const visibleLegend = showAll ? legend : legend.slice(0, 4);
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">Affiliate Joinings</h2>
         {legend.length > 4 && (

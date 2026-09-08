@@ -50,13 +50,13 @@ export default async function CompletaRegistrazionePage() {
       : null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 sm:p-6">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <MarchioCompleto className="h-auto w-[190px]" priority />
         </div>
 
-        <div className="glass-card p-6">
+        <div className="glass-card p-4 sm:p-6">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
             Completa la registrazione
           </h1>

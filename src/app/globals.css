@@ -203,6 +203,11 @@ body::before {
     justify-content: space-between;
     gap: 1rem;
     max-width: none !important;
+    /* Un IBAN, una mail lunga o un codice fiscale sono una parola sola: senza
+       questi due, invece di andare a capo allargano la scheda e mandano tutta
+       la pagina a scorrere di lato. */
+    overflow-wrap: anywhere;
+    white-space: normal !important;
   }
 
   /* L'etichetta sta a sinistra e il valore a destra, incolonnato con quello

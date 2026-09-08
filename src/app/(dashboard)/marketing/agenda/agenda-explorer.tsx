@@ -104,7 +104,7 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
                   key={section.title}
                   className="glass-card overflow-hidden"
                 >
-                  <div className="px-6 py-3 border-b border-gray-200 dark:border-white/10">
+                  <div className="px-4 sm:px-6 py-3 border-b border-gray-200 dark:border-white/10">
                     <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                       {section.title}
                       <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -113,7 +113,7 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
                     </h2>
                   </div>
                   {section.items.length === 0 ? (
-                    <p className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    <p className="px-4 sm:px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                       {section.emptyLabel}
                     </p>
                   ) : (
@@ -146,7 +146,7 @@ export function AgendaExplorer({ tasks, contacts }: { tasks: Task[]; contacts: C
 
           {doneTasks.length > 0 && (
             <div className="glass-card overflow-hidden">
-              <div className="px-6 py-3 border-b border-gray-200 dark:border-white/10">
+              <div className="px-4 sm:px-6 py-3 border-b border-gray-200 dark:border-white/10">
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                   Completate
                   <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">

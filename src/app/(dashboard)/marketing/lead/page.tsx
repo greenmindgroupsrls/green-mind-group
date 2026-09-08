@@ -155,7 +155,7 @@ export default async function LeadPage() {
                     assignedAt={l.assigned_at}
                   />
                 </td>
-                <td className="px-3 py-3">
+                <td data-label="Elimina" className="px-3 py-3">
                   <LeadDeleteAction id={l.id} nome={l.name} />
                 </td>
               </tr>
@@ -174,7 +174,7 @@ export default async function LeadPage() {
 
   return (
     <div className="glass-card overflow-hidden">
-      <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+      <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">Lead</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400">
           Richieste di contatto arrivate dai siti collegati (es. Vortix)

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState, useTransition } from "react";
+import { useActionState, useMemo, useState, useTransition, type ReactNode } from "react";
 import { Search, ShieldAlert, Users, Package, Euro, Wand2, Ban, ShieldCheck, ShoppingCart } from "lucide-react";
 import { formatActivityCode } from "@/lib/activity-code";
 import { RANK_LABEL, type Rank } from "@/lib/rank";
@@ -72,6 +72,29 @@ function scelta(forzato: boolean | null): AcquistoScelta {
 }
 
 const profileInitialState: ProfileState = { error: null, success: false };
+
+// Da telefono tre scatolette in fila lasciano 70px a testa: l'importo delle
+// commissioni non ci sta. Sotto i 640px diventano tre righe, con l'ordine
+// invertito dalle classi order-* invece che duplicando il testo.
+function Statistica({
+  icona,
+  valore,
+  etichetta,
+}: {
+  icona: ReactNode;
+  valore: string;
+  etichetta: string;
+}) {
+  return (
+    <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3 flex items-center gap-2 sm:flex-col sm:items-stretch sm:gap-0">
+      <span className="shrink-0 text-gray-500 dark:text-gray-400">{icona}</span>
+      <p className="order-2 sm:order-3 flex-1 text-xs text-gray-500 dark:text-gray-400">{etichetta}</p>
+      <p className="order-3 sm:order-2 text-base sm:text-lg font-semibold text-gray-900 dark:text-white tabular-nums sm:mt-1">
+        {valore}
+      </p>
+    </div>
+  );
+}
 
 function MemberDetail({ member }: { member: ControlCenterMember }) {
   const [editState, editAction, editPending] = useActionState(updateMemberProfile, profileInitialState);
@@ -169,24 +192,18 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Users size={14} className="text-gray-500 dark:text-gray-400" />
-          <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.teamSize}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Team totale</p>
-        </div>
-        <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Package size={14} className="text-gray-500 dark:text-gray-400" />
-          <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{member.piecesSold}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Pezzi venduti</p>
-        </div>
-        <div className="rounded-lg border border-gray-200 dark:border-white/10 p-3">
-          <Euro size={14} className="text-gray-500 dark:text-gray-400" />
-          <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-            {formatEuro(member.totalEarnings)}
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Commissioni guadagnate</p>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+        <Statistica icona={<Users size={14} />} valore={String(member.teamSize)} etichetta="Team totale" />
+        <Statistica
+          icona={<Package size={14} />}
+          valore={String(member.piecesSold)}
+          etichetta="Pezzi venduti"
+        />
+        <Statistica
+          icona={<Euro size={14} />}
+          valore={formatEuro(member.totalEarnings)}
+          etichetta="Commissioni guadagnate"
+        />
       </div>
 
       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -227,7 +244,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
                   setRankSaved(false);
                 }}
                 disabled={rankPending}
-                className={`${inputClass} w-fit disabled:opacity-50`}
+                className={`${inputClass} w-full sm:w-fit max-w-full disabled:opacity-50`}
               >
                 <option value="auto">Automatico (calcolato)</option>
                 <option value="standard">Forza Standard</option>
@@ -276,7 +293,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
                   setAcquistoSaved(false);
                 }}
                 disabled={acquistoPending}
-                className={`${inputClass} w-fit disabled:opacity-50`}
+                className={`${inputClass} w-full sm:w-fit max-w-full disabled:opacity-50`}
               >
                 <option value="auto">
                   Automatico ({member.haAcquistatoDavvero ? "ha comprato" : "non ha comprato"})
@@ -355,7 +372,7 @@ function MemberDetail({ member }: { member: ControlCenterMember }) {
       <form action={editAction} className="flex flex-col gap-3">
         <input type="hidden" name="target_code" value={member.activity_code} />
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Dati anagrafici</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1">
             <span className={labelClass}>Nome</span>
             <input name="first_name" defaultValue={member.first_name ?? ""} className={inputClass} />
@@ -449,7 +466,7 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
             />
           </div>
         </div>
-        <div className="overflow-y-auto max-h-[70vh] divide-y divide-gray-100 dark:divide-white/5">
+        <div className="overflow-y-auto max-h-[45vh] xl:max-h-[70vh] divide-y divide-gray-100 dark:divide-white/5">
           {filtered.map((m) => (
             <button
               key={m.activity_code}
@@ -500,7 +517,7 @@ export function ControlCenterExplorer({ members }: { members: ControlCenterMembe
         </div>
       </div>
 
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         {selected ? (
           <MemberDetail key={selected.activity_code} member={selected} />
         ) : (

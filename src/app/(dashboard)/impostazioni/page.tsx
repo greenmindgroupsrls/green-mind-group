@@ -30,7 +30,7 @@ export default async function MyProfilePage() {
     .single();
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white mb-4">My Profile</h2>
       <ProfileForm
         initial={{

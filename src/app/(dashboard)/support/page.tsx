@@ -95,7 +95,7 @@ export default async function SupportAcademyPage() {
 
   return (
     <div className="glass-card overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-3">
+      <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center gap-3">
         <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent shrink-0">
           <GraduationCap size={20} />
         </div>
@@ -116,7 +116,7 @@ export default async function SupportAcademyPage() {
 
       <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
         {items.map((item) => (
-          <div key={item.label} className="flex items-center justify-between gap-3 px-6 py-4">
+          <div key={item.label} className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4">
             <div className="flex items-center gap-3">
               {item.done ? (
                 <CheckCircle2 size={20} className="text-emerald-500 shrink-0" />

@@ -90,7 +90,7 @@ export function MyRankCard({
     : 100;
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white">{T.ilTuoRank}</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">{T.laTuaPosizione}</p>
 

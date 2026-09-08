@@ -56,7 +56,7 @@ export default async function ShopOrdersPage() {
 
   return (
     <div className="glass-card overflow-hidden">
-      <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+      <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">
           {isRoot ? T.ordiniRicevuti : T.iTuoiOrdini}
         </h2>

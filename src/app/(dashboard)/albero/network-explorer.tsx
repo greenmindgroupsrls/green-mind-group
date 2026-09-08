@@ -225,7 +225,7 @@ export function NetworkExplorer({
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 mt-6">
         <div className="glass-card">
           {!root ? (
-            <p className="text-gray-500 dark:text-gray-400 p-8">{T.nessunDato}</p>
+            <p className="text-gray-500 dark:text-gray-400 p-5 sm:p-8">{T.nessunDato}</p>
           ) : (
             <PanZoomViewport>
               <ul className="org-tree">
@@ -242,7 +242,7 @@ export function NetworkExplorer({
           )}
         </div>
 
-        <div className="glass-card p-6 h-fit sticky top-6">
+        <div className="glass-card p-4 sm:p-6 h-fit sticky top-6">
           {!selected ? (
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {T.selezionaNodo}

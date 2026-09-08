@@ -31,7 +31,7 @@ export default async function KycDocumentsPage() {
   const uploadedTypes = new Set((docs ?? []).map((d) => d.doc_type));
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white mb-4">KYC Documents</h2>
       <div className="flex flex-col gap-5 max-w-lg">
         {DOC_TYPES.map(({ type, label }) => (

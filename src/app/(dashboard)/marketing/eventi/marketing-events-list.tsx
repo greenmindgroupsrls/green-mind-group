@@ -47,7 +47,7 @@ export function MarketingEventsList({
             return (
               <div
                 key={ev.id}
-                className="glass-card p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+                className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4"
               >
                 <div className="flex items-center gap-5 flex-1 min-w-0">
                   <div className="shrink-0 w-16 text-center rounded-lg bg-accent/10 py-2">

@@ -125,7 +125,7 @@ export function MarketingContent({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">{T.linkPersonale}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
@@ -162,7 +162,7 @@ export function MarketingContent({
         </div>
       </div>
 
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         <h2 className="font-semibold text-gray-900 dark:text-white mb-1">{T.testiPronti}</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
           {T.copiaIncolla}

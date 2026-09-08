@@ -35,7 +35,7 @@ export async function AnnouncementsFeed({
 
   return (
     <div className="glass-card mb-6">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
+      <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Megaphone size={18} className="text-accent" />
           <h2 className="font-semibold text-gray-900 dark:text-white">Annunci</h2>
@@ -43,11 +43,11 @@ export async function AnnouncementsFeed({
         {isRoot && <AnnouncementComposer />}
       </div>
       {announcements.length === 0 ? (
-        <p className="px-6 py-6 text-sm text-gray-500 dark:text-gray-400">Nessun annuncio ancora.</p>
+        <p className="px-4 sm:px-6 py-6 text-sm text-gray-500 dark:text-gray-400">Nessun annuncio ancora.</p>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {announcements.map((a) => (
-            <div key={a.id} className="px-6 py-4">
+            <div key={a.id} className="px-4 sm:px-6 py-4">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">{a.title}</p>
                 <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">

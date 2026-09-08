@@ -41,7 +41,7 @@ export function PassUpLinesCard({
   if (cedute.length === 0 && proprie.length === 0) return null;
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white">{T.titolo}</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">
         {T.sottotitolo}

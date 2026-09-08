@@ -62,7 +62,7 @@ export default async function MessaggiPage() {
       <p className="text-gray-600 dark:text-gray-300 mt-1">{T.sottotitolo}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6 mt-6">
-        <div className="glass-card p-6 h-fit">
+        <div className="glass-card p-4 sm:p-6 h-fit">
           <MessageForm />
         </div>
 

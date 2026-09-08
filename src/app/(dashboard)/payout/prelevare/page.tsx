@@ -65,7 +65,7 @@ export default async function PayoutPrelevarePage() {
       )}
 
       <div className="glass-card">
-        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+        <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.richiediPrelievo}</h2>
         </div>
         <div className="p-4 sm:p-6">
@@ -89,7 +89,7 @@ export default async function PayoutPrelevarePage() {
       </div>
 
       <div className="glass-card overflow-hidden">
-        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+        <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.leTueRichieste}</h2>
         </div>
         <div className="overflow-x-auto">
@@ -135,7 +135,7 @@ export default async function PayoutPrelevarePage() {
 
       {isRoot && (
         <div className="glass-card overflow-hidden">
-          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+          <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.richiesteDaGestire}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Tutte le richieste di prelievo della rete

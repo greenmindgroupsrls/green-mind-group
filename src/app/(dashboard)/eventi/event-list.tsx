@@ -47,7 +47,7 @@ export function EventList({
         return (
           <div
             key={ev.id}
-            className="glass-card p-5 flex items-start gap-5"
+            className="glass-card p-4 sm:p-5 flex items-start gap-5"
           >
             <div className="shrink-0 w-16 text-center rounded-lg bg-accent/10 py-2">
               <p className="text-[10px] font-semibold text-accent uppercase">{date.month}</p>

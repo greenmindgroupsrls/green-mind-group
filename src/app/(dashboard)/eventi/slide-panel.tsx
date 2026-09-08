@@ -21,7 +21,7 @@ export function SlidePanel({
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
       <div className="relative w-full max-w-lg h-full overflow-y-auto glass-card glass-panel rounded-none border-y-0 border-r-0 flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-white/10 sticky top-0 bg-white dark:bg-[#151129] z-10">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10 sticky top-0 bg-white dark:bg-[#151129] z-10">
           <h2 className="font-semibold text-gray-900 dark:text-white">{title}</h2>
           <button
             type="button"

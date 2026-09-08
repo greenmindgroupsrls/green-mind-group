@@ -90,12 +90,12 @@ export default async function AlberoPage() {
   return (
     <div>
       {usingMockData && (
-        <div className="bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-8 py-2 border-b border-amber-200 dark:border-amber-500/20">
+        <div className="bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 text-sm px-4 sm:px-8 py-2 border-b border-amber-200 dark:border-amber-500/20">
           Supabase non ancora collegato: questi sono dati di esempio a scopo dimostrativo.
         </div>
       )}
       {loadFailed && (
-        <div className="bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 text-sm px-8 py-2 border-b border-red-200 dark:border-red-500/20">
+        <div className="bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 text-sm px-4 sm:px-8 py-2 border-b border-red-200 dark:border-red-500/20">
           Non è stato possibile caricare i tuoi dati in questo momento. Ricarica la pagina o riprova tra poco.
         </div>
       )}

@@ -68,7 +68,7 @@ export async function ProssimiImpegni({ activityCode }: { activityCode: number }
 
   if (voci.length === 0) {
     return (
-      <div className="glass-card p-6">
+      <div className="glass-card p-4 sm:p-6">
         <Intestazione titolo={T.titolo} sottotitolo={T.sottotitolo} />
         <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{T.nessuno}</p>
       </div>
@@ -89,7 +89,7 @@ export async function ProssimiImpegni({ activityCode }: { activityCode: number }
   }
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <Intestazione titolo={T.titolo} sottotitolo={T.sottotitolo} />
       <ul className="mt-4 flex flex-col gap-2">
         {voci.map((v) => {

@@ -26,13 +26,13 @@ export default async function ReferralLinkPage({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 sm:p-6">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-8">
           <MarchioCompleto className="h-auto w-[190px]" priority />
         </div>
 
-        <div className="glass-card p-6">
+        <div className="glass-card p-4 sm:p-6">
           {!configured ? (
             <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2">
               Supabase non ancora collegato: la registrazione non è disponibile in modalità demo.

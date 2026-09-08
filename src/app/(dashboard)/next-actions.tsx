@@ -195,7 +195,7 @@ export async function NextActions({ activityCode }: { activityCode: number }) {
   }
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <div className="flex items-center gap-2">
         <CheckCircle2 size={17} className="text-accent" />
         <h2 className="font-semibold text-gray-900 dark:text-white">{T.titolo}</h2>

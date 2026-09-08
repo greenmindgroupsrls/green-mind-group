@@ -103,7 +103,7 @@ export function CompensationSettingsView({ settings }: { settings: CompensationS
   });
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Piano compensi</h3>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
         Ogni voce è una percentuale sull&apos;imponibile del prodotto venduto. Chi vende riceve la

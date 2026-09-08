@@ -56,7 +56,7 @@ export default async function PayoutCommissioniPage() {
       </div>
 
       <div className="glass-card overflow-hidden">
-        <div className="px-6 py-4 border-b border-[var(--glass-edge)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.movimentiCommissioni}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">

@@ -39,12 +39,12 @@ export default async function RegistrazionePage() {
       ) : (
         <>
           {slug && (
-            <div className="mt-6 max-w-2xl glass-card p-6">
+            <div className="mt-6 max-w-2xl glass-card p-4 sm:p-6">
               <PersonalLinkField slug={slug} />
             </div>
           )}
 
-          <div className="mt-6 max-w-2xl glass-card p-6">
+          <div className="mt-6 max-w-2xl glass-card p-4 sm:p-6">
             <EnrollForm />
           </div>
         </>

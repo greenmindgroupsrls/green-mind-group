@@ -21,7 +21,7 @@ export function LeadViewSwitch({
 
   return (
     <div className="flex flex-col">
-      <div className="px-6 py-3 border-b border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
+      <div className="px-4 sm:px-6 py-3 border-b border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
         <div className="inline-flex rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-white/5 p-1">
           {(
             [

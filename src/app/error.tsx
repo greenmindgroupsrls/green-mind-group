@@ -17,7 +17,7 @@ export default function RootError({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 sm:p-6">
       <div className="flex flex-col items-center text-center max-w-sm">
         <div className="h-12 w-12 rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center text-red-600 dark:text-red-400 mb-4">
           <AlertTriangle size={22} />

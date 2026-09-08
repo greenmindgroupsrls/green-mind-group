@@ -24,7 +24,7 @@ const WorldMapCard = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="glass-card p-6 animate-pulse">
+      <div className="glass-card p-4 sm:p-6 animate-pulse">
         <div className="h-5 w-40 rounded bg-gray-100 dark:bg-white/10 mb-4" />
         <div className="h-[340px] rounded-lg bg-gray-50 dark:bg-white/5" />
       </div>
@@ -125,7 +125,7 @@ export function DashboardView({
           della colonna di destra e lascia sotto una fascia bianca vuota. */}
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4 mt-4 items-start">
         <div className="flex flex-col gap-4">
-          <div className="glass-card p-6">
+          <div className="glass-card p-4 sm:p-6">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.team}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{T.nuoviIscrittiPerMese}</p>
             <div className="mt-4">
@@ -136,7 +136,7 @@ export function DashboardView({
           {/* I grafici stanno nella colonna larga, gli elenchi in quella
               stretta: e' anche cio' che tiene le due colonne alte uguali,
               invece di lasciare un buco sotto una delle due. */}
-          <div className="glass-card p-6">
+          <div className="glass-card p-4 sm:p-6">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.andamentoProvvigioni}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{T.guadagniPerMese}</p>
             <div className="mt-4">
@@ -154,7 +154,7 @@ export function DashboardView({
 
           <PassUpLinesCard members={members} ranks={ranks} rootCode={rootCode} />
 
-          <div className="glass-card p-6">
+          <div className="glass-card p-4 sm:p-6">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.distribuzioneRank}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">Standard · VIP · Royal</p>
             <RankDistribution counts={data.rankCounts} />
@@ -168,7 +168,7 @@ export function DashboardView({
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-4">
         <div className="glass-card overflow-hidden">
-          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+          <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.ultimiIscritti}</h2>
           </div>
           <div className="overflow-x-auto">
@@ -216,7 +216,7 @@ export function DashboardView({
         </div>
 
         <div className="glass-card overflow-hidden">
-          <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+          <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
             <h2 className="font-semibold text-gray-900 dark:text-white">{T.teamPerformance}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {isRoot ? T.direttiAzienda : T.direttiTuoi}
@@ -262,7 +262,7 @@ export function DashboardView({
       </div>
 
       <div className="mt-4 glass-card overflow-hidden">
-        <div className="px-6 py-4 border-b border-[var(--glass-edge)]">
+        <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.attivitaDiRete}</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             Ultime iscrizioni introdotte da te o dal tuo team, in tutta la struttura

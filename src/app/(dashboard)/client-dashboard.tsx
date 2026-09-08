@@ -17,7 +17,7 @@ export async function ClientDashboard({ username }: { username: string }) {
         </p>
       </div>
 
-      <div className="glass-card p-6 flex flex-col items-start gap-3">
+      <div className="glass-card p-4 sm:p-6 flex flex-col items-start gap-3">
         <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
           <ShoppingBag size={20} />
         </div>

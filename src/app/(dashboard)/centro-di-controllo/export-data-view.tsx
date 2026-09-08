@@ -21,7 +21,7 @@ export function ExportDataView() {
       {EXPORTS.map(({ type, label, description }) => (
         <div
           key={type}
-          className="glass-card p-5 flex flex-col gap-3"
+          className="glass-card p-4 sm:p-5 flex flex-col gap-3"
         >
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{label}</h3>

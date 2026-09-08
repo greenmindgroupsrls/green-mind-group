@@ -186,7 +186,7 @@ function Radio({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="glass-card p-6 flex flex-col gap-4">
+    <div className="glass-card p-4 sm:p-6 flex flex-col gap-4">
       <h2 className="font-semibold text-gray-900 dark:text-white">{title}</h2>
       {children}
     </div>

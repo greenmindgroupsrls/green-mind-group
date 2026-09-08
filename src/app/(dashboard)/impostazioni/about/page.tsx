@@ -29,7 +29,7 @@ export default async function AboutMePage() {
     .single();
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-4 sm:p-6">
       <h2 className="font-semibold text-gray-900 dark:text-white mb-1">About Me</h2>
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         Informazioni aggiuntive per la tua pagina di presentazione

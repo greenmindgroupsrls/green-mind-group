@@ -74,7 +74,7 @@ export function CheckoutForm() {
 
   if (state.success) {
     return (
-      <div className="glass-card p-8 text-center max-w-md mx-auto">
+      <div className="glass-card p-4 sm:p-5 sm:p-8 text-center max-w-md mx-auto">
         <p className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
           {T.ordineConfermato}
         </p>
@@ -107,7 +107,7 @@ export function CheckoutForm() {
         value={JSON.stringify(items.map((i) => ({ product_id: i.id, quantity: i.quantity })))}
       />
 
-      <div className="glass-card p-6 flex flex-col gap-4">
+      <div className="glass-card p-4 sm:p-6 flex flex-col gap-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">{T.indirizzoSpedizione}</h2>
 
         <label className="flex flex-col gap-1.5">
@@ -189,7 +189,7 @@ export function CheckoutForm() {
         )}
       </div>
 
-      <div className="glass-card p-6 h-fit flex flex-col gap-4">
+      <div className="glass-card p-4 sm:p-6 h-fit flex flex-col gap-4">
         <h2 className="font-semibold text-gray-900 dark:text-white">{T.riepilogoOrdine}</h2>
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
           {items.map((item) => (

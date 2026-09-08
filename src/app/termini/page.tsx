@@ -4,13 +4,13 @@ export const metadata = { title: "Termini e Condizioni — Green Mind Group" };
 
 export default function TerminiPage() {
   return (
-    <div className="min-h-screen bg-background flex justify-center px-6 py-16">
+    <div className="min-h-screen bg-background flex justify-center px-4 sm:px-6 py-10 sm:py-16">
       <div className="w-full max-w-3xl">
         <Link href="/login" className="text-sm text-accent font-medium hover:underline">
           ← Torna al login
         </Link>
 
-        <div className="mt-6 glass-card p-8">
+        <div className="mt-6 glass-card p-4 sm:p-5 sm:p-8">
           <p className="text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 rounded-lg px-3 py-2 mb-6">
             Bozza operativa: prima di renderla vincolante per il pubblico, fai revisionare questo
             testo da un legale.
