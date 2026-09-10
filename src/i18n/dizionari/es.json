@@ -200,7 +200,13 @@
     "colData": "Fecha",
     "colStato": "Estado",
     "nessunOrdineRicevuto": "No se ha recibido ningún pedido.",
-    "nessunOrdine": "Aún no has realizado pedidos."
+    "nessunOrdine": "Aún no has realizado pedidos.",
+    "comeVuoiPagare": "¿Cómo quieres pagar?",
+    "pagaOra": "Pagar ahora",
+    "pagaOraDettaglio": "Tarjeta, PayPal o a plazos. Pago seguro gestionado por Stripe: los datos de la tarjeta no pasan por nuestros servidores.",
+    "bonifico": "Transferencia bancaria",
+    "bonificoDettaglio": "El pedido queda en espera hasta que registremos la transferencia. Te enviaremos los datos bancarios por mensaje.",
+    "vaiAlPagamento": "Ir al pago"
   },
   "payout": {
     "titolo": "Pagos",

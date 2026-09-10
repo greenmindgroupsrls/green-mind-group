@@ -20,10 +20,13 @@ function formatEuro(value: number) {
 
 const emptyAddress = { street: "", city: "", region: "", postalCode: "", country: "Italia" };
 
-export function CheckoutForm() {
+export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) {
   const T = useTesti().shop;
   const { items, subtotal, clear } = useCart();
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
+  // Quando il pagamento online non e' ancora acceso non si mostra proprio la
+  // scelta: un'opzione che non funziona e' peggio di un'opzione che non c'e'.
+  const [metodo, setMetodo] = useState<"stripe" | "bonifico">(pagamentoAttivo ? "stripe" : "bonifico");
   const [prevSuccess, setPrevSuccess] = useState(state.success);
   const [address, setAddress] = useState(emptyAddress);
   const [coupon, setCoupon] = useState("");
@@ -259,12 +262,48 @@ export function CheckoutForm() {
           <span className="text-gray-900 dark:text-white">{T.totale}</span>
           <span className="text-gray-900 dark:text-white">{formatEuro(totale)}</span>
         </div>
+        {pagamentoAttivo && (
+          <div className="flex flex-col gap-2 pt-3 border-t border-gray-200 dark:border-white/10">
+            <span className={labelClass}>{T.comeVuoiPagare}</span>
+            {[
+              { valore: "stripe" as const, titolo: T.pagaOra, dettaglio: T.pagaOraDettaglio },
+              { valore: "bonifico" as const, titolo: T.bonifico, dettaglio: T.bonificoDettaglio },
+            ].map(({ valore, titolo, dettaglio }) => (
+              <label
+                key={valore}
+                className={`flex items-start gap-2.5 rounded-lg border p-3 cursor-pointer transition-colors ${
+                  metodo === valore
+                    ? "border-accent bg-accent/5"
+                    : "border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="payment_method"
+                  value={valore}
+                  checked={metodo === valore}
+                  onChange={() => setMetodo(valore)}
+                  className="mt-0.5 accent-[var(--accent)]"
+                />
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">{titolo}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">{dettaglio}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={pending}
           className="glass-btn-primary rounded-lg px-4 py-2.5 text-sm font-medium disabled:opacity-50"
         >
-          {pending ? T.invioInCorso : T.confermaOrdine}
+          {pending
+            ? T.invioInCorso
+            : pagamentoAttivo && metodo === "stripe"
+              ? T.vaiAlPagamento
+              : T.confermaOrdine}
         </button>
       </div>
     </form>

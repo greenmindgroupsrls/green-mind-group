@@ -200,7 +200,13 @@
     "colData": "Date",
     "colStato": "Status",
     "nessunOrdineRicevuto": "No orders received so far.",
-    "nessunOrdine": "You haven't placed any orders yet."
+    "nessunOrdine": "You haven't placed any orders yet.",
+    "comeVuoiPagare": "How would you like to pay",
+    "pagaOra": "Pay now",
+    "pagaOraDettaglio": "Card, PayPal or instalments. Secure payment handled by Stripe: card details never pass through our servers.",
+    "bonifico": "Bank transfer",
+    "bonificoDettaglio": "The order stays on hold until we record the transfer. We will send you the bank details by message.",
+    "vaiAlPagamento": "Go to payment"
   },
   "payout": {
     "titolo": "Payout",

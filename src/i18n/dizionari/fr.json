@@ -200,7 +200,13 @@
     "colData": "Date",
     "colStato": "Statut",
     "nessunOrdineRicevuto": "Aucune commande reçue pour l'instant.",
-    "nessunOrdine": "Vous n'avez pas encore passé de commande."
+    "nessunOrdine": "Vous n'avez pas encore passé de commande.",
+    "comeVuoiPagare": "Comment souhaitez-vous payer",
+    "pagaOra": "Payer maintenant",
+    "pagaOraDettaglio": "Carte, PayPal ou paiement en plusieurs fois. Paiement sécurisé géré par Stripe : les données de la carte ne passent jamais par nos serveurs.",
+    "bonifico": "Virement bancaire",
+    "bonificoDettaglio": "La commande reste en attente jusqu'à l'enregistrement du virement. Nous vous enverrons les coordonnées par message.",
+    "vaiAlPagamento": "Aller au paiement"
   },
   "payout": {
     "titolo": "Paiements",

@@ -200,7 +200,13 @@
     "colData": "Datum",
     "colStato": "Status",
     "nessunOrdineRicevuto": "Bisher keine Bestellungen eingegangen.",
-    "nessunOrdine": "Sie haben noch keine Bestellungen aufgegeben."
+    "nessunOrdine": "Sie haben noch keine Bestellungen aufgegeben.",
+    "comeVuoiPagare": "Wie möchten Sie bezahlen",
+    "pagaOra": "Jetzt bezahlen",
+    "pagaOraDettaglio": "Karte, PayPal oder Ratenzahlung. Sichere Zahlung über Stripe: Kartendaten laufen nie über unsere Server.",
+    "bonifico": "Banküberweisung",
+    "bonificoDettaglio": "Die Bestellung bleibt offen, bis wir die Überweisung verbuchen. Die Bankdaten senden wir Ihnen per Nachricht.",
+    "vaiAlPagamento": "Zur Zahlung"
   },
   "payout": {
     "titolo": "Auszahlungen",

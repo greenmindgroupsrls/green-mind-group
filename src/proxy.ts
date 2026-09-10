@@ -50,7 +50,11 @@ export async function proxy(request: NextRequest) {
   const isLegalRoute = pathname.startsWith("/termini") || pathname.startsWith("/privacy");
   // Webhook server-to-server (es. Vortix che manda un nuovo lead): nessuna
   // sessione utente, autenticato via segreto condiviso nel route handler.
-  const isWebhookRoute = pathname.startsWith("/api/leads/");
+  // /api/stripe/webhook: lo chiamano i server di Stripe, che non hanno una
+  // sessione. Non e' una porta aperta: la richiesta e' firmata, e la firma
+  // si verifica dentro il route handler prima di leggere qualsiasi cosa.
+  const isWebhookRoute =
+    pathname.startsWith("/api/leads/") || pathname.startsWith("/api/stripe/");
   // Le prenotazioni dal sito Vortix: chi prenota non ha un account, quindi
   // la strada deve restare aperta. La convalida dei dati e il vincolo di
   // unicita' sullo slot stanno nel route handler e nel database.
