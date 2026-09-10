@@ -60,7 +60,7 @@ export function ContactsExplorer({
       </div>
 
       {filtered.length === 0 ? (
-        <div className="glass-card p-12 text-center">
+        <div className="glass-card p-8 sm:p-12 text-center">
           <p className="text-gray-500 dark:text-gray-400">
             {contacts.length === 0 ? T.nessunContatto : T.nessunContattoTrovato}
           </p>

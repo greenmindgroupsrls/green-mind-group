@@ -37,7 +37,7 @@ export function MarketingEventsList({
       </div>
 
       {events.length === 0 ? (
-        <div className="glass-card p-12 text-center">
+        <div className="glass-card p-8 sm:p-12 text-center">
           <p className="text-gray-500 dark:text-gray-400">{T.nessunEvento}</p>
         </div>
       ) : (

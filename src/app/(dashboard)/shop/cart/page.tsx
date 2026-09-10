@@ -16,7 +16,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="glass-card p-12 text-center">
+      <div className="glass-card p-8 sm:p-12 text-center">
         <p className="text-gray-500 dark:text-gray-400 mb-4">{T.carrelloVuoto}</p>
         <Link href="/shop" className="text-accent font-medium hover:underline">
           {T.tornaAlCatalogo}

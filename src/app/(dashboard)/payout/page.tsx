@@ -80,7 +80,7 @@ export default async function PayoutOverviewPage() {
         <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-white/10">
           <h2 className="font-semibold text-gray-900 dark:text-white">{T.panoramica}</h2>
         </div>
-        <div className="flex flex-col lg:flex-row items-center gap-8 p-6">
+        <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 p-4 sm:p-6">
           <div className="flex-1 w-full flex flex-col divide-y divide-gray-100 dark:divide-white/5">
             {rows.map((r) => (
               <div key={r.abbr} className="flex items-center justify-between py-3">

@@ -33,7 +33,7 @@ export function EventList({
   const T = useTesti().eventi;
   if (events.length === 0) {
     return (
-      <div className="glass-card p-12 text-center">
+      <div className="glass-card p-8 sm:p-12 text-center">
         <p className="text-gray-500 dark:text-gray-400">{emptyLabel}</p>
       </div>
     );

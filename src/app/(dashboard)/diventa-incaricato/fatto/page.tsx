@@ -34,7 +34,7 @@ export default async function ContrattoFirmatoPage() {
 
   return (
     <div className="p-4 sm:p-8 max-w-2xl mx-auto flex flex-col gap-6">
-      <div className="rounded-xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/10 p-6 flex items-start gap-4">
+      <div className="rounded-xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/10 p-4 sm:p-6 flex items-start gap-4">
         <CheckCircle2 size={24} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
         <div>
           <h1 className="font-semibold text-gray-900 dark:text-white text-lg">

@@ -35,7 +35,7 @@ export async function ClientDashboard({ username }: { username: string }) {
         </Link>
       </div>
 
-      <div className="rounded-xl border border-accent/30 bg-accent/5 p-6 shadow-sm flex flex-col items-start gap-3">
+      <div className="rounded-xl border border-accent/30 bg-accent/5 p-4 sm:p-6 shadow-sm flex flex-col items-start gap-3">
         <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
           <Rocket size={20} />
         </div>
