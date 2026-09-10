@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Il back office vive sullo stesso dominio del sito. Le sue pagine sono gia'
+# protette dall'accesso — un motore di ricerca ci trova solo un rinvio al
+# login — ma senza queste righe le proverebbe comunque tutte, e finirebbe
+# per mostrare la pagina di accesso fra i risultati del sito.
+Disallow: /login
+Disallow: /dashboard
+Disallow: /albero
+Disallow: /shop
+Disallow: /payout
+Disallow: /vendite
+Disallow: /marketing
+Disallow: /eventi
+Disallow: /messaggi
+Disallow: /impostazioni
+Disallow: /support
+Disallow: /iscrivi
+Disallow: /registrazione
+Disallow: /registrati
+Disallow: /diventa-incaricato
+Disallow: /centro-di-controllo
+Disallow: /password-dimenticata
+Disallow: /reset-password
+Disallow: /api/
+# I link di invito personali degli incaricati: non vanno indicizzati.
+Disallow: /r/
+
+Sitemap: https://greenmindgroup.pro/sitemap.xml

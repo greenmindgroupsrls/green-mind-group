@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const ref = request.nextUrl.searchParams.get("ref");
   const refName = request.nextUrl.searchParams.get("refName");
   const nextParam = request.nextUrl.searchParams.get("next");
-  const next = nextParam && nextParam.startsWith("/") ? nextParam : "/";
+  const next = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";
 
   if (code) {
     const supabase = await createClient();

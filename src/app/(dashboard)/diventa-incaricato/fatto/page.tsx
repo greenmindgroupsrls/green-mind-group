@@ -68,7 +68,7 @@ export default async function ContrattoFirmatoPage() {
       </div>
 
       <Link
-        href="/"
+        href="/dashboard"
         className="self-start text-sm font-medium text-accent hover:underline"
       >
         Vai alla dashboard

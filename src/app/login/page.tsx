@@ -6,7 +6,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const t = (await getDizionario()).accesso;
   const nextParam = params.next;
-  const next = typeof nextParam === "string" ? nextParam : "/";
+  const next = typeof nextParam === "string" ? nextParam : "/dashboard";
   const suspended = params.suspended === "1";
 
   const supabaseConfigured =

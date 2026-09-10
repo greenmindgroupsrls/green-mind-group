@@ -1,22 +1,45 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
-// Il sito Vortix vive in public/company: e' HTML statico servito da noi, non
-// piu' un rinvio a un progetto Vercel separato. Una cosa sola da pubblicare,
-// una sola da salvare nei backup, una sola cronologia.
+// Il sito VORTIX e' il sito principale: vive in public/ ed e' quello che
+// trova chi scrive greenmindgroup.pro. Il back office sta sotto lo stesso
+// dominio ma si entra da /login, e la sua schermata iniziale e' /dashboard.
 //
-// Lo slash finale resta necessario: le pagine usano path relativi tipo
-// "css/style.css", che senza "/company/" risolverebbero contro la radice del
-// dominio. Il redirect /company -> /company/ e' in proxy.ts.
+// Le pagine sono HTML statico dentro public/, quindi rispondono gia' al loro
+// nome-file (/sondaggio.html). Le rewrite qui sotto servono a dargli anche
+// l'indirizzo pulito senza estensione, che e' quello che pubblichiamo.
+const PAGINE_SITO = [
+  { pulito: "/", file: "/index.html" },
+  { pulito: "/sondaggio", file: "/sondaggio.html" },
+  { pulito: "/disclaimer", file: "/disclaimer.html" },
+  { pulito: "/termini-greenmindgroup", file: "/termini-greenmindgroup.html" },
+  { pulito: "/privacy-greenmindgroup", file: "/privacy-greenmindgroup.html" },
+];
+
 const nextConfig: NextConfig = {
-  // Il redirect a "/company/" va in loop infinito con la normalizzazione
-  // automatica di Next (che di default fa l'esatto opposto, toglie lo slash
-  // finale): va disattivata qui e gestita a mano.
-  skipTrailingSlashRedirect: true,
   async rewrites() {
-    // I file dentro public/ si servono al loro percorso esatto: "/company/"
-    // da solo non trova nulla, va indirizzato all'indice a mano.
-    return [{ source: "/company/", destination: "/company/index.html" }];
+    return PAGINE_SITO.map(({ pulito, file }) => ({ source: pulito, destination: file }));
+  },
+
+  // Il sito stava sotto /company/: quei link sono gia' in giro — nelle email
+  // dei coupon, nel link per prenotare, in qualunque cosa sia stata
+  // condivisa. I redirect vengono valutati PRIMA del proxy (vedi l'ordine di
+  // routing nella documentazione di Next), quindi chi apre un vecchio link
+  // arriva alla pagina nuova senza passare dalla richiesta di accesso.
+  async redirects() {
+    return [
+      // Lo slash finale lo toglie gia' Next da solo prima di arrivare qui,
+      // quindi "/company/" passa comunque da questa riga.
+      { source: "/company", destination: "/", permanent: true },
+      { source: "/company/index.html", destination: "/", permanent: true },
+      { source: "/company/sondaggio.html", destination: "/sondaggio", permanent: true },
+      { source: "/company/disclaimer.html", destination: "/disclaimer", permanent: true },
+      { source: "/company/termini.html", destination: "/termini-greenmindgroup", permanent: true },
+      { source: "/company/privacy.html", destination: "/privacy-greenmindgroup", permanent: true },
+      // Immagini, fogli di stile, video e modello 3D: tutto quello che stava
+      // sotto /company/ ora sta allo stesso percorso senza quel prefisso.
+      { source: "/company/:percorso*", destination: "/:percorso*", permanent: true },
+    ];
   },
 };
 

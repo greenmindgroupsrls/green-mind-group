@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dati from "@/data/comuni-italiani.json";
 
 // Elenchi ufficiali di regioni, province e comuni italiani con i relativi
-// CAP, usati dal modulo di prenotazione del sito (public/company).
+// CAP, usati dal modulo di prenotazione del sito (public/).
 //
 // Stanno qui e non dentro la pagina per un motivo di peso: il file completo
 // e' 271 KB, e caricarlo tutto per far scegliere un comune sarebbe uno

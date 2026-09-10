@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { inviaEmailPrenotazione, type Prenotazione } from "@/lib/email-prenotazione";
 
-// Prenotazioni dal sito Vortix (public/company). Prima passavano dal
+// Prenotazioni dal sito Vortix (public/). Prima passavano dal
 // database Supabase separato del progetto Vortix, che poi richiamava una
 // Edge Function per le email e inoltrava il lead qui con un segreto
 // condiviso. Ora arrivano direttamente: un passaggio invece di quattro,

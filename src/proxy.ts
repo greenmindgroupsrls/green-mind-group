@@ -62,23 +62,22 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/prenotazioni") ||
     pathname.startsWith("/api/comuni") ||
     pathname.startsWith("/api/coupon");
-  // /company e' il sito prodotto Vortix montato via rewrite (vedi
-  // next.config.ts): pagina pubblica, non fa parte del back office, deve
-  // restare raggiungibile da chiunque senza login.
-  const isCompanyRoute = pathname.startsWith("/company");
+  // Il sito VORTIX e' il sito principale e vive alla radice del dominio:
+  // e' la prima cosa che vede chi arriva, quindi non puo' passare da una
+  // richiesta di accesso. Elenco esplicito e non un prefisso, cosi' una
+  // pagina nuova del back office non diventa pubblica per sbaglio.
+  const PAGINE_PUBBLICHE = new Set([
+    "/",
+    "/sondaggio",
+    "/disclaimer",
+    "/termini-greenmindgroup",
+    "/privacy-greenmindgroup",
+  ]);
+  const isSitoPubblico = PAGINE_PUBBLICHE.has(pathname);
   // Il marchio serve alla pagina di accesso, cioe' a chi non ha ancora
   // fatto l'accesso: mandarlo al login e' un giro a vuoto che finisce con
   // un'immagine rotta proprio sulla prima schermata che si vede.
   const isMarchioRoute = pathname.startsWith("/marchio/");
-
-  // Lo slash finale e' necessario: la pagina Vortix usa path relativi tipo
-  // "css/style.css", che senza "/company/" risolverebbero contro la radice
-  // del dominio invece che contro /company/. skipTrailingSlashRedirect in
-  // next.config.ts disattiva la normalizzazione automatica di Next (che
-  // farebbe l'esatto opposto), quindi va gestito qui a mano.
-  if (pathname === "/company") {
-    return NextResponse.redirect(new URL("/company/", request.url), 308);
-  }
 
   if (
     !user &&
@@ -88,7 +87,7 @@ export async function proxy(request: NextRequest) {
     !isLegalRoute &&
     !isWebhookRoute &&
     !isPrenotazioneRoute &&
-    !isCompanyRoute &&
+    !isSitoPubblico &&
     !isMarchioRoute
   ) {
     const redirectUrl = new URL("/login", request.url);
@@ -97,7 +96,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (user && isLoginRoute) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return response;
@@ -108,5 +107,7 @@ export const config = {
   // usano quando si aggiunge il sito alla schermata iniziale, e la chiedono
   // senza avere una sessione. Passando dal guscio di autenticazione veniva
   // rimandata al login, e l'icona restava vuota.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|apple-icon.png|icon.png|.*\\.svg$).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|apple-icon.png|icon.png|robots.txt|sitemap.xml|css/|js/|assets/|.*\\.svg$).*)",
+  ],
 };

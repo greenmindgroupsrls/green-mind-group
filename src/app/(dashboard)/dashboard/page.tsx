@@ -4,12 +4,12 @@ import type { Member } from "@/lib/members";
 import type { Sale, CommissionEntry } from "@/lib/commissions";
 import type { Rank } from "@/lib/rank";
 import { loadNetworkData } from "@/lib/load-network-data";
-import { DashboardView } from "./dashboard-view";
-import { AnnouncementsFeed } from "./announcements-feed";
-import { ClientDashboard } from "./client-dashboard";
-import { ContractReminder } from "./contract-reminder";
-import { NextActions } from "./next-actions";
-import { ProssimiImpegni } from "./prossimi-impegni";
+import { DashboardView } from "../dashboard-view";
+import { AnnouncementsFeed } from "../announcements-feed";
+import { ClientDashboard } from "../client-dashboard";
+import { ContractReminder } from "../contract-reminder";
+import { NextActions } from "../next-actions";
+import { ProssimiImpegni } from "../prossimi-impegni";
 
 export const dynamic = "force-dynamic";
 

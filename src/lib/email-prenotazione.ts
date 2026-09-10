@@ -19,13 +19,13 @@ import { sendEmail } from "./email";
 const MITTENTE = "VORTIX <hello@greenmindgroup.pro>";
 const DESTINATARIO_INTERNO = "greenmindgroupsrls@gmail.com";
 
-// Il sito prodotto sta sotto /company/: greenmindgroup.pro da solo e' il
-// back office, e un cliente che ci clicca finisce sulla pagina di accesso.
-// #prenota apre direttamente la finestra dell'appuntamento (vedi main.js).
-const SITO_PRODOTTO = "https://greenmindgroup.pro/company/";
+// Il sito prodotto e' il sito principale: greenmindgroup.pro da solo porta
+// li'. #prenota apre direttamente la finestra dell'appuntamento (vedi
+// public/js/main.js).
+const SITO_PRODOTTO = "https://greenmindgroup.pro/";
 const PRENOTAZIONE_URL = `${SITO_PRODOTTO}#prenota`;
 
-// Palette VORTIX (tema chiaro, da public/company/css/style.css)
+// Palette VORTIX (tema chiaro, da public/css/style.css)
 const INK = "#0b2529";
 const INK_DIM = "#3e5c60";
 const INK_FAINT = "#7c9194";
@@ -219,7 +219,7 @@ function confermaCliente(p: Prenotazione, quando: string) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l. — greenmindgroup.pro/company",
+    "Green Mind Group S.r.l. — greenmindgroup.pro",
   ]
     .filter((r) => r !== "")
     .join("\n");
@@ -369,7 +369,7 @@ function emailBuono(b: BuonoSondaggio) {
     "A presto,",
     "Il team VORTIX",
     "",
-    "Green Mind Group S.r.l. — greenmindgroup.pro/company",
+    "Green Mind Group S.r.l. — greenmindgroup.pro",
   ].join("\n");
 
   return { html, text };
