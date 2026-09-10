@@ -61,5 +61,5 @@ export async function completeRegistration(
   if (newMember) await notifySponsorOfNewReferral(newMember);
 
   revalidateTag("network-data", { expire: 0 });
-  redirect("/");
+  redirect("/dashboard");
 }

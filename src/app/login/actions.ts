@@ -127,7 +127,7 @@ export async function signUp(
   if (newMember) await notifySponsorOfNewReferral(newMember);
 
   revalidateTag("network-data", { expire: 0 });
-  redirect("/");
+  redirect("/dashboard");
 }
 
 export type RequestResetState = {
@@ -190,5 +190,5 @@ export async function updatePassword(
     return { error: messaggioErrore(error, await getDizionario()) };
   }
 
-  redirect("/");
+  redirect("/dashboard");
 }

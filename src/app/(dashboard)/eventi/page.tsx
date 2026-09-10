@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 import type { EventGuest, EventRow } from "@/lib/events";
@@ -20,8 +20,13 @@ export default async function EventiPage() {
   }
 
   const member = await getCurrentMember();
+  // Riservata all'account aziendale. Chi non lo e' trova una pagina
+  // inesistente, non un rinvio altrove: un rinvio confermerebbe che
+  // l'indirizzo esiste e che c'e' qualcosa da cercare. Non e' l'unica
+  // difesa — le regole del database non restituiscono queste righe a
+  // nessun altro — ma e' quella che evita anche il tentativo.
   if (!member || member.activity_code !== 0) {
-    redirect("/");
+    notFound();
   }
 
   const supabase = await createClient();

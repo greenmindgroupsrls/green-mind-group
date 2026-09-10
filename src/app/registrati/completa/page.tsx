@@ -16,7 +16,7 @@ export default async function CompletaRegistrazionePage() {
   const { isAuthenticated, member } = await getAuthState();
 
   if (!isAuthenticated) redirect("/login");
-  if (member) redirect("/");
+  if (member) redirect("/dashboard");
 
   const supabase = await createClient();
   const {

@@ -7,7 +7,7 @@ import { getCurrentMember, supabaseConfigured } from "@/lib/current-member";
 export const dynamic = "force-dynamic";
 
 export default async function ContrattoFirmatoPage() {
-  if (!supabaseConfigured()) redirect("/");
+  if (!supabaseConfigured()) redirect("/dashboard");
 
   const member = await getCurrentMember();
   if (!member) redirect("/login");
