@@ -562,5 +562,11 @@
     "evento": "Evento",
     "appuntamento": "Appuntamento",
     "vaiAllAgenda": "Vai all'agenda"
+  },
+  "nonTrovata": {
+    "titolo": "Pagina non trovata",
+    "spiegazione": "L'indirizzo che hai aperto non esiste, oppure non fa parte della tua area. Può capitare con un collegamento vecchio o con un indirizzo scritto a mano.",
+    "tornaDashboard": "Torna alla dashboard",
+    "tornaSito": "Vai al sito"
   }
 }

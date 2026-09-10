@@ -562,5 +562,11 @@
     "evento": "Event",
     "appuntamento": "Appointment",
     "vaiAllAgenda": "Go to the agenda"
+  },
+  "nonTrovata": {
+    "titolo": "Page not found",
+    "spiegazione": "The address you opened does not exist, or is not part of your area. This can happen with an old link or an address typed by hand.",
+    "tornaDashboard": "Back to dashboard",
+    "tornaSito": "Go to the website"
   }
 }

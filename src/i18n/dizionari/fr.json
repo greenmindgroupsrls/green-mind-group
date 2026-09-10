@@ -562,5 +562,11 @@
     "evento": "Événement",
     "appuntamento": "Rendez-vous",
     "vaiAllAgenda": "Voir l'agenda"
+  },
+  "nonTrovata": {
+    "titolo": "Page introuvable",
+    "spiegazione": "L'adresse que vous avez ouverte n'existe pas ou ne fait pas partie de votre espace. Cela peut arriver avec un ancien lien ou une adresse saisie à la main.",
+    "tornaDashboard": "Retour au tableau de bord",
+    "tornaSito": "Aller au site"
   }
 }

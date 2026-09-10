@@ -562,5 +562,11 @@
     "evento": "Evento",
     "appuntamento": "Cita",
     "vaiAllAgenda": "Ir a la agenda"
+  },
+  "nonTrovata": {
+    "titolo": "Página no encontrada",
+    "spiegazione": "La dirección que has abierto no existe o no forma parte de tu área. Puede ocurrir con un enlace antiguo o con una dirección escrita a mano.",
+    "tornaDashboard": "Volver al panel",
+    "tornaSito": "Ir al sitio"
   }
 }

@@ -562,5 +562,11 @@
     "evento": "Veranstaltung",
     "appuntamento": "Termin",
     "vaiAllAgenda": "Zum Kalender"
+  },
+  "nonTrovata": {
+    "titolo": "Seite nicht gefunden",
+    "spiegazione": "Die aufgerufene Adresse existiert nicht oder gehört nicht zu Ihrem Bereich. Das kann bei einem alten Link oder einer von Hand eingegebenen Adresse passieren.",
+    "tornaDashboard": "Zurück zum Dashboard",
+    "tornaSito": "Zur Website"
   }
 }
