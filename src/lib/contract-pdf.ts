@@ -48,7 +48,7 @@ const HAIRLINE = rgb(0.85, 0.85, 0.85);
 // da quel set fa fallire drawText. Le lettere accentate italiane ci sono
 // tutte, ma simboli tipografici come il trattino lungo o le virgolette
 // curve no — vanno sostituiti prima di disegnare.
-function safe(s: unknown): string {
+export function safe(s: unknown): string {
   return String(s ?? "")
     .replace(/[—–]/g, "-")
     .replace(/[‘’]/g, "'")
