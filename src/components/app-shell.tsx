@@ -83,9 +83,16 @@ const BOTTOM_NAV_ITEMS = [
 // Quale voce del menu illuminare. La dashboard risponde solo al percorso
 // esatto, altrimenti resterebbe accesa ovunque; le altre restano accese
 // anche nelle loro sottopagine.
-function voceAttiva(percorso: string, href: string): boolean {
-  if (href === "/") return percorso === "/";
-  return percorso === href || percorso.startsWith(href + "/");
+//
+// Vince la voce piu' precisa. Prima bastava che l'indirizzo aperto
+// cominciasse con quello della voce, e da quando "Ordini" porta a
+// /shop/ordini si accendevano due voci insieme: Shop (/shop) e Ordini. Ora
+// una voce resta spenta se un'altra combacia con un indirizzo piu' lungo.
+function voceAttiva(percorso: string, href: string, tutte: string[]): boolean {
+  const combacia = (h: string) =>
+    h === "/" ? percorso === "/" : percorso === h || percorso.startsWith(h + "/");
+  if (!combacia(href)) return false;
+  return !tutte.some((altra) => altra.length > href.length && combacia(altra));
 }
 
 export function AppShell({
@@ -112,7 +119,8 @@ export function AppShell({
 }) {
   const router = useRouter();
   const percorso = usePathname();
-  const attiva = (href: string) => voceAttiva(percorso, href);
+  const tutteLeVoci = [...MAIN_NAV_ITEMS, ...BOTTOM_NAV_ITEMS].map((v) => v.href);
+  const attiva = (href: string) => voceAttiva(percorso, href, tutteLeVoci);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const closeMobile = () => setMobileOpen(false);

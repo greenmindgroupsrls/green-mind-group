@@ -13,6 +13,11 @@ const EXPORTS: { type: string; label: string; description: string }[] = [
     label: "Prelievi",
     description: "Tutte le richieste di prelievo con stato e dati bancari.",
   },
+  {
+    type: "orders",
+    label: "Ordini",
+    description: "Ogni ordine del negozio con codici prodotto, dati di fatturazione e indirizzo di spedizione.",
+  },
 ];
 
 export function ExportDataView() {
