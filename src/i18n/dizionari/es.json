@@ -208,7 +208,17 @@
     "bonifico": "Transferencia bancaria",
     "bonificoDettaglio": "El pedido queda en espera hasta que registremos la transferencia. Te enviaremos los datos bancarios por mensaje.",
     "vaiAlPagamento": "Ir al pago",
-    "regione": "Región"
+    "regione": "Región",
+    "datiFatturazione": "Datos de facturación",
+    "intestatario": "Factura a nombre de *",
+    "intestatarioAiuto": "Nombre y apellidos, o la razón social si facturas a una empresa",
+    "codiceFiscale": "Código fiscal / NIF *",
+    "codiceSdi": "Código SDI o correo certificado",
+    "codiceSdiAiuto": "para la factura electrónica",
+    "stessoIndirizzo": "Enviar a la misma dirección",
+    "stessoIndirizzoNota": "El paquete va a la dirección de facturación indicada arriba.",
+    "salvaDati": "Guardar datos",
+    "datiSalvati": "Datos guardados"
   },
   "payout": {
     "titolo": "Pagos",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "El texto del mensaje es obligatorio.",
     "destinatario_non_trovato": "No encontramos ningún miembro llamado {valore}.",
     "evento_non_trovato": "Evento {valore} no encontrado.",
-    "slot_occupato": "Ese horario acaba de ocuparse. Elige otro."
+    "slot_occupato": "Ese horario acaba de ocuparse. Elige otro.",
+    "intestatario_obbligatorio": "Indica a nombre de quién emitir la factura",
+    "codice_fiscale_obbligatorio": "Se necesita el código fiscal o el NIF para emitir la factura"
   },
   "impegni": {
     "titolo": "Próximos compromisos",

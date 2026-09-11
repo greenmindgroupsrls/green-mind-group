@@ -3,10 +3,8 @@
 import { useActionState, useState, useTransition } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { placeOrder, verificaCoupon, type CheckoutState } from "./actions";
-import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
-import { StreetAutocompleteInput, type AddressSuggestion } from "@/components/street-autocomplete-input";
-import { ZonaItalia, ZONA_VUOTA, type ZonaItaliana } from "@/components/zona-italia";
+import { placeOrder, verificaCoupon, salvaDatiCheckout, type CheckoutState } from "./actions";
+import { BloccoIndirizzo, INDIRIZZO_VUOTO, type DatiIndirizzo } from "@/components/blocco-indirizzo";
 import { useTesti, riempiTesto } from "@/i18n/testi-client";
 
 const initialState: CheckoutState = { error: null, success: null };
@@ -19,9 +17,19 @@ function formatEuro(value: number) {
   return value.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
 }
 
-const emptyAddress = { street: "", city: "", region: "", postalCode: "", country: "Italia" };
+// Quello che si sa gia' di chi sta comprando, se aveva premuto "salva dati"
+// una volta: arriva dal server, il modulo lo usa solo come punto di partenza.
+export type DatiSalvati = {
+  intestatario: string;
+  codiceFiscale: string;
+  codiceSdi: string;
+  destinatario: string;
+  telefono: string;
+  fatturazione: DatiIndirizzo | null;
+  spedizione: DatiIndirizzo | null;
+};
 
-export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) {
+export function CheckoutForm({ pagamentoAttivo, dati }: { pagamentoAttivo: boolean; dati: DatiSalvati }) {
   const T = useTesti().shop;
   const { items, subtotal, clear } = useCart();
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
@@ -29,8 +37,17 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
   // scelta: un'opzione che non funziona e' peggio di un'opzione che non c'e'.
   const [metodo, setMetodo] = useState<"stripe" | "bonifico">(pagamentoAttivo ? "stripe" : "bonifico");
   const [prevSuccess, setPrevSuccess] = useState(state.success);
-  const [address, setAddress] = useState(emptyAddress);
-  const [zona, setZona] = useState<ZonaItaliana>(ZONA_VUOTA);
+  const [fatturazione, setFatturazione] = useState<DatiIndirizzo>(dati.fatturazione ?? INDIRIZZO_VUOTO);
+  const [spedizione, setSpedizione] = useState<DatiIndirizzo>(dati.spedizione ?? INDIRIZZO_VUOTO);
+  // Spuntato di partenza: quasi sempre si spedisce dove si fattura, e far
+  // riscrivere lo stesso indirizzo due volte e' il modo piu' rapido per
+  // farlo sbagliare la seconda.
+  const [spedizioneUguale, setSpedizioneUguale] = useState(true);
+  const [salvataggio, setSalvataggio] = useState<{ inCorso: boolean; esito: string | null }>({
+    inCorso: false,
+    esito: null,
+  });
+  const [intestatarioCorrente, setIntestatarioCorrente] = useState(dati.intestatario);
   const [coupon, setCoupon] = useState("");
   const [scontoApplicato, setScontoApplicato] = useState<{ codice: string; importo: number } | null>(null);
   const [couponErrore, setCouponErrore] = useState<string | null>(null);
@@ -64,21 +81,23 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
     if (state.success) clear();
   }
 
-  const selectedIso2 = EUROPEAN_COUNTRIES.find((c) => c.name === address.country)?.iso2;
-  // Gli elenchi di regioni, province e comuni esistono solo per l'Italia:
-  // per gli altri paesi restano i campi liberi, che e' meglio di una
-  // tendina vuota.
-  const inItalia = address.country === "Italia";
+  const etichetteIndirizzo = {
+    paese: T.paese,
+    indirizzo: T.indirizzo,
+    citta: T.citta,
+    cap: T.cap,
+    provincia: T.provincia,
+    regione: T.regione,
+  };
 
-  function handleSelectSuggestion(s: AddressSuggestion) {
-    const matchedCountry = EUROPEAN_COUNTRIES.find((c) => c.iso2 === s.countryIso2)?.name;
-    setAddress((prev) => ({
-      street: s.street || prev.street,
-      city: s.city || prev.city,
-      region: s.region || prev.region,
-      postalCode: s.postalCode || prev.postalCode,
-      country: matchedCountry ?? prev.country,
-    }));
+  function salvaDati() {
+    const modulo = document.querySelector<HTMLFormElement>("form[data-checkout]");
+    if (!modulo) return;
+    setSalvataggio({ inCorso: true, esito: null });
+    startCouponTransition(async () => {
+      const esito = await salvaDatiCheckout(new FormData(modulo));
+      setSalvataggio({ inCorso: false, esito: esito.salvato ? "ok" : (esito.errore ?? T.codiceNonValido) });
+    });
   }
 
   if (state.success) {
@@ -109,120 +128,131 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
   }
 
   return (
-    <form action={formAction} className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+    <form action={formAction} data-checkout className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
       <input
         type="hidden"
         name="items"
         value={JSON.stringify(items.map((i) => ({ product_id: i.id, quantity: i.quantity })))}
       />
 
-      <div className="glass-card p-4 sm:p-6 flex flex-col gap-4">
-        <h2 className="font-semibold text-gray-900 dark:text-white">{T.indirizzoSpedizione}</h2>
+      <div className="flex flex-col gap-6">
+        {/* Prima a chi si intesta la fattura: e' il dato che serve per
+            legge, e chiederlo per primo evita di scoprire a fine modulo
+            che manca il codice fiscale. */}
+        <div className="glass-card p-4 sm:p-6 flex flex-col gap-4">
+          <h2 className="font-semibold text-gray-900 dark:text-white">{T.datiFatturazione}</h2>
 
-        <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>{T.nomeDestinatario}</span>
-          <input name="recipient_name" required className={inputClass} />
-        </label>
-
-        <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>{T.paese}</span>
-          <select
-            name="country"
-            required
-            value={address.country}
-            onChange={(e) => {
-              // Cambiando paese la zona italiana non vale piu': si riparte
-              // dai campi liberi, altrimenti resterebbe un CAP di un altro
-              // stato attaccato a una citta' nuova.
-              setZona(ZONA_VUOTA);
-              setAddress((prev) => ({ ...prev, country: e.target.value, city: "", region: "", postalCode: "" }));
-            }}
-            className={inputClass}
-          >
-            {EUROPEAN_COUNTRIES.map((c) => (
-              <option key={c.iso2} value={c.name}>
-                {flagEmoji(c.iso2)} {c.name}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {inItalia ? (
-          <>
-            <ZonaItalia
-              valore={zona}
-              onChange={setZona}
-              etichette={{
-                // Dentro la cascata sono obbligatorie entrambe (senza
-                // provincia non c'e' elenco di comuni), fuori la provincia
-                // resta facoltativa: l'asterisco si aggiunge qui e non nel
-                // dizionario, che serve a tutti e due i casi.
-                regione: `${T.regione} *`,
-                provincia: `${T.provincia} *`,
-                citta: T.citta,
-                cap: T.cap,
-              }}
-              classeCampo={inputClass}
-              classeEtichetta={labelClass}
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>{T.intestatario}</span>
+            <input
+              name="billing_name"
+              required
+              value={intestatarioCorrente}
+              onChange={(e) => setIntestatarioCorrente(e.target.value)}
+              className={inputClass}
             />
-            {/* Quello che viene spedito al server: le tendine scrivono qui. */}
-            <input type="hidden" name="city" value={zona.citta} />
-            <input type="hidden" name="postal_code" value={zona.cap} />
-            <input type="hidden" name="region" value={zona.provincia} />
-          </>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="flex flex-col gap-1.5">
-                <span className={labelClass}>{T.citta}</span>
-                <input
-                  name="city"
-                  required
-                  value={address.city}
-                  onChange={(e) => setAddress((prev) => ({ ...prev, city: e.target.value }))}
-                  className={inputClass}
-                />
-              </label>
-              <label className="flex flex-col gap-1.5">
-                <span className={labelClass}>{T.cap}</span>
-                <input
-                  name="postal_code"
-                  required
-                  value={address.postalCode}
-                  onChange={(e) => setAddress((prev) => ({ ...prev, postalCode: e.target.value }))}
-                  className={inputClass}
-                />
-              </label>
-            </div>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{T.intestatarioAiuto}</span>
+          </label>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label className="flex flex-col gap-1.5">
-              <span className={labelClass}>{T.provincia}</span>
+              <span className={labelClass}>{T.codiceFiscale}</span>
               <input
-                name="region"
-                value={address.region}
-                onChange={(e) => setAddress((prev) => ({ ...prev, region: e.target.value }))}
-                className={inputClass}
+                name="billing_tax_id"
+                required
+                defaultValue={dati.codiceFiscale}
+                className={`${inputClass} uppercase`}
               />
             </label>
-          </>
-        )}
+            <label className="flex flex-col gap-1.5">
+              <span className={labelClass}>{T.codiceSdi}</span>
+              <input
+                name="billing_sdi"
+                defaultValue={dati.codiceSdi}
+                placeholder={T.codiceSdiAiuto}
+                className={`${inputClass} uppercase`}
+              />
+            </label>
+          </div>
 
-        {/* La via per ultima: si scrive dopo aver detto dove, cosi' i
-            suggerimenti sanno gia' in che comune cercare. */}
-        <StreetAutocompleteInput
-          name="street"
-          label={T.indirizzo}
-          value={address.street}
-          onChange={(v) => setAddress((prev) => ({ ...prev, street: v }))}
-          onSelect={handleSelectSuggestion}
-          countryIso2={selectedIso2}
-          className={inputClass}
-          required
-        />
+          <BloccoIndirizzo
+            prefisso="billing_"
+            valore={fatturazione}
+            onChange={setFatturazione}
+            etichette={etichetteIndirizzo}
+            classeCampo={inputClass}
+            classeEtichetta={labelClass}
+          />
+        </div>
 
-        <label className="flex flex-col gap-1.5">
-          <span className={labelClass}>{T.telefono}</span>
-          <input name="phone" className={inputClass} placeholder="opzionale" />
-        </label>
+        <div className="glass-card p-4 sm:p-6 flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h2 className="font-semibold text-gray-900 dark:text-white">{T.indirizzoSpedizione}</h2>
+            <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={spedizioneUguale}
+                onChange={(e) => setSpedizioneUguale(e.target.checked)}
+                className="accent-[var(--accent)]"
+              />
+              {T.stessoIndirizzo}
+            </label>
+          </div>
+
+          {spedizioneUguale ? (
+            <>
+              {/* Spuntato: si spedisce dove si fattura. I campi non si
+                  mostrano ma vanno comunque inviati, altrimenti il server
+                  riceverebbe un ordine senza destinazione. */}
+              <p className="text-sm text-gray-500 dark:text-gray-400">{T.stessoIndirizzoNota}</p>
+              <input type="hidden" name="recipient_name" value={intestatarioCorrente} />
+              <input type="hidden" name="street" value={fatturazione.via} />
+              <input type="hidden" name="city" value={fatturazione.citta} />
+              <input type="hidden" name="region" value={fatturazione.provincia} />
+              <input type="hidden" name="country" value={fatturazione.paese} />
+              <input type="hidden" name="postal_code" value={fatturazione.cap} />
+            </>
+          ) : (
+            <>
+              <label className="flex flex-col gap-1.5">
+                <span className={labelClass}>{T.nomeDestinatario}</span>
+                <input name="recipient_name" required defaultValue={dati.destinatario} className={inputClass} />
+              </label>
+              <BloccoIndirizzo
+                prefisso=""
+                valore={spedizione}
+                onChange={setSpedizione}
+                etichette={etichetteIndirizzo}
+                classeCampo={inputClass}
+                classeEtichetta={labelClass}
+              />
+            </>
+          )}
+
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>{T.telefono}</span>
+            <input name="phone" defaultValue={dati.telefono} className={inputClass} placeholder="opzionale" />
+          </label>
+
+          {/* Salvare e' un gesto a parte dall'ordinare: chi compra una volta
+              sola non deve lasciare i propri dati per forza. */}
+          <div className="flex items-center gap-3 flex-wrap pt-1">
+            <button
+              type="button"
+              onClick={salvaDati}
+              disabled={salvataggio.inCorso}
+              className="glass-btn-soft rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 disabled:opacity-50"
+            >
+              {salvataggio.inCorso ? T.invioInCorso : T.salvaDati}
+            </button>
+            {salvataggio.esito === "ok" && (
+              <span className="text-xs text-emerald-600 dark:text-emerald-400">{T.datiSalvati}</span>
+            )}
+            {salvataggio.esito && salvataggio.esito !== "ok" && (
+              <span className="text-xs text-red-600 dark:text-red-400">{salvataggio.esito}</span>
+            )}
+          </div>
+        </div>
 
         {state.error && (
           <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 rounded-lg px-3 py-2">

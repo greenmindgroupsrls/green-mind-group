@@ -208,7 +208,17 @@
     "bonifico": "Bonifico bancario",
     "bonificoDettaglio": "L'ordine resta in attesa finché non registriamo il bonifico. Ti mandiamo le coordinate via messaggio.",
     "vaiAlPagamento": "Vai al pagamento",
-    "regione": "Regione"
+    "regione": "Regione",
+    "datiFatturazione": "Dati di fatturazione",
+    "intestatario": "Intestatario fattura *",
+    "intestatarioAiuto": "Nome e cognome, oppure la ragione sociale se fatturi a una ditta",
+    "codiceFiscale": "Codice fiscale / P.IVA *",
+    "codiceSdi": "Codice SDI o PEC",
+    "codiceSdiAiuto": "per la fattura elettronica",
+    "stessoIndirizzo": "Spedisci allo stesso indirizzo",
+    "stessoIndirizzoNota": "Il pacco arriva all'indirizzo di fatturazione indicato sopra.",
+    "salvaDati": "Salva dati",
+    "datiSalvati": "Dati salvati"
   },
   "payout": {
     "titolo": "Payout",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "Il testo del messaggio è obbligatorio.",
     "destinatario_non_trovato": "Non troviamo nessun membro chiamato {valore}.",
     "evento_non_trovato": "Evento {valore} non trovato.",
-    "slot_occupato": "Questo orario è appena stato preso. Scegline un altro."
+    "slot_occupato": "Questo orario è appena stato preso. Scegline un altro.",
+    "intestatario_obbligatorio": "Indica a chi intestare la fattura",
+    "codice_fiscale_obbligatorio": "Serve il codice fiscale o la partita IVA per emettere la fattura"
   },
   "impegni": {
     "titolo": "Prossimi impegni",

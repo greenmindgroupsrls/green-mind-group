@@ -208,7 +208,17 @@
     "bonifico": "Банковский перевод",
     "bonificoDettaglio": "Заказ остаётся в ожидании, пока мы не зарегистрируем перевод. Реквизиты пришлём сообщением.",
     "vaiAlPagamento": "Перейти к оплате",
-    "regione": "Регион"
+    "regione": "Регион",
+    "datiFatturazione": "Данные для счёта",
+    "intestatario": "Счёт на имя *",
+    "intestatarioAiuto": "Имя и фамилия или название компании, если счёт выставляется фирме",
+    "codiceFiscale": "Налоговый код / НДС *",
+    "codiceSdi": "Код SDI или PEC",
+    "codiceSdiAiuto": "для электронного счёта",
+    "stessoIndirizzo": "Доставить по тому же адресу",
+    "stessoIndirizzoNota": "Посылка придёт на указанный выше адрес для счёта.",
+    "salvaDati": "Сохранить данные",
+    "datiSalvati": "Данные сохранены"
   },
   "payout": {
     "titolo": "Выплаты",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "Текст сообщения обязателен.",
     "destinatario_non_trovato": "Не найден участник с именем {valore}.",
     "evento_non_trovato": "Событие {valore} не найдено.",
-    "slot_occupato": "Это время только что заняли. Выберите другое."
+    "slot_occupato": "Это время только что заняли. Выберите другое.",
+    "intestatario_obbligatorio": "Укажите, на кого выставить счёт",
+    "codice_fiscale_obbligatorio": "Для выставления счёта нужен налоговый код или номер НДС"
   },
   "impegni": {
     "titolo": "Ближайшие дела",

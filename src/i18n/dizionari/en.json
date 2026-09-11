@@ -208,7 +208,17 @@
     "bonifico": "Bank transfer",
     "bonificoDettaglio": "The order stays on hold until we record the transfer. We will send you the bank details by message.",
     "vaiAlPagamento": "Go to payment",
-    "regione": "Region"
+    "regione": "Region",
+    "datiFatturazione": "Billing details",
+    "intestatario": "Invoice made out to *",
+    "intestatarioAiuto": "First and last name, or the company name if invoicing a business",
+    "codiceFiscale": "Tax code / VAT number *",
+    "codiceSdi": "SDI code or certified email",
+    "codiceSdiAiuto": "for electronic invoicing",
+    "stessoIndirizzo": "Ship to the same address",
+    "stessoIndirizzoNota": "The parcel goes to the billing address above.",
+    "salvaDati": "Save details",
+    "datiSalvati": "Details saved"
   },
   "payout": {
     "titolo": "Payout",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "Message text is required.",
     "destinatario_non_trovato": "We can't find a member called {valore}.",
     "evento_non_trovato": "Event {valore} not found.",
-    "slot_occupato": "That time slot has just been taken. Please pick another."
+    "slot_occupato": "That time slot has just been taken. Please pick another.",
+    "intestatario_obbligatorio": "Say who the invoice should be made out to",
+    "codice_fiscale_obbligatorio": "A tax code or VAT number is needed to issue the invoice"
   },
   "impegni": {
     "titolo": "What's coming up",

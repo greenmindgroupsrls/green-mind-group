@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
@@ -62,6 +62,17 @@ export async function placeOrder(
   const postalCode = String(formData.get("postal_code") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
   const coupon = String(formData.get("coupon_code") ?? "").trim().toUpperCase();
+  const fatt = {
+    nome: String(formData.get("billing_name") ?? "").trim(),
+    codice: String(formData.get("billing_tax_id") ?? "").trim(),
+    sdi: String(formData.get("billing_sdi") ?? "").trim(),
+    via: String(formData.get("billing_street") ?? "").trim(),
+    citta: String(formData.get("billing_city") ?? "").trim(),
+    provincia: String(formData.get("billing_region") ?? "").trim(),
+    paese: String(formData.get("billing_country") ?? "").trim(),
+    cap: String(formData.get("billing_postal_code") ?? "").trim(),
+  };
+
   const metodo: MetodoPagamento =
     String(formData.get("payment_method") ?? "bonifico") === "stripe" ? "stripe" : "bonifico";
 
@@ -83,6 +94,16 @@ export async function placeOrder(
       p_postal_code: postalCode,
       p_phone: phone || null,
       p_coupon_code: coupon || null,
+      p_billing_name: fatt.nome || null,
+      p_billing_tax_id: fatt.codice || null,
+      p_billing_sdi: fatt.sdi || null,
+      // Vuoti = coincide con la spedizione: e' il database a ricopiarli,
+      // cosi' la regola vale anche se un domani l'ordine nasce altrove.
+      p_billing_street: fatt.via || null,
+      p_billing_city: fatt.citta || null,
+      p_billing_region: fatt.provincia || null,
+      p_billing_country: fatt.paese || null,
+      p_billing_postal_code: fatt.cap || null,
     })
     .single();
 
@@ -213,4 +234,67 @@ async function preparaPagamentoStripe(
   }
 
   return { url: sessione.url, errore: null };
+}
+
+export type SalvataggioDati = { errore: string | null; salvato: boolean };
+
+// "Salva dati": mette da parte fatturazione e spedizione, cosi' il prossimo
+// ordine parte gia' compilato.
+//
+// Le due cose finiscono in due posti diversi perche' sono due cose diverse:
+// il codice fiscale e il codice SDI sono dati della persona e vivono nel
+// profilo (li si vede anche in Impostazioni), gli indirizzi vanno fra i
+// propri indirizzi salvati, ognuno col suo tipo.
+export async function salvaDatiCheckout(formData: FormData): Promise<SalvataggioDati> {
+  const supabase = await createClient();
+  const dizionario = await getDizionario();
+
+  const leggi = (k: string) => String(formData.get(k) ?? "").trim();
+
+  const codice = leggi("billing_tax_id");
+  const intestatario = leggi("billing_name");
+  if (!intestatario || !codice) {
+    return { errore: dizionario.errori.codice_fiscale_obbligatorio, salvato: false };
+  }
+
+  // Codice fiscale e codice SDI stanno nel profilo: sono della persona, non
+  // dell'ordine, e da li' li vede anche Impostazioni. L'intestatario invece
+  // no: per un privato e' il proprio nome, per una ditta la ragione sociale,
+  // e scriverlo a occhi chiusi in company_name sarebbe sbagliato per meta'
+  // dei casi. Viaggia con l'indirizzo di fatturazione, che e' il suo posto.
+  const { error: erroreProfilo } = await supabase.rpc("upsert_own_profile", {
+    p_tax_id: codice,
+    p_sdi_code: leggi("billing_sdi") || null,
+  });
+  if (erroreProfilo) return { errore: messaggioErrore(erroreProfilo, dizionario), salvato: false };
+
+  const indirizzi: { tipo: "billing" | "shipping"; prefisso: string; nome: string }[] = [
+    { tipo: "billing", prefisso: "billing_", nome: intestatario },
+    { tipo: "shipping", prefisso: "", nome: leggi("recipient_name") || intestatario },
+  ];
+
+  for (const { tipo, prefisso, nome } of indirizzi) {
+    const via = leggi(`${prefisso}street`);
+    const citta = leggi(`${prefisso}city`);
+    const paese = leggi(`${prefisso}country`);
+    const cap = leggi(`${prefisso}postal_code`);
+    // Un indirizzo a meta' non si salva: ricomparirebbe incompleto al
+    // prossimo ordine, che e' peggio di non averlo.
+    if (!via || !citta || !paese || !cap) continue;
+
+    const { error } = await supabase.rpc("add_own_address", {
+      p_recipient_name: nome,
+      p_street: via,
+      p_city: citta,
+      p_region: leggi(`${prefisso}region`) || null,
+      p_country: paese,
+      p_postal_code: cap,
+      p_phone: leggi("phone") || null,
+      p_type: tipo,
+    });
+    if (error) return { errore: messaggioErrore(error, dizionario), salvato: false };
+  }
+
+  revalidatePath("/impostazioni/indirizzi");
+  return { errore: null, salvato: true };
 }

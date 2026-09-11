@@ -208,7 +208,17 @@
     "bonifico": "Banküberweisung",
     "bonificoDettaglio": "Die Bestellung bleibt offen, bis wir die Überweisung verbuchen. Die Bankdaten senden wir Ihnen per Nachricht.",
     "vaiAlPagamento": "Zur Zahlung",
-    "regione": "Region"
+    "regione": "Region",
+    "datiFatturazione": "Rechnungsdaten",
+    "intestatario": "Rechnung ausgestellt auf *",
+    "intestatarioAiuto": "Vor- und Nachname oder der Firmenname bei Rechnung an ein Unternehmen",
+    "codiceFiscale": "Steuernummer / USt-IdNr. *",
+    "codiceSdi": "SDI-Code oder PEC",
+    "codiceSdiAiuto": "für die elektronische Rechnung",
+    "stessoIndirizzo": "An dieselbe Adresse senden",
+    "stessoIndirizzoNota": "Das Paket geht an die oben angegebene Rechnungsadresse.",
+    "salvaDati": "Daten speichern",
+    "datiSalvati": "Daten gespeichert"
   },
   "payout": {
     "titolo": "Auszahlungen",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "Der Nachrichtentext ist erforderlich.",
     "destinatario_non_trovato": "Wir finden kein Mitglied mit dem Namen {valore}.",
     "evento_non_trovato": "Veranstaltung {valore} nicht gefunden.",
-    "slot_occupato": "Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen."
+    "slot_occupato": "Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen.",
+    "intestatario_obbligatorio": "Geben Sie an, auf wen die Rechnung ausgestellt werden soll",
+    "codice_fiscale_obbligatorio": "Für die Rechnung wird eine Steuernummer oder USt-IdNr. benötigt"
   },
   "impegni": {
     "titolo": "Was ansteht",

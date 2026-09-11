@@ -208,7 +208,17 @@
     "bonifico": "Virement bancaire",
     "bonificoDettaglio": "La commande reste en attente jusqu'à l'enregistrement du virement. Nous vous enverrons les coordonnées par message.",
     "vaiAlPagamento": "Aller au paiement",
-    "regione": "Région"
+    "regione": "Région",
+    "datiFatturazione": "Données de facturation",
+    "intestatario": "Facture au nom de *",
+    "intestatarioAiuto": "Nom et prénom, ou la raison sociale si vous facturez une entreprise",
+    "codiceFiscale": "Code fiscal / N° TVA *",
+    "codiceSdi": "Code SDI ou e-mail certifié",
+    "codiceSdiAiuto": "pour la facturation électronique",
+    "stessoIndirizzo": "Livrer à la même adresse",
+    "stessoIndirizzoNota": "Le colis part à l'adresse de facturation ci-dessus.",
+    "salvaDati": "Enregistrer",
+    "datiSalvati": "Données enregistrées"
   },
   "payout": {
     "titolo": "Paiements",
@@ -559,7 +569,9 @@
     "testo_obbligatorio": "Le texte du message est obligatoire.",
     "destinatario_non_trovato": "Nous ne trouvons aucun membre nommé {valore}.",
     "evento_non_trovato": "Événement {valore} introuvable.",
-    "slot_occupato": "Ce créneau vient d'être pris. Choisissez-en un autre."
+    "slot_occupato": "Ce créneau vient d'être pris. Choisissez-en un autre.",
+    "intestatario_obbligatorio": "Indiquez au nom de qui établir la facture",
+    "codice_fiscale_obbligatorio": "Un code fiscal ou un numéro de TVA est nécessaire pour émettre la facture"
   },
   "impegni": {
     "titolo": "À venir",
