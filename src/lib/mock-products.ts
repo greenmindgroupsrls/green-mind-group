@@ -4,6 +4,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 1,
     slug: "vortix-5-anni",
+    code: "GMGV005",
     name: "Vortix + 5 anni di garanzia",
     price: 1390.0,
     description:
@@ -14,6 +15,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 2,
     slug: "vortix-8-anni",
+    code: "GMGV008",
     name: "Vortix + 8 anni di garanzia",
     price: 1490.0,
     description:

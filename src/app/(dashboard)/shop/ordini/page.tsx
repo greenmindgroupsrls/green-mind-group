@@ -41,13 +41,17 @@ export default async function ShopOrdersPage() {
     supabase.from("shop_orders").select("*").order("created_at", { ascending: false }),
     supabase.from("shop_order_items").select("*"),
     supabase.from("members").select("activity_code, username"),
-    supabase.from("products").select("id, name"),
+    supabase.from("products").select("id, name, code"),
   ]);
 
   const orderRows = (orders ?? []) as ShopOrder[];
   const itemRows = (items ?? []) as ShopOrderItem[];
   const memberByCode = new Map((members ?? []).map((m) => [m.activity_code, m.username as string]));
+  // Due mappe perche' la stessa riga serve a due lettori diversi: chi
+  // prepara la spedizione cerca il codice, chi ha comprato riconosce il
+  // nome.
   const productById = new Map((products ?? []).map((p) => [p.id, p.name as string]));
+  const codeById = new Map((products ?? []).map((p) => [p.id, p.code as string]));
   const itemsByOrder = new Map<number, ShopOrderItem[]>();
   for (const item of itemRows) {
     const list = itemsByOrder.get(item.order_id) ?? [];
@@ -98,7 +102,17 @@ export default async function ShopOrdersPage() {
                 <td data-label={T.colProdotti} className="px-6 py-3 text-gray-600 dark:text-gray-300">
                   {(itemsByOrder.get(order.id) ?? []).map((item) => (
                     <div key={item.id}>
-                      {productById.get(item.product_id) ?? "Prodotto"} × {item.quantity}
+                      {isRoot ? (
+                        // Il codice in tondo fisso: due prodotti che
+                        // differiscono per una cifra si distinguono a colpo
+                        // d'occhio solo se le cifre sono incolonnate.
+                        <span className="font-mono text-gray-900 dark:text-white">
+                          {codeById.get(item.product_id) ?? "—"}
+                        </span>
+                      ) : (
+                        productById.get(item.product_id) ?? "Prodotto"
+                      )}{" "}
+                      × {item.quantity}
                     </div>
                   ))}
                 </td>
