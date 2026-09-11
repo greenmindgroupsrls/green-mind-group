@@ -25,6 +25,16 @@ export type ShopOrder = {
   postal_code: string;
   phone: string | null;
   created_at: string;
+  // Fatturazione (migrazione 0077). Nulli negli ordini nati prima che il
+  // checkout la chiedesse.
+  billing_name: string | null;
+  billing_tax_id: string | null;
+  billing_sdi: string | null;
+  billing_street: string | null;
+  billing_city: string | null;
+  billing_region: string | null;
+  billing_country: string | null;
+  billing_postal_code: string | null;
 };
 
 export type ShopOrderItem = {

@@ -218,7 +218,12 @@
     "stessoIndirizzo": "Доставить по тому же адресу",
     "stessoIndirizzoNota": "Посылка придёт на указанный выше адрес для счёта.",
     "salvaDati": "Сохранить данные",
-    "datiSalvati": "Данные сохранены"
+    "datiSalvati": "Данные сохранены",
+    "colFatturazione": "Счёт",
+    "cfPiva": "Налог. код/НДС",
+    "sdi": "SDI",
+    "fatturazioneAssente": "Не собрано: заказ оформлен до появления формы счёта",
+    "ugualeSpedizione": "Тот же адрес, что и доставка"
   },
   "payout": {
     "titolo": "Выплаты",

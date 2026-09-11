@@ -218,7 +218,12 @@
     "stessoIndirizzo": "Enviar a la misma dirección",
     "stessoIndirizzoNota": "El paquete va a la dirección de facturación indicada arriba.",
     "salvaDati": "Guardar datos",
-    "datiSalvati": "Datos guardados"
+    "datiSalvati": "Datos guardados",
+    "colFatturazione": "Facturación",
+    "cfPiva": "Cód. fiscal/NIF",
+    "sdi": "SDI",
+    "fatturazioneAssente": "No recogida: pedido anterior al formulario de facturación",
+    "ugualeSpedizione": "Misma dirección que el envío"
   },
   "payout": {
     "titolo": "Pagos",

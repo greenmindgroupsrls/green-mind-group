@@ -218,7 +218,12 @@
     "stessoIndirizzo": "Ship to the same address",
     "stessoIndirizzoNota": "The parcel goes to the billing address above.",
     "salvaDati": "Save details",
-    "datiSalvati": "Details saved"
+    "datiSalvati": "Details saved",
+    "colFatturazione": "Billing",
+    "cfPiva": "Tax code/VAT",
+    "sdi": "SDI",
+    "fatturazioneAssente": "Not collected: order placed before the billing form",
+    "ugualeSpedizione": "Same address as shipping"
   },
   "payout": {
     "titolo": "Payout",

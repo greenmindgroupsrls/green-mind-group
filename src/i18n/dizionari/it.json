@@ -218,7 +218,12 @@
     "stessoIndirizzo": "Spedisci allo stesso indirizzo",
     "stessoIndirizzoNota": "Il pacco arriva all'indirizzo di fatturazione indicato sopra.",
     "salvaDati": "Salva dati",
-    "datiSalvati": "Dati salvati"
+    "datiSalvati": "Dati salvati",
+    "colFatturazione": "Fatturazione",
+    "cfPiva": "C.F./P.IVA",
+    "sdi": "SDI",
+    "fatturazioneAssente": "Non raccolta: ordine precedente al modulo di fatturazione",
+    "ugualeSpedizione": "Indirizzo uguale alla spedizione"
   },
   "payout": {
     "titolo": "Payout",

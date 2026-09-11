@@ -78,6 +78,7 @@ export default async function ShopOrdersPage() {
             <tr className="text-left text-xs text-gray-500 dark:text-gray-400">
               {isRoot && <th className="px-6 py-2 font-medium">{T.colUtente}</th>}
               <th className="px-6 py-2 font-medium">{T.colProdotti}</th>
+              {isRoot && <th className="px-6 py-2 font-medium">{T.colFatturazione}</th>}
               <th className="px-6 py-2 font-medium">{T.colSpedizione}</th>
               <th className="px-6 py-2 font-medium text-right">{T.totale}</th>
               <th className="px-6 py-2 font-medium">{T.colData}</th>
@@ -116,6 +117,44 @@ export default async function ShopOrdersPage() {
                     </div>
                   ))}
                 </td>
+                {isRoot && (
+                  <td data-label={T.colFatturazione} className="px-6 py-3 text-gray-500 dark:text-gray-400">
+                    {order.billing_name ? (
+                      <>
+                        <span className="text-gray-900 dark:text-white">{order.billing_name}</span>
+                        <br />
+                        {T.cfPiva}:{" "}
+                        <span className="font-mono text-gray-900 dark:text-white">{order.billing_tax_id}</span>
+                        {order.billing_sdi && (
+                          <>
+                            <br />
+                            {T.sdi}: <span className="font-mono">{order.billing_sdi}</span>
+                          </>
+                        )}
+                        <br />
+                        {/* Se coincide con la spedizione non la si ripete:
+                            due indirizzi identici uno sotto l'altro fanno
+                            cercare una differenza che non c'e'. */}
+                        {order.billing_street === order.street &&
+                        order.billing_postal_code === order.postal_code &&
+                        order.billing_city === order.city &&
+                        order.billing_country === order.country ? (
+                          <span className="italic">{T.ugualeSpedizione}</span>
+                        ) : (
+                          <>
+                            {order.billing_street}, {order.billing_postal_code} {order.billing_city}
+                            {order.billing_region ? ` (${order.billing_region})` : ""}, {order.billing_country}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      // Ordini nati prima che il checkout chiedesse la
+                      // fatturazione: meglio dirlo che lasciare una cella
+                      // vuota che sembra un errore.
+                      <span className="text-xs italic">{T.fatturazioneAssente}</span>
+                    )}
+                  </td>
+                )}
                 <td data-label={T.colSpedizione} className="px-6 py-3 text-gray-500 dark:text-gray-400">
                   {order.recipient_name}
                   <br />
@@ -163,7 +202,7 @@ export default async function ShopOrdersPage() {
             ))}
             {orderRows.length === 0 && (
               <tr>
-                <td colSpan={isRoot ? 6 : 5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan={isRoot ? 7 : 5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                   {isRoot ? T.nessunOrdineRicevuto : T.nessunOrdine}
                 </td>
               </tr>

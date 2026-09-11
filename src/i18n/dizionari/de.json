@@ -218,7 +218,12 @@
     "stessoIndirizzo": "An dieselbe Adresse senden",
     "stessoIndirizzoNota": "Das Paket geht an die oben angegebene Rechnungsadresse.",
     "salvaDati": "Daten speichern",
-    "datiSalvati": "Daten gespeichert"
+    "datiSalvati": "Daten gespeichert",
+    "colFatturazione": "Rechnung",
+    "cfPiva": "Steuernr./USt-IdNr.",
+    "sdi": "SDI",
+    "fatturazioneAssente": "Nicht erfasst: Bestellung vor dem Rechnungsformular",
+    "ugualeSpedizione": "Gleiche Adresse wie Versand"
   },
   "payout": {
     "titolo": "Auszahlungen",

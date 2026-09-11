@@ -218,7 +218,12 @@
     "stessoIndirizzo": "Livrer à la même adresse",
     "stessoIndirizzoNota": "Le colis part à l'adresse de facturation ci-dessus.",
     "salvaDati": "Enregistrer",
-    "datiSalvati": "Données enregistrées"
+    "datiSalvati": "Données enregistrées",
+    "colFatturazione": "Facturation",
+    "cfPiva": "Code fiscal/TVA",
+    "sdi": "SDI",
+    "fatturazioneAssente": "Non collectée : commande antérieure au formulaire de facturation",
+    "ugualeSpedizione": "Adresse identique à la livraison"
   },
   "payout": {
     "titolo": "Paiements",
