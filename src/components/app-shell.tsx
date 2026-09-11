@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import {
+  PackageCheck,
   LayoutDashboard,
   ClipboardPlus,
   Network,
@@ -59,6 +60,17 @@ const MAIN_NAV_ITEMS = [
     rootOnly: true,
     highlighted: true,
   },
+  // Porta alla stessa pagina che l'azienda vede gia' dal negozio, con chi ha
+  // ordinato e dove spedire: qui pero' si trova senza passare dal catalogo,
+  // ed e' l'unica voce del menu che sa avvisare da sola.
+  {
+    href: "/shop/ordini",
+    chiave: "ordini" as const,
+    icon: PackageCheck,
+    incaricatoOnly: false,
+    rootOnly: true,
+    highlighted: true,
+  },
 ];
 
 const BOTTOM_NAV_ITEMS = [
@@ -80,6 +92,7 @@ export function AppShell({
   children,
   currentMember,
   unreadCount = 0,
+  nuoviOrdini = 0,
   notifications = [],
   testi,
   lingua,
@@ -92,6 +105,7 @@ export function AppShell({
     role: "cliente" | "incaricato";
   } | null;
   unreadCount?: number;
+  nuoviOrdini?: number;
   notifications?: RecentNotification[];
   testi: Dizionario;
   lingua: Lingua;
@@ -180,7 +194,20 @@ export function AppShell({
               ].join(" ")}
             >
               <Icon size={18} />
-              {testi.nav[chiave]}
+              <span className="flex-1">{testi.nav[chiave]}</span>
+              {/* Il pallino sta sulla parola, non sull'icona: si legge
+                  insieme al nome della voce invece che di fianco. */}
+              {chiave === "ordini" && nuoviOrdini > 0 && (
+                <span
+                  aria-label={`${nuoviOrdini} ${nuoviOrdini === 1 ? "nuovo ordine" : "nuovi ordini"}`}
+                  // red-500 col bianco sopra sta a 3,8:1, sotto la soglia per un testo
+                  // di 11px. Il 600 arriva a 4,8:1 ed e' lo stesso rosso a
+                  // colpo d'occhio.
+                  className="shrink-0 h-5 min-w-5 px-1.5 rounded-full bg-red-600 text-white text-[11px] font-semibold flex items-center justify-center tabular-nums"
+                >
+                  {nuoviOrdini > 9 ? "9+" : nuoviOrdini}
+                </span>
+              )}
             </Link>
           ))}
         </nav>

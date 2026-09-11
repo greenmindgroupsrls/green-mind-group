@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAuthState, supabaseConfigured } from "@/lib/current-member";
-import { getUnreadMessageCount, getRecentNotifications } from "@/lib/notifications";
+import { getUnreadMessageCount, getRecentNotifications, contaNuoviOrdini } from "@/lib/notifications";
 import { AppShell } from "@/components/app-shell";
 import { getDizionario, linguaCorrente } from "@/i18n/dizionario";
 import { createClient } from "@/lib/supabase/server";
@@ -22,18 +22,20 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
   const lingua = await linguaCorrente();
   const testi = await getDizionario(lingua);
 
-  const [unreadCount, notifications] = member
+  const [unreadCount, notifications, nuoviOrdini] = member
     ? await Promise.all([
         getUnreadMessageCount(member.activity_code),
         getRecentNotifications(member.activity_code),
+        contaNuoviOrdini(member.activity_code),
       ])
-    : [0, []];
+    : [0, [], 0];
 
   return (
     <TestiProvider testi={testi} lingua={lingua}>
       <AppShell
         currentMember={member}
         unreadCount={unreadCount}
+        nuoviOrdini={nuoviOrdini}
         notifications={notifications}
         testi={testi}
         lingua={lingua}

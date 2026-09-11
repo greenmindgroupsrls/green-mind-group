@@ -43,3 +43,15 @@ export async function getRecentNotifications(activityCode: number): Promise<Rece
 
   return data ?? [];
 }
+
+// Quanti ordini sono arrivati da quando l'azienda ha aperto l'elenco
+// l'ultima volta. Per chiunque altro e' sempre zero: la voce di menu con il
+// pallino la vede solo l'account aziendale, e il conto lo fa il database
+// (nuovi_ordini), non questa funzione.
+export async function contaNuoviOrdini(activityCode: number): Promise<number> {
+  if (activityCode !== 0) return 0;
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("nuovi_ordini");
+  if (error) return 0;
+  return Number(data ?? 0);
+}

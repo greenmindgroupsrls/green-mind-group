@@ -8,6 +8,7 @@ import {
   type ShopOrderItem,
 } from "@/lib/shop-orders";
 import { OrderStatusSelect } from "./order-status-select";
+import { SegnaOrdiniVisti } from "./segna-visti";
 import { ConfirmPaymentButton } from "./confirm-payment-button";
 import { getDizionario } from "@/i18n/dizionario";
 
@@ -56,6 +57,7 @@ export default async function ShopOrdersPage() {
 
   return (
     <div className="glass-card overflow-hidden">
+      <SegnaOrdiniVisti attivo={isRoot} />
       <div className="px-4 sm:px-6 py-4 border-b border-[var(--glass-edge)]">
         <h2 className="font-semibold text-gray-900 dark:text-white">
           {isRoot ? T.ordiniRicevuti : T.iTuoiOrdini}

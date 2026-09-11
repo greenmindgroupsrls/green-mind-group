@@ -45,3 +45,12 @@ export async function confirmOrderPayment(id: number) {
   revalidateTag("network-data", { expire: 0 });
   revalidatePath("/shop/ordini");
 }
+
+// Il pallino rosso sul menu si spegne quando l'elenco viene aperto davvero.
+// Sta in un'azione e non nella pagina perche' una pagina puo' essere
+// precaricata dal browser senza che nessuno la guardi: cosi' il segnalibro
+// si sposta solo quando qualcuno c'e' arrivato sul serio.
+export async function segnaOrdiniVisti() {
+  const supabase = await createClient();
+  await supabase.rpc("segna_visto", { p_chiave: "ordini" });
+}
