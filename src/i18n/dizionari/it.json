@@ -206,7 +206,8 @@
     "pagaOraDettaglio": "Carta, PayPal o a rate. Pagamento sicuro gestito da Stripe: i dati della carta non passano dai nostri server.",
     "bonifico": "Bonifico bancario",
     "bonificoDettaglio": "L'ordine resta in attesa finché non registriamo il bonifico. Ti mandiamo le coordinate via messaggio.",
-    "vaiAlPagamento": "Vai al pagamento"
+    "vaiAlPagamento": "Vai al pagamento",
+    "regione": "Regione"
   },
   "payout": {
     "titolo": "Payout",

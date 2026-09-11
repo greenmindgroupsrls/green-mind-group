@@ -206,7 +206,8 @@
     "pagaOraDettaglio": "Carte, PayPal ou paiement en plusieurs fois. Paiement sécurisé géré par Stripe : les données de la carte ne passent jamais par nos serveurs.",
     "bonifico": "Virement bancaire",
     "bonificoDettaglio": "La commande reste en attente jusqu'à l'enregistrement du virement. Nous vous enverrons les coordonnées par message.",
-    "vaiAlPagamento": "Aller au paiement"
+    "vaiAlPagamento": "Aller au paiement",
+    "regione": "Région"
   },
   "payout": {
     "titolo": "Paiements",

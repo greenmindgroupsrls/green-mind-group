@@ -206,7 +206,8 @@
     "pagaOraDettaglio": "Karte, PayPal oder Ratenzahlung. Sichere Zahlung über Stripe: Kartendaten laufen nie über unsere Server.",
     "bonifico": "Banküberweisung",
     "bonificoDettaglio": "Die Bestellung bleibt offen, bis wir die Überweisung verbuchen. Die Bankdaten senden wir Ihnen per Nachricht.",
-    "vaiAlPagamento": "Zur Zahlung"
+    "vaiAlPagamento": "Zur Zahlung",
+    "regione": "Region"
   },
   "payout": {
     "titolo": "Auszahlungen",

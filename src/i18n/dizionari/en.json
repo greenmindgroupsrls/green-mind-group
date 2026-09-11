@@ -206,7 +206,8 @@
     "pagaOraDettaglio": "Card, PayPal or instalments. Secure payment handled by Stripe: card details never pass through our servers.",
     "bonifico": "Bank transfer",
     "bonificoDettaglio": "The order stays on hold until we record the transfer. We will send you the bank details by message.",
-    "vaiAlPagamento": "Go to payment"
+    "vaiAlPagamento": "Go to payment",
+    "regione": "Region"
   },
   "payout": {
     "titolo": "Payout",

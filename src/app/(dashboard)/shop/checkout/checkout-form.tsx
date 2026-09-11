@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import { placeOrder, verificaCoupon, type CheckoutState } from "./actions";
 import { EUROPEAN_COUNTRIES, flagEmoji } from "@/lib/countries";
 import { StreetAutocompleteInput, type AddressSuggestion } from "@/components/street-autocomplete-input";
+import { ZonaItalia, ZONA_VUOTA, type ZonaItaliana } from "@/components/zona-italia";
 import { useTesti, riempiTesto } from "@/i18n/testi-client";
 
 const initialState: CheckoutState = { error: null, success: null };
@@ -29,6 +30,7 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
   const [metodo, setMetodo] = useState<"stripe" | "bonifico">(pagamentoAttivo ? "stripe" : "bonifico");
   const [prevSuccess, setPrevSuccess] = useState(state.success);
   const [address, setAddress] = useState(emptyAddress);
+  const [zona, setZona] = useState<ZonaItaliana>(ZONA_VUOTA);
   const [coupon, setCoupon] = useState("");
   const [scontoApplicato, setScontoApplicato] = useState<{ codice: string; importo: number } | null>(null);
   const [couponErrore, setCouponErrore] = useState<string | null>(null);
@@ -63,6 +65,10 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
   }
 
   const selectedIso2 = EUROPEAN_COUNTRIES.find((c) => c.name === address.country)?.iso2;
+  // Gli elenchi di regioni, province e comuni esistono solo per l'Italia:
+  // per gli altri paesi restano i campi liberi, che e' meglio di una
+  // tendina vuota.
+  const inItalia = address.country === "Italia";
 
   function handleSelectSuggestion(s: AddressSuggestion) {
     const matchedCountry = EUROPEAN_COUNTRIES.find((c) => c.iso2 === s.countryIso2)?.name;
@@ -118,6 +124,90 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
           <input name="recipient_name" required className={inputClass} />
         </label>
 
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>{T.paese}</span>
+          <select
+            name="country"
+            required
+            value={address.country}
+            onChange={(e) => {
+              // Cambiando paese la zona italiana non vale piu': si riparte
+              // dai campi liberi, altrimenti resterebbe un CAP di un altro
+              // stato attaccato a una citta' nuova.
+              setZona(ZONA_VUOTA);
+              setAddress((prev) => ({ ...prev, country: e.target.value, city: "", region: "", postalCode: "" }));
+            }}
+            className={inputClass}
+          >
+            {EUROPEAN_COUNTRIES.map((c) => (
+              <option key={c.iso2} value={c.name}>
+                {flagEmoji(c.iso2)} {c.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {inItalia ? (
+          <>
+            <ZonaItalia
+              valore={zona}
+              onChange={setZona}
+              etichette={{
+                // Dentro la cascata sono obbligatorie entrambe (senza
+                // provincia non c'e' elenco di comuni), fuori la provincia
+                // resta facoltativa: l'asterisco si aggiunge qui e non nel
+                // dizionario, che serve a tutti e due i casi.
+                regione: `${T.regione} *`,
+                provincia: `${T.provincia} *`,
+                citta: T.citta,
+                cap: T.cap,
+              }}
+              classeCampo={inputClass}
+              classeEtichetta={labelClass}
+            />
+            {/* Quello che viene spedito al server: le tendine scrivono qui. */}
+            <input type="hidden" name="city" value={zona.citta} />
+            <input type="hidden" name="postal_code" value={zona.cap} />
+            <input type="hidden" name="region" value={zona.provincia} />
+          </>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label className="flex flex-col gap-1.5">
+                <span className={labelClass}>{T.citta}</span>
+                <input
+                  name="city"
+                  required
+                  value={address.city}
+                  onChange={(e) => setAddress((prev) => ({ ...prev, city: e.target.value }))}
+                  className={inputClass}
+                />
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className={labelClass}>{T.cap}</span>
+                <input
+                  name="postal_code"
+                  required
+                  value={address.postalCode}
+                  onChange={(e) => setAddress((prev) => ({ ...prev, postalCode: e.target.value }))}
+                  className={inputClass}
+                />
+              </label>
+            </div>
+            <label className="flex flex-col gap-1.5">
+              <span className={labelClass}>{T.provincia}</span>
+              <input
+                name="region"
+                value={address.region}
+                onChange={(e) => setAddress((prev) => ({ ...prev, region: e.target.value }))}
+                className={inputClass}
+              />
+            </label>
+          </>
+        )}
+
+        {/* La via per ultima: si scrive dopo aver detto dove, cosi' i
+            suggerimenti sanno gia' in che comune cercare. */}
         <StreetAutocompleteInput
           name="street"
           label={T.indirizzo}
@@ -128,57 +218,6 @@ export function CheckoutForm({ pagamentoAttivo }: { pagamentoAttivo: boolean }) 
           className={inputClass}
           required
         />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>{T.citta}</span>
-            <input
-              name="city"
-              required
-              value={address.city}
-              onChange={(e) => setAddress((prev) => ({ ...prev, city: e.target.value }))}
-              className={inputClass}
-            />
-          </label>
-          <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>{T.cap}</span>
-            <input
-              name="postal_code"
-              required
-              value={address.postalCode}
-              onChange={(e) => setAddress((prev) => ({ ...prev, postalCode: e.target.value }))}
-              className={inputClass}
-            />
-          </label>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>{T.provincia}</span>
-            <input
-              name="region"
-              value={address.region}
-              onChange={(e) => setAddress((prev) => ({ ...prev, region: e.target.value }))}
-              className={inputClass}
-            />
-          </label>
-          <label className="flex flex-col gap-1.5">
-            <span className={labelClass}>{T.paese}</span>
-            <select
-              name="country"
-              required
-              value={address.country}
-              onChange={(e) => setAddress((prev) => ({ ...prev, country: e.target.value }))}
-              className={inputClass}
-            >
-              {EUROPEAN_COUNTRIES.map((c) => (
-                <option key={c.iso2} value={c.name}>
-                  {flagEmoji(c.iso2)} {c.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
 
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>{T.telefono}</span>

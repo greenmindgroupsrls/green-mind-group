@@ -206,7 +206,8 @@
     "pagaOraDettaglio": "Tarjeta, PayPal o a plazos. Pago seguro gestionado por Stripe: los datos de la tarjeta no pasan por nuestros servidores.",
     "bonifico": "Transferencia bancaria",
     "bonificoDettaglio": "El pedido queda en espera hasta que registremos la transferencia. Te enviaremos los datos bancarios por mensaje.",
-    "vaiAlPagamento": "Ir al pago"
+    "vaiAlPagamento": "Ir al pago",
+    "regione": "Región"
   },
   "payout": {
     "titolo": "Pagos",
