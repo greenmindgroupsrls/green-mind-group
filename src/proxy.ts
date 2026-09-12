@@ -44,6 +44,11 @@ export async function proxy(request: NextRequest) {
   // deve poter aprire/condividere/testare il proprio stesso link anche da
   // loggato (la pagina stessa gestisce il caso "hai gia' un account").
   const isReferralLinkRoute = pathname.startsWith("/r/");
+  // /firma/<token> e' la pagina dove il cliente firma dal proprio telefono:
+  // non ha un account, quindi non puo' passare dal login. Il token da solo
+  // non basta comunque a firmare — serve anche il codice inviato via email
+  // (vedi src/app/firma/[token]/actions.ts).
+  const isFirmaRoute = pathname.startsWith("/firma/");
   // Termini e Privacy devono essere leggibili sia da chi deve ancora
   // registrarsi (per accettarli) sia da chi e' gia' loggato — a differenza
   // di /login, qui non si reindirizza mai via un utente autenticato.
@@ -88,6 +93,7 @@ export async function proxy(request: NextRequest) {
     !isLoginRoute &&
     !isAuthCallbackRoute &&
     !isReferralLinkRoute &&
+    !isFirmaRoute &&
     !isLegalRoute &&
     !isWebhookRoute &&
     !isPrenotazioneRoute &&

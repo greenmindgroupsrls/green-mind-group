@@ -134,6 +134,94 @@ function Elenco({ tipo, mese, unita }: { tipo: Tipo; mese: string; unita: "euro"
   );
 }
 
+type RigaDocumento = {
+  id: number;
+  numero: string;
+  tipo: string;
+  stato: string;
+  firmato: boolean;
+  cliente: string;
+  incaricato: string;
+  creatoIl: string;
+  haPdf: boolean;
+};
+
+// I DOCUMENTI FIRMATI DEL MESE
+//
+// Stessa logica delle altre voci — si apre l'elenco e accanto a ogni riga
+// c'e' il suo PDF — ma qui il PDF non si genera al volo: e' il documento
+// che il cliente ha firmato, archiviato cosi' com'era al momento della
+// firma.
+function DocumentiFirmati({ mese }: { mese: string }) {
+  const [stato, setStato] = useState<{ chiave: string; righe: RigaDocumento[] | null; errore: string | null }>({
+    chiave: "",
+    righe: null,
+    errore: null,
+  });
+
+  useEffect(() => {
+    let vivo = true;
+    fetch(`/api/admin/export/documenti?mese=${mese}`)
+      .then(async (r) => {
+        if (!r.ok) throw new Error((await r.json().catch(() => null))?.error ?? "Errore");
+        return r.json();
+      })
+      .then((d) => vivo && setStato({ chiave: mese, righe: d.righe ?? [], errore: null }))
+      .catch((e) => vivo && setStato({ chiave: mese, righe: null, errore: String(e.message ?? e) }));
+    return () => {
+      vivo = false;
+    };
+  }, [mese]);
+
+  return (
+    <div className="glass-card p-4 sm:p-5 flex flex-col gap-3">
+      <div>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Documenti firmati</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Contratti di vendita, informative, verbali di consegna e contratti incaricato firmati nel
+          mese, con il PDF archiviato di ognuno.
+        </p>
+      </div>
+
+      {stato.chiave !== mese ? (
+        <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 py-3">
+          <Loader2 size={14} className="animate-spin" /> Caricamento…
+        </p>
+      ) : stato.errore ? (
+        <p className="text-sm text-red-600 dark:text-red-400 py-3">{stato.errore}</p>
+      ) : !stato.righe || stato.righe.length === 0 ? (
+        <p className="text-sm text-gray-500 dark:text-gray-400 py-3">Nessun documento in questo mese.</p>
+      ) : (
+        <ul className="flex flex-col divide-y divide-gray-100 dark:divide-white/5 max-h-96 overflow-y-auto -mx-1">
+          {stato.righe.map((r) => (
+            <li key={r.id} className="flex items-center justify-between gap-3 px-1 py-2.5">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  {r.tipo} · {r.cliente}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {r.numero} · {r.incaricato} · {r.stato}
+                </p>
+              </div>
+              {r.haPdf ? (
+                <a
+                  href={`/api/documenti/${r.id}/pdf`}
+                  className="shrink-0 inline-flex items-center gap-1.5 px-3 h-9 rounded-lg bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 transition-colors"
+                >
+                  <FileText size={14} />
+                  PDF
+                </a>
+              ) : (
+                <span className="shrink-0 text-xs text-gray-400 dark:text-gray-500">Da firmare</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function ExportDataView() {
   const [mese, setMese] = useState(meseCorrente);
   const [aperte, setAperte] = useState<Set<Tipo>>(new Set());
@@ -202,6 +290,8 @@ export function ExportDataView() {
           );
         })}
       </div>
+
+      <DocumentiFirmati mese={mese} />
     </div>
   );
 }

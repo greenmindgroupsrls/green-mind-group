@@ -19,7 +19,7 @@ function escapeHtml(value: string) {
 // header scuro col marchio in bianco, corpo con tipografia leggibile,
 // bottone d'azione opzionale, footer discreto. `bodyHtml` è già HTML
 // (i valori dinamici vanno passati già scappati con escapeHtml).
-function renderEmailHtml(params: {
+export function renderEmailHtml(params: {
   heading: string;
   bodyHtml: string;
   cta?: { label: string; href: string };
@@ -101,6 +101,9 @@ export async function sendEmail(params: {
   text: string;
   html: string;
   from?: string;
+  // Allegati: servono alla copia firmata del contratto, che per il cliente
+  // e' la prova di aver ricevuto il documento su supporto durevole.
+  attachments?: { filename: string; content: Buffer }[];
 }) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
@@ -116,6 +119,7 @@ export async function sendEmail(params: {
       subject: params.subject,
       text: params.text,
       html: params.html,
+      ...(params.attachments?.length ? { attachments: params.attachments } : {}),
     });
   } catch {
     // non blocchiamo l'azione che ha generato l'email se l'invio fallisce

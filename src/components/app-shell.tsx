@@ -21,6 +21,7 @@ import {
   X,
   ShieldCheck,
   CalendarClock,
+  FileSignature,
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { signOut } from "@/lib/auth-actions";
@@ -47,6 +48,7 @@ function timeAgo(iso: string) {
 const MAIN_NAV_ITEMS = [
   { href: "/dashboard", chiave: "dashboard" as const, icon: LayoutDashboard, incaricatoOnly: false, rootOnly: false, highlighted: false },
   { href: "/registrazione", chiave: "registrazione" as const, icon: ClipboardPlus, incaricatoOnly: true, rootOnly: false, highlighted: false },
+  { href: "/documenti", chiave: "documenti" as const, icon: FileSignature, incaricatoOnly: true, rootOnly: false, highlighted: false },
   { href: "/albero", chiave: "team" as const, icon: Network, incaricatoOnly: true, rootOnly: false, highlighted: false },
   { href: "/marketing", chiave: "marketing" as const, icon: Megaphone, incaricatoOnly: true, rootOnly: false, highlighted: false },
   { href: "/payout", chiave: "payout" as const, icon: Wallet, incaricatoOnly: true, rootOnly: false, highlighted: false },
