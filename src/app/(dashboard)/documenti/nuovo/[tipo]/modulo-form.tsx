@@ -64,6 +64,42 @@ export function ModuloForm({
       );
     }
 
+    if (c.tipo === "scelta") {
+      // Non un <label> che avvolge tutto: avvolgere piu' spunte in una sola
+      // etichetta farebbe scattare la prima a ogni clic sul titolo.
+      //
+      // Spunte esclusive (radio) e non caselle indipendenti: due caselle
+      // separate potrebbero restare entrambe vuote o entrambe segnate, e su
+      // un documento che si firma sarebbe un consenso assente o
+      // contraddittorio. Il campo resta obbligatorio: senza scelta il
+      // browser non manda il modulo.
+      return (
+        <fieldset key={c.nome} className={c.intera ? "sm:col-span-2" : ""}>
+          <legend className={labelClass}>
+            {c.label}
+            {c.obbligatorio && " *"}
+          </legend>
+          <div className="flex flex-col gap-1 mt-1.5">
+            {c.opzioni?.map((o) => (
+              <label key={o.value} className="flex items-start gap-2.5 py-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name={c.nome}
+                  value={o.value}
+                  required={c.obbligatorio}
+                  checked={valore === o.value}
+                  onChange={() => aggiorna(c.nome, o.value)}
+                  className="h-4 w-4 mt-0.5 shrink-0 border-gray-300 dark:border-white/20 text-accent focus:ring-accent/40"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">{o.label}</span>
+              </label>
+            ))}
+          </div>
+          {c.aiuto && <span className="text-xs text-gray-500 dark:text-gray-400">{c.aiuto}</span>}
+        </fieldset>
+      );
+    }
+
     return (
       <label key={c.nome} className={`flex flex-col gap-1.5 ${c.intera ? "sm:col-span-2" : ""}`}>
         <span className={labelClass}>

@@ -26,6 +26,10 @@ export type TipoCampo =
   | "data"
   | "numero"
   | "select"
+  // Scelta fra poche alternative, a spunte esclusive invece che a tendina:
+  // su un modulo che si firma davanti al cliente le opzioni devono essere
+  // tutte visibili, non nascoste dentro un menu da aprire.
+  | "scelta"
   | "checkbox"
   | "note";
 
@@ -206,7 +210,7 @@ export const CAMPI_DOCUMENTO: Record<TipoDocumento, Sezione[]> = {
         {
           nome: "consenso_marketing",
           label: "Comunicazioni commerciali di Green Mind Group (e-mail, SMS, messaggistica, telefono, posta)",
-          tipo: "select",
+          tipo: "scelta",
           obbligatorio: true,
           intera: true,
           opzioni: [
@@ -339,7 +343,7 @@ export function campoVisibile(campo: Campo, valori: Record<string, string>): boo
 export function valoreLeggibile(campo: Campo, valore: unknown): string {
   if (valore === undefined || valore === null || valore === "") return "-";
   if (campo.tipo === "checkbox") return valore === true || valore === "on" || valore === "si" ? "Sì" : "No";
-  if (campo.tipo === "select") {
+  if (campo.tipo === "select" || campo.tipo === "scelta") {
     const scelta = campo.opzioni?.find((o) => o.value === String(valore));
     return scelta ? scelta.label : String(valore);
   }
